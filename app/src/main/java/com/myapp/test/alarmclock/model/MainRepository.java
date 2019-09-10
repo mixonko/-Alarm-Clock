@@ -1,15 +1,41 @@
 package com.myapp.test.alarmclock.model;
 
 import com.myapp.test.alarmclock.contracts.MainContract;
+import com.myapp.test.alarmclock.database.MyAppDatabase;
+import com.myapp.test.alarmclock.entity.AlarmClock;
+import com.myapp.test.alarmclock.myAppContext.MyApplication;
+
+import java.util.List;
 
 public class MainRepository implements MainContract.Repository {
-    @Override
-    public void addAlarmClock() {
+    public static MyAppDatabase database;
 
+    public MainRepository() {
+        database = MyAppDatabase.getDatabase(MyApplication.getAppContext());
     }
 
     @Override
-    public void setAlarmClock() {
+    public void addAlarmClock(AlarmClock alarmClock) {
+        database.alarmClockDao().addAlarmClock(alarmClock);
+    }
 
+    @Override
+    public void deleteAlarmClock(AlarmClock alarmClock) {
+        database.alarmClockDao().deleteAlarmClock(alarmClock);
+    }
+
+    @Override
+    public void updateAlarmClock(AlarmClock alarmClock) {
+        database.alarmClockDao().updateAlarmClock(alarmClock);
+    }
+
+    @Override
+    public List<AlarmClock> getAllAlarmClock() {
+        return database.alarmClockDao().getAllAlarmClock();
+    }
+
+    @Override
+    public AlarmClock getAlarmClock(int id) {
+        return database.alarmClockDao().getAlarmClock(id);
     }
 }

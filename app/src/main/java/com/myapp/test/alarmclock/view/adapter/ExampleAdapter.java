@@ -79,15 +79,15 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
     public void onBindViewHolder(@NonNull ExampleViewHolder exampleViewHolder, int i) {
         AlarmClock currentItem = exampleItems.get(i);
 
-        exampleViewHolder.time.set
-        exampleViewHolder.monday.set
-        exampleViewHolder.tuesday.set
-        exampleViewHolder.wednesday.set
-        exampleViewHolder.thursday.set
-        exampleViewHolder.friday.set
-        exampleViewHolder.saturday.set
-        exampleViewHolder.sunday.set
-        exampleViewHolder.mySwitch.set
+//        exampleViewHolder.time.set
+//        exampleViewHolder.monday.set
+//        exampleViewHolder.tuesday.set
+//        exampleViewHolder.wednesday.set
+//        exampleViewHolder.thursday.set
+//        exampleViewHolder.friday.set
+//        exampleViewHolder.saturday.set
+//        exampleViewHolder.sunday.set
+//        exampleViewHolder.mySwitch.set
 
     }
 

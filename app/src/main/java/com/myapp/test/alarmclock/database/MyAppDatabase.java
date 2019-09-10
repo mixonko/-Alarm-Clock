@@ -2,8 +2,8 @@ package com.myapp.test.alarmclock.database;
 
 import android.content.Context;
 
+import com.myapp.test.alarmclock.dao.AlarmClockDao;
 import com.myapp.test.alarmclock.entity.AlarmClock;
-import com.myapp.test.alarmclock.myAppContext.MyAppContext;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -13,12 +13,12 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteOpenHelper;
 
-@Database(entities = AlarmClock.class, version = 1)
+//@Database(entities = AlarmClock.class, version = 1)
 public abstract class MyAppDatabase extends RoomDatabase {
 
     public static MyAppDatabase INSTANCE;
 
-    public abstract AlarmClock alarmClock();
+    public abstract AlarmClockDao alarmClockDao();
 
     @NonNull
     @Override
@@ -40,7 +40,7 @@ public abstract class MyAppDatabase extends RoomDatabase {
 
         if (INSTANCE == null) {
             INSTANCE =
-                    Room.databaseBuilder(MyAppContext.getAppContext(),
+                    Room.databaseBuilder(context,
                             MyAppDatabase.class, "alarm_clock_database")
                             .allowMainThreadQueries()
                             .fallbackToDestructiveMigration()

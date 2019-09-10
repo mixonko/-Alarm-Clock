@@ -1,12 +1,9 @@
 package com.myapp.test.alarmclock.presenter;
 
 import com.myapp.test.alarmclock.contracts.MainContract;
-import com.myapp.test.alarmclock.entity.AlarmClock;
 import com.myapp.test.alarmclock.model.MainRepository;
 
-import java.util.List;
-
-public class MainPresenter implements MainContract.Presenter, MainContract.Repository.OnFinishedListener {
+public class MainPresenter implements MainContract.Presenter {
     private MainContract.View view;
     private MainContract.Repository repository;
 
@@ -16,22 +13,23 @@ public class MainPresenter implements MainContract.Presenter, MainContract.Repos
     }
 
     @Override
+    public void onCreateActivity() {
+        view.setAdapter(repository.getAllAlarmClock());
+    }
+
+    @Override
     public void onItemWasClicked(int position) {
 
     }
 
     @Override
     public void onCreateButtonWasClicked() {
-
+        view.startCreateActivity();
     }
 
     @Override
-    public void onSwitchWasClicked() {
+    public void onSwitchWasClicked(int position) {
 
     }
 
-    @Override
-    public void onFinished(List<AlarmClock> list) {
-
-    }
 }
