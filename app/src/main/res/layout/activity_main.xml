@@ -6,6 +6,16 @@
     android:orientation="vertical"
     tools:context=".view.MainActivity">
 
+    <FrameLayout
+        style="@style/Title">
+
+        <TextView
+            style="@style/TitleText"
+            android:text="@string/alarm_clock" />
+
+    </FrameLayout>
+
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -15,31 +25,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-<!--        <TimePicker-->
-<!--            android:id="@+id/timePicker"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content" />-->
+        <TimePicker
+            android:id="@+id/timePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
-    <Button
-        android:id="@+id/create"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button" />
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/list"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent" />-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-<!--        <Button-->
-<!--            android:id="@+id/create"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="bottom|center"-->
-<!--            android:layout_marginBottom="25dp"/>-->
+        <Button
+            android:id="@+id/create"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="25dp"/>
 
 
 

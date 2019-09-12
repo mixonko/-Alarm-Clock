@@ -3,9 +3,113 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/button"
+    <FrameLayout
+        style="@style/Title">
+
+        <Button
+            android:id="@+id/close"
+            style="@style/TitleButtons"
+            android:layout_gravity="left|center"/>
+
+        <TextView
+            style="@style/TitleText"
+            android:text="@string/create_title" />
+
+        <Button
+            android:id="@+id/done"
+            style="@style/TitleButtons"
+            android:layout_gravity="right|center"/>
+
+    </FrameLayout>
+
+    <EditText
+        android:id="@+id/hour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/minute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <FrameLayout
+        android:id="@+id/days_of_the_week"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Button" />
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="@string/days_of_the_week" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="@string/without_replay"
+            android:drawableRight="@drawable/ic_arrow_right_black"/>
+
+    </FrameLayout>
+
+
+
+    <FrameLayout
+        android:id="@+id/sound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="@string/sound" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="@string/default_text"
+            android:drawableRight="@drawable/ic_arrow_right_black"/>
+
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:id="@+id/vibration_signal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="@string/vibration_signal" />
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="@string/description" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="@string/alarm_clock"
+            android:drawableRight="@drawable/ic_arrow_right_black"/>
+
+    </FrameLayout>
 </LinearLayout>

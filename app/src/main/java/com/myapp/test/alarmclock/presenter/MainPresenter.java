@@ -1,15 +1,18 @@
 package com.myapp.test.alarmclock.presenter;
 
 import com.myapp.test.alarmclock.contracts.MainContract;
-import com.myapp.test.alarmclock.model.MainRepository;
+import com.myapp.test.alarmclock.contracts.RepositoryContract;
+import com.myapp.test.alarmclock.model.Repository;
+
+
 
 public class MainPresenter implements MainContract.Presenter {
     private MainContract.View view;
-    private MainContract.Repository repository;
+    private RepositoryContract repository;
 
     public MainPresenter(MainContract.View view) {
         this.view = view;
-        repository = new MainRepository();
+        repository = new Repository();
     }
 
     @Override
@@ -25,6 +28,7 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void onCreateButtonWasClicked() {
         view.startCreateActivity();
+
     }
 
     @Override

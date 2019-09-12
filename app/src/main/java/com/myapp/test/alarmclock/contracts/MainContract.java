@@ -20,12 +20,4 @@ public interface MainContract {
         void onSwitchWasClicked(int position);
     }
 
-    interface Repository{
-        void addAlarmClock(AlarmClock alarmClock);
-        void deleteAlarmClock(AlarmClock alarmClock);
-        void updateAlarmClock(AlarmClock alarmClock);
-        List<AlarmClock> getAllAlarmClock();
-        AlarmClock getAlarmClock(int id);
-
-    }
 }
