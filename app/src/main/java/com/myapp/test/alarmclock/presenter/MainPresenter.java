@@ -32,7 +32,7 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void onSwitchWasClicked(int position) {
+    public void onSwitchWasChanged(int position) {
 
     }
 

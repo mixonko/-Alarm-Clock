@@ -11,13 +11,16 @@ public interface MainContract {
         void startCreateActivity(AlarmClock alarmClock);
         void updateList();
         void setAdapter(List<AlarmClock> list);
+        void startAlarmClock();
+        void cancelAlarmClock();
+
     }
 
     interface Presenter{
         void onCreateActivity();
         void onItemWasClicked(int position);
         void onCreateButtonWasClicked();
-        void onSwitchWasClicked(int position);
+        void onSwitchWasChanged(int position);
     }
 
 }

@@ -5,13 +5,26 @@
     android:layout_height="80dp"
     android:padding="10dp">
 
+    <Switch
+        android:id="@+id/mySwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:layout_gravity="right|center" />
+
+    <TextView
+        android:id="@+id/time"
+        style="@style/AlarmClockTextTime"
+        android:layout_gravity="top"
+        android:text="asdasd" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom">
 
         <TextView
-            android:id="@+id/text"
+            android:id="@+id/description"
             style="@style/AlarmClockTextDay"
             android:text="@string/text" />
 
@@ -51,17 +64,5 @@
             android:text="asdasd" />
 
     </LinearLayout>
-
-    <Switch
-        android:id="@+id/mySwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right|center" />
-
-    <TextView
-        android:id="@+id/time"
-        style="@style/AlarmClockTextTime"
-        android:layout_gravity="top"
-        android:text="asdasd" />
 
 </FrameLayout>

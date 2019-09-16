@@ -3,6 +3,7 @@ package com.myapp.test.alarmclock.view.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -16,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleViewHolder> {
     private OnItemClickListener onItemClickListener;
+    private OnCheckedChangeListener onCheckedChangeListener;
+
     private List<AlarmClock> exampleItems;
 
     public ExampleAdapter(List<AlarmClock> exampleItems) {
@@ -26,8 +29,16 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
         void onItemClick(int position);
     }
 
+    public interface OnCheckedChangeListener{
+        void onCheckedChanged(int position, CompoundButton compoundButton, boolean b);
+    }
+
     public void setOnItemClickListener(OnItemClickListener listener) {
         onItemClickListener = listener;
+    }
+
+    public void setOnCheckedChangeListener(OnCheckedChangeListener listener){
+        onCheckedChangeListener = listener;
     }
 
     public static class ExampleViewHolder extends RecyclerView.ViewHolder {
@@ -41,7 +52,8 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
         public TextView sunday;
         public Switch mySwitch;
 
-        public ExampleViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
+        public ExampleViewHolder(@NonNull View itemView, final OnItemClickListener listener,
+                                 final OnCheckedChangeListener checkedChangeListener) {
             super(itemView);
             time = itemView.findViewById(R.id.time);
             monday = itemView.findViewById(R.id.monday);
@@ -64,6 +76,18 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
                     }
                 }
             });
+
+            mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if (checkedChangeListener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            checkedChangeListener.onCheckedChanged(position, compoundButton, b);
+                        }
+                    }
+                }
+            });
         }
     }
 
@@ -71,7 +95,7 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
     @Override
     public ExampleViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.example_item, viewGroup, false);
-        ExampleViewHolder exampleViewHolder = new ExampleViewHolder(v, onItemClickListener);
+        ExampleViewHolder exampleViewHolder = new ExampleViewHolder(v, onItemClickListener, onCheckedChangeListener);
         return exampleViewHolder;
     }
 
@@ -79,7 +103,7 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
     public void onBindViewHolder(@NonNull ExampleViewHolder exampleViewHolder, int i) {
         AlarmClock currentItem = exampleItems.get(i);
 
-//        exampleViewHolder.time.set
+        exampleViewHolder.time.setText(currentItem.getHour() + ":" + currentItem.getMinute());
 //        exampleViewHolder.monday.set
 //        exampleViewHolder.tuesday.set
 //        exampleViewHolder.wednesday.set

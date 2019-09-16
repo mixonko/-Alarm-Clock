@@ -3,12 +3,13 @@ package com.myapp.test.alarmclock.contracts;
 public interface CreateContract {
     interface view {
         void close();
-        String getHour();
-        String getMinute();
+        int getHour();
+        int getMinute();
         void setDays();
         void setSound();
         void setVibration();
         void setDescription();
+        void startAlarmClock(int hour, int minute);
     }
 
     interface presenter{

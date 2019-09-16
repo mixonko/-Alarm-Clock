@@ -22,8 +22,11 @@ public class CreatePresenter implements CreateContract.presenter {
 
     @Override
     public void onDoneWasClicked() {
-        repository.addAlarmClock(new AlarmClock(view.getHour(), view.getMinute()));
+        repository.addAlarmClock(new AlarmClock(String.valueOf(view.getHour()),
+                String.valueOf(view.getMinute())));
+        view.startAlarmClock(view.getHour(), view.getMinute());
         view.close();
+
     }
 
     @Override

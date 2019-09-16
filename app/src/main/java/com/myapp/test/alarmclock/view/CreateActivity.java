@@ -1,18 +1,28 @@
 package com.myapp.test.alarmclock.view;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.TimePicker;
 
+import com.myapp.test.alarmclock.AlarmReceiver;
 import com.myapp.test.alarmclock.R;
 import com.myapp.test.alarmclock.contracts.CreateContract;
 import com.myapp.test.alarmclock.myAppContext.MyApplication;
 import com.myapp.test.alarmclock.presenter.CreatePresenter;
 
+import java.util.Calendar;
 import java.util.List;
 
 import androidx.appcompat.app.AlertDialog;
@@ -23,11 +33,11 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     private CreateContract.presenter presenter;
     private Button close;
     private Button done;
-    private EditText hour;
-    private EditText minute;
-    private List days;
-    private Boolean vibration;
-    private String des;
+    private TimePicker timePicker;
+    private TextView descriptionText;
+//    private List days;
+//    private Boolean vibration;
+//    private String des;
     private FrameLayout daysOfTheWeek, sound, vibrationSignal, description;
 
     @Override
@@ -39,12 +49,13 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
 
         close = findViewById(R.id.close);
         done = findViewById(R.id.done);
-        hour = findViewById(R.id.hour);
-        minute = findViewById(R.id.minute);
+        timePicker = findViewById(R.id.timePicker);
+        timePicker.setIs24HourView(true);
         daysOfTheWeek = findViewById(R.id.days_of_the_week);
         sound = findViewById(R.id.sound);
         vibrationSignal = findViewById(R.id.vibration_signal);
         description = findViewById(R.id.description);
+        descriptionText = findViewById(R.id.descriptionText);
 
         close.setOnClickListener(this);
         done.setOnClickListener(this);
@@ -60,13 +71,13 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     }
 
     @Override
-    public String getHour() {
-        return hour.getText().toString();
+    public int getHour() {
+        return timePicker.getHour();
     }
 
     @Override
-    public String getMinute() {
-        return minute.getText().toString();
+    public int getMinute() {
+        return timePicker.getMinute();
     }
 
     @Override
@@ -94,7 +105,7 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
         builder.setPositiveButton("Ок", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                des = String.valueOf(et.getText());
+                descriptionText.setText(et.getText().toString());
             }
         }).setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
             @Override
@@ -105,6 +116,19 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
                 .show();
     }
 
+    @Override
+    public void startAlarmClock(int hour, int minute) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
+        Intent intent = new Intent(CreateActivity.this, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(MyApplication.getAppContext(),
+                0 , intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+
+    }
 
     @Override
     public void onClick(View view) {
