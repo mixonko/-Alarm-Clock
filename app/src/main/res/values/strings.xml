@@ -10,4 +10,6 @@
     <string name="default_text">По умолчанию</string>
     <string name="vibration_signal">Вибросигнал</string>
     <string name="description">Описание</string>
+    <string name="alarm_clock_off">Будильник выключен</string>
+    <string name="alarm_clock_on">Будильник включен</string>
 </resources>

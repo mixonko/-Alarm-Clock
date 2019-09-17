@@ -5,6 +5,8 @@ import com.myapp.test.alarmclock.contracts.RepositoryContract;
 import com.myapp.test.alarmclock.entity.AlarmClock;
 import com.myapp.test.alarmclock.model.Repository;
 
+import java.util.List;
+
 public class CreatePresenter implements CreateContract.presenter {
 
     private CreateContract.view view;
@@ -22,25 +24,13 @@ public class CreatePresenter implements CreateContract.presenter {
 
     @Override
     public void onDoneWasClicked() {
-        repository.addAlarmClock(new AlarmClock(String.valueOf(view.getHour()),
-                String.valueOf(view.getMinute())));
-        view.startAlarmClock(view.getHour(), view.getMinute());
+        AlarmClock alarmClock = new AlarmClock(String.valueOf(view.getHour()),
+                String.valueOf(view.getMinute()), false);
+        repository.addAlarmClock(alarmClock);
+        view.createAlarmClock(view.getHour(), view.getMinute());
+        alarmClock.setAlarmClockOn(true);
+        repository.updateAlarmClock(alarmClock);
         view.close();
-
-    }
-
-    @Override
-    public void onDaysOfTheWeekWasClicked() {
-
-    }
-
-    @Override
-    public void onSoundWasClicked() {
-
-    }
-
-    @Override
-    public void onVibrationSignalWasClicked() {
 
     }
 

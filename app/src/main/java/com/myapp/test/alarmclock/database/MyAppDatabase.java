@@ -16,12 +16,11 @@ public abstract class MyAppDatabase extends RoomDatabase {
 
     public abstract AlarmClockDao alarmClockDao();
 
-
     public static MyAppDatabase getDatabase(Context context) {
 
         if (INSTANCE == null) {
             INSTANCE =
-                    Room.databaseBuilder(context, MyAppDatabase.class, "car_database")
+                    Room.databaseBuilder(context, MyAppDatabase.class, "alarmClock_database")
                             .allowMainThreadQueries()
                             .fallbackToDestructiveMigration()
                             .build();

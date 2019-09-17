@@ -11,8 +11,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.myapp.test.alarmclock.AlarmReceiver;
 import com.myapp.test.alarmclock.R;
@@ -23,6 +21,7 @@ import com.myapp.test.alarmclock.presenter.MainPresenter;
 import com.myapp.test.alarmclock.view.adapter.ExampleAdapter;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View{
@@ -30,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private static final String ALARM_CLOCK_KEY = "alarm_clock_key";
     private MainContract.Presenter presenter;
     private Button create;
-    private TextView info;
     private RecyclerView recyclerView;
     private ExampleAdapter exampleAdapter;
     private LinearLayoutManager linearLayoutManager;
@@ -43,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         presenter = new MainPresenter(this);
 
         create = findViewById(R.id.create);
-        info = findViewById(R.id.info);
         recyclerView = findViewById(R.id.list);
         linearLayoutManager = new LinearLayoutManager(MyApplication.getAppContext());
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -55,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
             }
         });
-        exampleAdapter = new ExampleAdapter(null);
+
         presenter.onCreateActivity();
 
     }
@@ -76,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         Bundle bundle = new Bundle();
         bundle.putSerializable(BUNDLE_KEY, (Serializable) alarmClock);
         intent.putExtra(ALARM_CLOCK_KEY, bundle);
-        startActivity(intent);
+        startActivityForResult(intent, 1);
     }
 
     @Override
@@ -85,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void setAdapter(List<AlarmClock> list) {
+    public void setAdapter(final List<AlarmClock> list) {
         if (list.size() != 0) {
             exampleAdapter = new ExampleAdapter(list);
             recyclerView.setAdapter(exampleAdapter);
@@ -98,8 +95,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             exampleAdapter.setOnCheckedChangeListener(new ExampleAdapter.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(int position, CompoundButton compoundButton, boolean b) {
-                    presenter.onSwitchWasChanged(position);
-                    Toast.makeText(MyApplication.getAppContext(), String.valueOf(position) + String.valueOf(b), Toast.LENGTH_LONG).show();
+                    AlarmClock alarmClock = list.get(position);
+                    presenter.onSwitchWasChanged(position, b, alarmClock);
                 }
             });
         }
@@ -107,13 +104,31 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void startAlarmClock() {
+    public void alarmClockOn(int hour, int minute) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
+        if(calendar.before(Calendar.getInstance())) {
+            calendar.add(Calendar.DATE, 1);
+        }
+        Intent intent = new Intent(MyApplication.getAppContext(), AlarmReceiver.class);
+//        intent.putExtra("extra", id);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(MyApplication.getAppContext(),
+                0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }
 
     @Override
-    public void cancelAlarmClock() {
-        
+    public void alarmClockOff() {
+        Intent intent = new Intent(MyApplication.getAppContext(), AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(MyApplication.getAppContext(),
+                0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
+        pendingIntent.cancel();
     }
 
 }

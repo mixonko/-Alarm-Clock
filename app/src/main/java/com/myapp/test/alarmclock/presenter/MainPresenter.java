@@ -2,8 +2,8 @@ package com.myapp.test.alarmclock.presenter;
 
 import com.myapp.test.alarmclock.contracts.MainContract;
 import com.myapp.test.alarmclock.contracts.RepositoryContract;
+import com.myapp.test.alarmclock.entity.AlarmClock;
 import com.myapp.test.alarmclock.model.Repository;
-
 
 
 public class MainPresenter implements MainContract.Presenter {
@@ -17,6 +17,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onCreateActivity() {
+//        if (repository.getAllAlarmClock().size() != 0)
         view.setAdapter(repository.getAllAlarmClock());
     }
 
@@ -32,8 +33,20 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void onSwitchWasChanged(int position) {
+    public void onSwitchWasChanged(int position, Boolean b, AlarmClock alarmClock) {
+        if (b){
+            updateAlarmClock(alarmClock,true);
+            view.alarmClockOn(Integer.parseInt(alarmClock.getHour()), Integer.parseInt(alarmClock.getMinute()));
+        }else {
+            updateAlarmClock(alarmClock,false);
+            view.alarmClockOff();
 
+        }
+    }
+
+    private void updateAlarmClock(AlarmClock alarmClock, Boolean b){
+        alarmClock.setAlarmClockOn(b);
+        repository.updateAlarmClock(alarmClock);
     }
 
 }

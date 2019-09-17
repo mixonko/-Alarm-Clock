@@ -25,7 +25,7 @@ public interface AlarmClockDao {
     @Query("select * from alarm_clock")
     public List<AlarmClock> getAllAlarmClock();
 
-    @Query("select * from alarm_clock where hour = :hour")
-    public AlarmClock getAlarmClock(String hour);
+    @Query("select * from alarm_clock where id = :id")
+    public AlarmClock getAlarmClock(int id);
 
 }

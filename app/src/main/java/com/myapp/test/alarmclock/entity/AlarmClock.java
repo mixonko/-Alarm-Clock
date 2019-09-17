@@ -7,9 +7,10 @@ import androidx.room.PrimaryKey;
 @Entity( tableName = "alarm_clock" )
 public class AlarmClock {
 
-    public AlarmClock(String hour, String minute) {
+    public AlarmClock(String hour, String minute, Boolean alarmClockOn) {
         this.hour = hour;
         this.minute = minute;
+        this.alarmClockOn = alarmClockOn;
     }
 
 //    public AlarmClock(String hour, String minute, Boolean monday, Boolean tuesday,
@@ -33,6 +34,10 @@ public class AlarmClock {
     private String hour;
     @ColumnInfo( name = "minute" )
     private String minute;
+    @ColumnInfo( name = "alarm_clock_on" )
+    private Boolean alarmClockOn;
+
+
 //    @ColumnInfo( name = "monday" )
 //    private Boolean monday;
 //    @ColumnInfo( name = "tuesday" )
@@ -74,7 +79,15 @@ public class AlarmClock {
         this.minute = minute;
     }
 
-//    public Boolean getMonday() {
+    public Boolean getAlarmClockOn() {
+        return alarmClockOn;
+    }
+
+    public void setAlarmClockOn(Boolean alarmClockOn) {
+        this.alarmClockOn = alarmClockOn;
+    }
+
+    //    public Boolean getMonday() {
 //        return monday;
 //    }
 //

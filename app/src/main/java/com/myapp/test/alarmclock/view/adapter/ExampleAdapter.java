@@ -111,7 +111,9 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
 //        exampleViewHolder.friday.set
 //        exampleViewHolder.saturday.set
 //        exampleViewHolder.sunday.set
-//        exampleViewHolder.mySwitch.set
+        if (currentItem.getAlarmClockOn()){
+            exampleViewHolder.mySwitch.setChecked(true);
+        }
 
     }
 

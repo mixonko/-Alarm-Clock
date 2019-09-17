@@ -17,7 +17,6 @@ public class Repository implements RepositoryContract {
     @Override
     public void addAlarmClock(AlarmClock alarmClock) {
         database.alarmClockDao().addAlarmClock(alarmClock);
-
     }
 
     @Override
@@ -36,7 +35,7 @@ public class Repository implements RepositoryContract {
     }
 
     @Override
-    public AlarmClock getAlarmClock(String hour) {
-        return database.alarmClockDao().getAlarmClock(hour);
+    public AlarmClock getAlarmClock(int id) {
+        return database.alarmClockDao().getAlarmClock(id);
     }
 }
