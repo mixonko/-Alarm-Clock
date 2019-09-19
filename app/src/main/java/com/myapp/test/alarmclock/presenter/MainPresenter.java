@@ -17,7 +17,6 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onCreateActivity() {
-//        if (repository.getAllAlarmClock().size() != 0)
         view.setAdapter(repository.getAllAlarmClock());
     }
 
@@ -36,12 +35,17 @@ public class MainPresenter implements MainContract.Presenter {
     public void onSwitchWasChanged(int position, Boolean b, AlarmClock alarmClock) {
         if (b){
             updateAlarmClock(alarmClock,true);
-            view.alarmClockOn(Integer.parseInt(alarmClock.getHour()), Integer.parseInt(alarmClock.getMinute()));
+            view.alarmClockOn(Integer.parseInt(alarmClock.getHour()), Integer.parseInt(alarmClock.getMinute()), alarmClock.getId());
         }else {
             updateAlarmClock(alarmClock,false);
-            view.alarmClockOff();
+            view.alarmClockOff(alarmClock.getId());
 
         }
+    }
+
+    @Override
+    public void onResume() {
+        view.setAdapter(repository.getAllAlarmClock());
     }
 
     private void updateAlarmClock(AlarmClock alarmClock, Boolean b){

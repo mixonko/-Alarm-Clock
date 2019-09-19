@@ -9,10 +9,9 @@ public interface MainContract {
         void setInfoText(String infoText);
         void startCreateActivity();
         void startCreateActivity(AlarmClock alarmClock);
-        void updateList();
         void setAdapter(List<AlarmClock> list);
-        void alarmClockOn(int hour, int minute);
-        void alarmClockOff();
+        void alarmClockOn(int hour, int minute, int id);
+        void alarmClockOff(int id);
 
     }
 
@@ -21,6 +20,7 @@ public interface MainContract {
         void onItemWasClicked(int position);
         void onCreateButtonWasClicked();
         void onSwitchWasChanged(int position, Boolean b, AlarmClock alarmClock);
+        void onResume();
     }
 
 }

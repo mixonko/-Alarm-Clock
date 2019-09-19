@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Alarm Clock</string>
     <string name="alarm_clock">Будильник</string>
-    <string name="text">Будильник, </string>
     <string name="create_title">Добавить</string>
     <string name="done">Сохранить</string>
     <string name="days_of_the_week">Дни недели</string>

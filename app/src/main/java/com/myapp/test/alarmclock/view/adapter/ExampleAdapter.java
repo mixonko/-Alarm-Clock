@@ -43,27 +43,17 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
 
     public static class ExampleViewHolder extends RecyclerView.ViewHolder {
         public TextView time;
-        public TextView monday;
-        public TextView tuesday;
-        public TextView wednesday;
-        public TextView thursday;
-        public TextView friday;
-        public TextView saturday;
-        public TextView sunday;
+        public TextView daysOfWeek;
         public Switch mySwitch;
+        public TextView description;
 
         public ExampleViewHolder(@NonNull View itemView, final OnItemClickListener listener,
                                  final OnCheckedChangeListener checkedChangeListener) {
             super(itemView);
             time = itemView.findViewById(R.id.time);
-            monday = itemView.findViewById(R.id.monday);
-            tuesday = itemView.findViewById(R.id.tuesday);
-            wednesday = itemView.findViewById(R.id.wednesday);
-            thursday = itemView.findViewById(R.id.thursday);
-            friday = itemView.findViewById(R.id.friday);
-            saturday = itemView.findViewById(R.id.saturday);
-            sunday = itemView.findViewById(R.id.sunday);
+            daysOfWeek = itemView.findViewById(R.id.days_of_week);
             mySwitch = itemView.findViewById(R.id.mySwitch);
+            description = itemView.findViewById(R.id.description);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -104,13 +94,7 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
         AlarmClock currentItem = exampleItems.get(i);
 
         exampleViewHolder.time.setText(currentItem.getHour() + ":" + currentItem.getMinute());
-//        exampleViewHolder.monday.set
-//        exampleViewHolder.tuesday.set
-//        exampleViewHolder.wednesday.set
-//        exampleViewHolder.thursday.set
-//        exampleViewHolder.friday.set
-//        exampleViewHolder.saturday.set
-//        exampleViewHolder.sunday.set
+        exampleViewHolder.description.setText(currentItem.getDescription());
         if (currentItem.getAlarmClockOn()){
             exampleViewHolder.mySwitch.setChecked(true);
         }

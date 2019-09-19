@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 
 import com.myapp.test.alarmclock.AlarmReceiver;
 import com.myapp.test.alarmclock.R;
@@ -24,7 +25,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MainContract.View{
+public class MainActivity extends AppCompatActivity implements MainContract.View {
     private static final String BUNDLE_KEY = "bundle_key";
     private static final String ALARM_CLOCK_KEY = "alarm_clock_key";
     private MainContract.Presenter presenter;
@@ -49,13 +50,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             @Override
             public void onClick(View view) {
                 presenter.onCreateButtonWasClicked();
-
             }
         });
 
         presenter.onCreateActivity();
 
     }
+
 
     @Override
     public void setInfoText(String infoText) {
@@ -74,11 +75,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         bundle.putSerializable(BUNDLE_KEY, (Serializable) alarmClock);
         intent.putExtra(ALARM_CLOCK_KEY, bundle);
         startActivityForResult(intent, 1);
-    }
-
-    @Override
-    public void updateList() {
-        exampleAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -104,31 +100,36 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void alarmClockOn(int hour, int minute) {
+    public void alarmClockOn(int hour, int minute, int id) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
-        if(calendar.before(Calendar.getInstance())) {
-            calendar.add(Calendar.DATE, 1);
-        }
+//        if(calendar.before(Calendar.getInstance())) {
+//            calendar.add(Calendar.DATE, 1);
+//        }
         Intent intent = new Intent(MyApplication.getAppContext(), AlarmReceiver.class);
-//        intent.putExtra("extra", id);
+        intent.putExtra("extra", id);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(MyApplication.getAppContext(),
-                0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }
 
     @Override
-    public void alarmClockOff() {
+    public void alarmClockOff(int id) {
         Intent intent = new Intent(MyApplication.getAppContext(), AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(MyApplication.getAppContext(),
-                0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
         pendingIntent.cancel();
+
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.onResume();
+    }
 }

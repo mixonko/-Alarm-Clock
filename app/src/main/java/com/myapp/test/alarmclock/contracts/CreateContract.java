@@ -6,13 +6,16 @@ public interface CreateContract {
         int getHour();
         int getMinute();
         void setDescription();
-        void createAlarmClock(int hour, int minute);
+        void createAlarmClock(int hour, int minute, int id);
+        Boolean getVibrationInfo();
+        String getDescription();
     }
 
     interface presenter{
         void onCloseWasClicked();
         void onDoneWasClicked();
         void onDescriptionWasClicked();
+
     }
 
 }

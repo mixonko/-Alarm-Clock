@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -30,8 +31,9 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     private Button close;
     private Button done;
     private TimePicker timePicker;
-    private TextView descriptionText;
-    private FrameLayout daysOfTheWeek, sound, vibrationSignal, description;
+    private TextView sound, description;
+    private Switch vibrationSignal;
+    private FrameLayout daysOfWeek;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,17 +46,15 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
         done = findViewById(R.id.done);
         timePicker = findViewById(R.id.timePicker);
         timePicker.setIs24HourView(true);
-        daysOfTheWeek = findViewById(R.id.days_of_the_week);
+        daysOfWeek = findViewById(R.id.days_of_week);
         sound = findViewById(R.id.sound);
         vibrationSignal = findViewById(R.id.vibration_signal);
         description = findViewById(R.id.description);
-        descriptionText = findViewById(R.id.descriptionText);
 
         close.setOnClickListener(this);
         done.setOnClickListener(this);
-        daysOfTheWeek.setOnClickListener(this);
+        daysOfWeek.setOnClickListener(this);
         sound.setOnClickListener(this);
-        vibrationSignal.setOnClickListener(this);
         description.setOnClickListener(this);
     }
 
@@ -83,7 +83,11 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
         builder.setPositiveButton("Ок", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                descriptionText.setText(et.getText().toString());
+                if (et.getText().toString().isEmpty()){
+                    description.setText(R.string.alarm_clock);
+                }else{
+                    description.setText(et.getText().toString());
+                }
             }
         }).setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
             @Override
@@ -95,21 +99,32 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     }
 
     @Override
-    public void createAlarmClock(int hour, int minute) {
+    public void createAlarmClock(int hour, int minute, int id) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
-        if(calendar.before(Calendar.getInstance())) {
+        if (calendar.before(Calendar.getInstance())) {
             calendar.add(Calendar.DATE, 1);
         }
         Intent intent = new Intent(CreateActivity.this, AlarmReceiver.class);
-//        intent.putExtra("extra", id);
+        intent.putExtra("extra", id);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(MyApplication.getAppContext(),
                 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+
+    }
+
+    @Override
+    public Boolean getVibrationInfo() {
+        return vibrationSignal.isChecked();
+    }
+
+    @Override
+    public String getDescription() {
+        return description.getText().toString();
     }
 
     @Override
