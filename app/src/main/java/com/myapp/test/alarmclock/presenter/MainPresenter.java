@@ -21,18 +21,17 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void onItemWasClicked(int position) {
-
+    public void onItemWasClicked(AlarmClock alarmClock) {
+        view.startCreateActivity(alarmClock.getId());
     }
 
     @Override
-    public void onCreateButtonWasClicked() {
-        view.startCreateActivity();
-
+    public void onItemWasLongClicked(AlarmClock alarmClock) {
+        view.showDeleteDialog(alarmClock);
     }
 
     @Override
-    public void onSwitchWasChanged(int position, Boolean b, AlarmClock alarmClock) {
+    public void onSwitchWasChanged(Boolean b, AlarmClock alarmClock) {
         if (b){
             updateAlarmClock(alarmClock,true);
             view.alarmClockOn(Integer.parseInt(alarmClock.getHour()),
@@ -43,6 +42,19 @@ public class MainPresenter implements MainContract.Presenter {
             view.alarmClockOff(alarmClock.getId());
             view.showAlarmClockOff(alarmClock.getHour(), alarmClock.getMinute());
         }
+    }
+
+    @Override
+    public void onCreateButtonWasClicked() {
+        view.startCreateActivity();
+
+    }
+
+    @Override
+    public void onDeleteWasClicked(AlarmClock alarmClock) {
+        view.alarmClockOff(alarmClock.getId());
+        repository.deleteAlarmClock(alarmClock);
+        view.setAdapter(repository.getAllAlarmClock());
     }
 
     @Override

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleViewHolder> {
     private OnItemClickListener onItemClickListener;
+    private OnItemLongClickListener onItemLongClickListener;
     private OnCheckedChangeListener onCheckedChangeListener;
 
     private List<AlarmClock> exampleItems;
@@ -29,12 +30,20 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
         void onItemClick(int position);
     }
 
+    public interface OnItemLongClickListener {
+        void onItemLongClick(int position);
+    }
+
     public interface OnCheckedChangeListener{
         void onCheckedChanged(int position, CompoundButton compoundButton, boolean b);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         onItemClickListener = listener;
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener listener){
+        onItemLongClickListener = listener;
     }
 
     public void setOnCheckedChangeListener(OnCheckedChangeListener listener){
@@ -48,6 +57,7 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
         public TextView description;
 
         public ExampleViewHolder(@NonNull View itemView, final OnItemClickListener listener,
+                                 final OnItemLongClickListener longClickListener,
                                  final OnCheckedChangeListener checkedChangeListener) {
             super(itemView);
             time = itemView.findViewById(R.id.time);
@@ -64,6 +74,19 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
                             listener.onItemClick(position);
                         }
                     }
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    if(longClickListener != null){
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION){
+                            longClickListener.onItemLongClick(position);
+                        }
+                    }
+                    return true;
                 }
             });
 
@@ -85,7 +108,7 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
     @Override
     public ExampleViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.example_item, viewGroup, false);
-        ExampleViewHolder exampleViewHolder = new ExampleViewHolder(v, onItemClickListener, onCheckedChangeListener);
+        ExampleViewHolder exampleViewHolder = new ExampleViewHolder(v, onItemClickListener, onItemLongClickListener, onCheckedChangeListener);
         return exampleViewHolder;
     }
 

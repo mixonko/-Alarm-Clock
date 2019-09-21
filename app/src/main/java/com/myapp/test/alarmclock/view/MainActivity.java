@@ -5,12 +5,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -26,13 +28,11 @@ import com.myapp.test.alarmclock.myAppContext.MyApplication;
 import com.myapp.test.alarmclock.presenter.MainPresenter;
 import com.myapp.test.alarmclock.view.adapter.ExampleAdapter;
 
-import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
-    private static final String BUNDLE_KEY = "bundle_key";
-    private static final String ALARM_CLOCK_KEY = "alarm_clock_key";
+    private static final String ALARM_CLOCK_ID = "alarm_clock_id";
     private MainContract.Presenter presenter;
     private Button create;
     private RecyclerView recyclerView;
@@ -80,11 +80,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void startCreateActivity(AlarmClock alarmClock) {
+    public void startCreateActivity(int id) {
         Intent intent = new Intent(MyApplication.getAppContext(), CreateActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(BUNDLE_KEY, (Serializable) alarmClock);
-        intent.putExtra(ALARM_CLOCK_KEY, bundle);
+        intent.putExtra(ALARM_CLOCK_ID, id);
         startActivityForResult(intent, 1);
     }
 
@@ -96,14 +94,22 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             exampleAdapter.setOnItemClickListener(new ExampleAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
-                    presenter.onItemWasClicked(position);
+                    AlarmClock alarmClock = list.get(position);
+                    presenter.onItemWasClicked(alarmClock);
+                }
+            });
+            exampleAdapter.setOnItemLongClickListener(new ExampleAdapter.OnItemLongClickListener() {
+                @Override
+                public void onItemLongClick(int position) {
+                    AlarmClock alarmClock = list.get(position);
+                    presenter.onItemWasLongClicked(alarmClock);
                 }
             });
             exampleAdapter.setOnCheckedChangeListener(new ExampleAdapter.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(int position, CompoundButton compoundButton, boolean b) {
                     AlarmClock alarmClock = list.get(position);
-                    presenter.onSwitchWasChanged(position, b, alarmClock);
+                    presenter.onSwitchWasChanged(b, alarmClock);
                 }
             });
         }
@@ -196,6 +202,27 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         Toast.makeText(MyApplication.getAppContext(),
                 "Будильник включен на " + hour + ":" + minute,
                 Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showDeleteDialog(final AlarmClock alarmClock) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Удалить будильник на " + alarmClock.getHour() +
+                ":" + alarmClock.getMinute() + "?")
+                .setCancelable(false)
+                .setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        presenter.onDeleteWasClicked(alarmClock);
+                    }
+                })
+                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                })
+                .show();
     }
 
     @Override
