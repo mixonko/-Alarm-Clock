@@ -26,7 +26,9 @@ public class CreatePresenter implements CreateContract.presenter {
                 String.valueOf(view.getMinute()), true,
                 view.getVibrationInfo(), view.getDescription());
         repository.addAlarmClock(alarmClock);
-        view.createAlarmClock(view.getHour(), view.getMinute(), alarmClock.getId());
+        view.createAlarmClock(Integer.parseInt(alarmClock.getHour()),
+                Integer.parseInt(alarmClock.getMinute()), alarmClock.getId());
+        view.showAlarmClockOn(alarmClock.getHour(), alarmClock.getMinute());
         view.close();
     }
 

@@ -13,8 +13,8 @@ import android.widget.FrameLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
-import com.myapp.test.alarmclock.AlarmReceiver;
 import com.myapp.test.alarmclock.R;
 import com.myapp.test.alarmclock.contracts.CreateContract;
 import com.myapp.test.alarmclock.myAppContext.MyApplication;
@@ -107,8 +107,8 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
         if (calendar.before(Calendar.getInstance())) {
             calendar.add(Calendar.DATE, 1);
         }
-        Intent intent = new Intent(CreateActivity.this, AlarmReceiver.class);
-        intent.putExtra("extra", id);
+        Intent intent = new Intent(MainActivity.ACTION_ON);
+        intent.putExtra(MainActivity.INTENT_EXTRA, id);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(MyApplication.getAppContext(),
                 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -125,6 +125,13 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     @Override
     public String getDescription() {
         return description.getText().toString();
+    }
+
+    @Override
+    public void showAlarmClockOn(String hour, String minute) {
+        Toast.makeText(MyApplication.getAppContext(),
+                "Будильник включен на " + hour + ":" + minute,
+                Toast.LENGTH_SHORT).show();
     }
 
     @Override

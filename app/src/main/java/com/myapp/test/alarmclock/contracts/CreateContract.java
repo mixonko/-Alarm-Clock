@@ -9,6 +9,7 @@ public interface CreateContract {
         void createAlarmClock(int hour, int minute, int id);
         Boolean getVibrationInfo();
         String getDescription();
+        void showAlarmClockOn(String hour, String minute);
     }
 
     interface presenter{

@@ -35,17 +35,36 @@ public class MainPresenter implements MainContract.Presenter {
     public void onSwitchWasChanged(int position, Boolean b, AlarmClock alarmClock) {
         if (b){
             updateAlarmClock(alarmClock,true);
-            view.alarmClockOn(Integer.parseInt(alarmClock.getHour()), Integer.parseInt(alarmClock.getMinute()), alarmClock.getId());
+            view.alarmClockOn(Integer.parseInt(alarmClock.getHour()),
+                    Integer.parseInt(alarmClock.getMinute()), alarmClock.getId());
+            view.showAlarmClockOn(alarmClock.getHour(), alarmClock.getMinute());
         }else {
             updateAlarmClock(alarmClock,false);
             view.alarmClockOff(alarmClock.getId());
-
+            view.showAlarmClockOff(alarmClock.getHour(), alarmClock.getMinute());
         }
     }
 
     @Override
     public void onResume() {
         view.setAdapter(repository.getAllAlarmClock());
+    }
+
+    @Override
+    public void onReceive(int id) {
+        AlarmClock alarmClock = repository.getAlarmClock(id);
+        view.createNotification(alarmClock.getId(), alarmClock);
+    }
+
+    @Override
+    public void onReceiveOff(int id) {
+        AlarmClock alarmClock = repository.getAlarmClock(id);
+        alarmClock.setAlarmClockOn(false);
+        repository.updateAlarmClock(alarmClock);
+        view.alarmClockOff(alarmClock.getId());
+        view.deleteNotification(alarmClock.getId());
+        view.setAdapter(repository.getAllAlarmClock());
+        view.showAlarmClockOff(alarmClock.getHour(), alarmClock.getMinute());
     }
 
     private void updateAlarmClock(AlarmClock alarmClock, Boolean b){
