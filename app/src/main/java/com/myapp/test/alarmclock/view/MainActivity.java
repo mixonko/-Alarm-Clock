@@ -32,7 +32,6 @@ import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
-    private static final String ALARM_CLOCK_ID = "alarm_clock_id";
     private MainContract.Presenter presenter;
     private Button create;
     private RecyclerView recyclerView;
@@ -41,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public static final String ACTION_ON = "action_on";
     public static final String ACTION_OFF = "action_off";
     public static final String INTENT_EXTRA = "extra";
+    public static final String ALARM_CLOCK_ID = "alarm_clock_id";
     private Notification.Builder mBuilder;
     private NotificationManager mNotificationManager;
 
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void startCreateActivity(int id) {
+    public void startChangeActivity(int id) {
         Intent intent = new Intent(MyApplication.getAppContext(), CreateActivity.class);
         intent.putExtra(ALARM_CLOCK_ID, id);
         startActivityForResult(intent, 1);

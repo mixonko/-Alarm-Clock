@@ -16,31 +16,30 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.myapp.test.alarmclock.R;
-import com.myapp.test.alarmclock.contracts.CreateContract;
+import com.myapp.test.alarmclock.contracts.ChangeContract;
 import com.myapp.test.alarmclock.myAppContext.MyApplication;
-import com.myapp.test.alarmclock.presenter.CreatePresenter;
+import com.myapp.test.alarmclock.presenter.ChangePresenter;
 
 import java.util.Calendar;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class CreateActivity extends AppCompatActivity implements CreateContract.view, View.OnClickListener {
-
-    private CreateContract.presenter presenter;
+public class ChangeActivity extends AppCompatActivity implements ChangeContract.view, View.OnClickListener {
+    private ChangeContract.presenter presenter;
     private Button close;
     private Button done;
     private TimePicker timePicker;
     private TextView sound, description;
     private Switch vibrationSignal;
     private FrameLayout daysOfWeek;
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
 
-        presenter = new CreatePresenter(this);
+        presenter = new ChangePresenter(this);
 
         close = findViewById(R.id.close);
         done = findViewById(R.id.done);
@@ -57,6 +56,25 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
         sound.setOnClickListener(this);
         description.setOnClickListener(this);
 
+        Intent intent = getIntent();
+        int id = intent.getIntExtra(MainActivity.ALARM_CLOCK_ID, 1);
+        
+        presenter.onCreate(id);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.close:
+                presenter.onCloseWasClicked();
+                break;
+            case R.id.done:
+                presenter.onDoneWasClicked();
+                break;
+            case R.id.description:
+                presenter.onDescriptionWasClicked();
+                break;
+        }
     }
 
     @Override
@@ -65,13 +83,18 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     }
 
     @Override
-    public int getHour() {
-        return timePicker.getHour();
+    public void setHour(int hour) {
+        timePicker.setHour(hour);
     }
 
     @Override
-    public int getMinute() {
-        return timePicker.getMinute();
+    public void setMinute(int minute) {
+        timePicker.setMinute(minute);
+    }
+
+    @Override
+    public void setVibration(Boolean vibration) {
+        vibrationSignal.setChecked(vibration);
     }
 
     @Override
@@ -97,11 +120,17 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
 
     @Override
     public void setDescription(String description) {
-        if (description.isEmpty()){
-            this.description.setText(R.string.alarm_clock);
-        }else{
-            this.description.setText(description);
-        }
+        this.description.setText(description);
+    }
+
+    @Override
+    public int getHour() {
+        return timePicker.getHour();
+    }
+
+    @Override
+    public int getMinute() {
+        return timePicker.getMinute();
     }
 
     @Override
@@ -120,7 +149,6 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-
     }
 
     @Override
@@ -139,20 +167,4 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
                 "Будильник включен на " + hour + ":" + minute,
                 Toast.LENGTH_SHORT).show();
     }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.close:
-                presenter.onCloseWasClicked();
-                break;
-            case R.id.done:
-                presenter.onDoneWasClicked();
-                break;
-            case R.id.description:
-                presenter.onDescriptionWasClicked();
-                break;
-        }
-    }
-
 }

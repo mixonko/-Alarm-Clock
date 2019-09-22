@@ -8,7 +8,7 @@ public interface MainContract {
     interface View{
         void setInfoText(String infoText);
         void startCreateActivity();
-        void startCreateActivity(int id);
+        void startChangeActivity(int id);
         void setAdapter(List<AlarmClock> list);
         void alarmClockOn(int hour, int minute, int id);
         void alarmClockOff(int id);

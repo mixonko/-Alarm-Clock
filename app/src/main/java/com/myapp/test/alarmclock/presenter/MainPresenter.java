@@ -22,7 +22,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onItemWasClicked(AlarmClock alarmClock) {
-        view.startCreateActivity(alarmClock.getId());
+        view.startChangeActivity(alarmClock.getId());
     }
 
     @Override
