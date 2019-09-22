@@ -1,9 +1,12 @@
 package com.myapp.test.alarmclock.presenter;
 
+import android.widget.Toast;
+
 import com.myapp.test.alarmclock.contracts.MainContract;
 import com.myapp.test.alarmclock.contracts.RepositoryContract;
 import com.myapp.test.alarmclock.entity.AlarmClock;
 import com.myapp.test.alarmclock.model.Repository;
+import com.myapp.test.alarmclock.myAppContext.MyApplication;
 
 
 public class MainPresenter implements MainContract.Presenter {
@@ -41,6 +44,7 @@ public class MainPresenter implements MainContract.Presenter {
             updateAlarmClock(alarmClock,false);
             view.alarmClockOff(alarmClock.getId());
             view.showAlarmClockOff(alarmClock.getHour(), alarmClock.getMinute());
+            view.deleteNotification(alarmClock.getId());
         }
     }
 

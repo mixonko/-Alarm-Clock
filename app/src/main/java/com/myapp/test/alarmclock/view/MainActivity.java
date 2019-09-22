@@ -41,8 +41,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public static final String ACTION_OFF = "action_off";
     public static final String INTENT_EXTRA = "extra";
     public static final String ALARM_CLOCK_ID = "alarm_clock_id";
-    private Notification.Builder mBuilder;
-    private NotificationManager mNotificationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         createBroadcastReceiver();
         createBroadcastReceiverOff();
-}
+    }
 
     @Override
     public void setInfoText(String infoText) {
@@ -81,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void startChangeActivity(int id) {
-        Intent intent = new Intent(MyApplication.getAppContext(), CreateActivity.class);
+        Intent intent = new Intent(MyApplication.getAppContext(), ChangeActivity.class);
         intent.putExtra(ALARM_CLOCK_ID, id);
         startActivityForResult(intent, 1);
     }
@@ -148,8 +146,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         long[] vibrate = new long[]{100, 100, 100, 100, 100, 100, 100, 100};
         final String NOTIFICATION_CHANNEL_ID = String.valueOf(alarmClock.getId());
 
-        mBuilder = new Notification.Builder(MyApplication.getAppContext());
-        mNotificationManager = (NotificationManager) MyApplication.getAppContext().
+//        Toast.makeText(MyApplication.getAppContext(), String.valueOf(alarmClock.getVibration()), Toast.LENGTH_SHORT).show();
+
+        Notification.Builder mBuilder = new Notification.Builder(MyApplication.getAppContext());
+        NotificationManager notificationManager = (NotificationManager) MyApplication.getAppContext().
                 getSystemService(Context.NOTIFICATION_SERVICE);
 
         Intent cancel = new Intent(ACTION_OFF);
@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         Notification.Action action = new Notification.Action(R.mipmap.ic_alarm,
                 MyApplication.getAppContext().getResources().
-                getString(R.string.disable_alarm), pendingIntent);
+                        getString(R.string.disable_alarm), pendingIntent);
 
         mBuilder.setSmallIcon(R.mipmap.ic_alarm);
         mBuilder.setContentTitle(alarmClock.getDescription())
@@ -169,31 +169,31 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "NOTIFICATION_CHANNEL_NAME", NotificationManager.IMPORTANCE_HIGH);
-            notificationChannel.enableLights(true);
-            if (alarmClock.getVibration()){
+            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, String.valueOf(id), NotificationManager.IMPORTANCE_HIGH);
+            if (alarmClock.getVibration()) {
                 notificationChannel.enableVibration(true);
                 notificationChannel.setVibrationPattern(vibrate);
             }
-            assert mNotificationManager != null;
+            notificationChannel.enableLights(true);
+            assert notificationManager != null;
             mBuilder.setChannelId(NOTIFICATION_CHANNEL_ID);
-            mNotificationManager.createNotificationChannel(notificationChannel);
+            notificationManager.createNotificationChannel(notificationChannel);
         }
-        assert mNotificationManager != null;
-        mNotificationManager.notify(id, mBuilder.build());
+        assert notificationManager != null;
+        notificationManager.notify(id, mBuilder.build());
 
     }
 
     @Override
     public void deleteNotification(int id) {
-        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(id);
     }
 
     @Override
     public void showAlarmClockOff(String hour, String minute) {
         Toast.makeText(MyApplication.getAppContext(),
-                "Будильник на " + hour + ":" + minute+ " выключен",
+                "Будильник на " + hour + ":" + minute + " выключен",
                 Toast.LENGTH_SHORT).show();
     }
 

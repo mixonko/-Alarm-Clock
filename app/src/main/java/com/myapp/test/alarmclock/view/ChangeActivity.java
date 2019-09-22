@@ -58,7 +58,7 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
 
         Intent intent = getIntent();
         int id = intent.getIntExtra(MainActivity.ALARM_CLOCK_ID, 1);
-        
+
         presenter.onCreate(id);
     }
 

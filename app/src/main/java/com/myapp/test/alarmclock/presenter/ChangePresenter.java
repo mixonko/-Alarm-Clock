@@ -8,6 +8,7 @@ import com.myapp.test.alarmclock.model.Repository;
 public class ChangePresenter implements ChangeContract.presenter {
     private ChangeContract.view view;
     private RepositoryContract repository;
+    private AlarmClock alarmClock;
 
     public ChangePresenter(ChangeContract.view view) {
         this.view = view;
@@ -17,7 +18,7 @@ public class ChangePresenter implements ChangeContract.presenter {
 
     @Override
     public void onCreate(int id) {
-        AlarmClock alarmClock = repository.getAlarmClock(id);
+        alarmClock = repository.getAlarmClock(id);
         view.setHour(Integer.parseInt(alarmClock.getHour()));
         view.setMinute(Integer.parseInt(alarmClock.getMinute()));
         view.setVibration(alarmClock.getVibration());
@@ -31,12 +32,11 @@ public class ChangePresenter implements ChangeContract.presenter {
 
     @Override
     public void onDoneWasClicked() {
-
-        //заменит ?!
-
-        AlarmClock alarmClock = new AlarmClock(String.valueOf(view.getHour()),
-                String.valueOf(view.getMinute()), true,
-                view.getVibrationInfo(), view.getDescription());
+        alarmClock.setHour(String.valueOf(view.getHour()));
+        alarmClock.setMinute(String.valueOf(view.getMinute()));
+        alarmClock.setAlarmClockOn(true);
+        alarmClock.setVibration(view.getVibrationInfo());
+        alarmClock.setDescription(view.getDescription());
         repository.updateAlarmClock(alarmClock);
         view.createAlarmClock(Integer.parseInt(alarmClock.getHour()),
                 Integer.parseInt(alarmClock.getMinute()), alarmClock.getId());

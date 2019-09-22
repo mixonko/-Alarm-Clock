@@ -33,7 +33,7 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     private TimePicker timePicker;
     private TextView sound, description;
     private Switch vibrationSignal;
-    private FrameLayout daysOfWeek;
+    private TextView daysOfWeek;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
