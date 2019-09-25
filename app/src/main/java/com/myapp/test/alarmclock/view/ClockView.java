@@ -5,9 +5,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
+
+import com.myapp.test.alarmclock.R;
+import com.myapp.test.alarmclock.myAppContext.MyApplication;
 
 import java.util.Calendar;
 
@@ -59,8 +63,8 @@ public class ClockView extends View {
             initClock();
         }
         drawOuterCircle(canvas);
-        drawCenterCircle(canvas);
         drawNumerals(canvas);
+        drawCenterCircle(canvas);
         drawHands(canvas);
 
         postInvalidateDelayed(500);
@@ -70,18 +74,29 @@ public class ClockView extends View {
         paint.reset();
         paint.setColor(Color.BLACK);
         paint.setStrokeWidth(5);
-        paint.setStyle(Paint.Style.STROKE);
         paint.setAntiAlias(true);
         canvas.drawCircle(width / 2, height / 2, radius + padding - 10, paint);
+
+        paint.setColor(Color.WHITE);
+        for (int i = 0; i < 60; i++) {
+            canvas.drawLine(width / 2, 0 , width / 2, 15, paint);
+            canvas.rotate(6, width/2, height/2);
+        }
+        for (int i = 0; i < 12; i++) {
+            canvas.drawLine(width / 2, 0 , width / 2, 30, paint);
+            canvas.rotate(30, width/2, height/2);
+        }
     }
 
     private void drawCenterCircle(Canvas canvas) {
         paint.setStyle(Paint.Style.FILL);
+        paint.setColor(Color.GRAY);
         canvas.drawCircle(width / 2, height / 2, 12, paint);
     }
 
     private void drawNumerals(Canvas canvas) {
         paint.setStrokeWidth(6);
+        paint.setColor(Color.WHITE);
         paint.setTextSize(fontSize);
 
         for (int hour : hours) {
@@ -106,11 +121,13 @@ public class ClockView extends View {
         double radianOfDay = angleOfDay * ((2 * Math.PI / 360));
 
         paint.setStrokeWidth(10);
-        drawHourHand(canvas, radianOfDay);
+        paint.setColor(Color.WHITE);
+        drawHourHand(canvas, radianOfDay);;
 
         paint.setStrokeWidth(6);
         drawHand(canvas, calendar.get(Calendar.MINUTE), false);
-        paint.setStrokeWidth(3);
+        paint.setStrokeWidth(1);
+        paint.setColor(MyApplication.getAppContext().getColor(R.color.colorAccent));
         drawHand(canvas, calendar.get(Calendar.SECOND), false);
     }
 
@@ -120,6 +137,7 @@ public class ClockView extends View {
                 (float) (width / 2 + Math.cos(loc) * handRadius),
                 (float) (height / 2 + Math.sin(loc) * handRadius),
                 paint);
+
     }
 
     private void drawHand(Canvas canvas, double loc, boolean isHour) {

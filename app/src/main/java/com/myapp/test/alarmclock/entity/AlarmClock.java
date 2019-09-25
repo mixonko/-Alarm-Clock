@@ -7,12 +7,13 @@ import androidx.room.PrimaryKey;
 @Entity( tableName = "alarm_clock" )
 public class AlarmClock {
 
-    public AlarmClock(String hour, String minute, Boolean alarmClockOn, Boolean vibration, String description) {
+    public AlarmClock(String hour, String minute, Boolean alarmClockOn, Boolean vibration, String description, Days days) {
         this.hour = hour;
         this.minute = minute;
         this.alarmClockOn = alarmClockOn;
         this.vibration = vibration;
         this.description = description;
+        this.days = days;
     }
 
     @PrimaryKey( autoGenerate = true )
@@ -27,6 +28,8 @@ public class AlarmClock {
     private Boolean vibration;
     @ColumnInfo( name = "description" )
     private String description;
+    @ColumnInfo( name = "days" )
+    private Days days;
 
     public int getId() {
         return id;
@@ -74,5 +77,13 @@ public class AlarmClock {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Days getDays() {
+        return days;
+    }
+
+    public void setDays(Days days) {
+        this.days = days;
     }
 }

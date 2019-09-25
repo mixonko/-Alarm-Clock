@@ -107,7 +107,7 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
     @NonNull
     @Override
     public ExampleViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.example_item, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.example_alarms_item, viewGroup, false);
         ExampleViewHolder exampleViewHolder = new ExampleViewHolder(v, onItemClickListener, onItemLongClickListener, onCheckedChangeListener);
         return exampleViewHolder;
     }
