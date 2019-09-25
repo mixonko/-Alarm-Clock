@@ -42,4 +42,9 @@ public class CreatePresenter implements CreateContract.presenter {
         view.setDescription(description);
     }
 
+    @Override
+    public void onDaysWasClicked() {
+        view.showDaysDialog(view.getDaysList());
+    }
+
 }

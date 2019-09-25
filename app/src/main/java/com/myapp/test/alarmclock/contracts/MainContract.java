@@ -17,7 +17,6 @@ public interface MainContract {
         void showAlarmClockOff(String hour, String minute);
         void showAlarmClockOn(String hour, String minute);
         void showDeleteDialog(AlarmClock alarmClock);
-
     }
 
     interface Presenter{

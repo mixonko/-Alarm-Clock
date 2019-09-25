@@ -47,8 +47,6 @@
 
     </FrameLayout>
 
-
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -68,7 +66,6 @@
             android:drawableRight="@drawable/ic_arrow_right_black"/>
 
     </FrameLayout>
-
 
     <FrameLayout
         android:layout_width="match_parent"

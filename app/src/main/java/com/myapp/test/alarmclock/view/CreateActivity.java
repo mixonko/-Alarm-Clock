@@ -11,6 +11,7 @@ import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -25,11 +26,18 @@ import com.myapp.test.alarmclock.R;
 import com.myapp.test.alarmclock.contracts.CreateContract;
 import com.myapp.test.alarmclock.myAppContext.MyApplication;
 import com.myapp.test.alarmclock.presenter.CreatePresenter;
+import com.myapp.test.alarmclock.view.adapter.ExampleDaysAdapter;
 
+import java.sql.Array;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class CreateActivity extends AppCompatActivity implements CreateContract.view, View.OnClickListener {
 
@@ -147,6 +155,45 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     }
 
     @Override
+    public List<String> getDaysList() {
+        String[] s = MyApplication.getAppContext().getResources().getStringArray(R.array.daysOfWeek);
+        List<String> list = Arrays.asList(s);
+        return list;
+    }
+
+    @Override
+    public void showDaysDialog(List<String> daysList) {
+        RecyclerView recyclerView = new RecyclerView(MyApplication.getAppContext());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MyApplication.getAppContext());
+        ExampleDaysAdapter adapter = new ExampleDaysAdapter(daysList);
+        adapter.setOnItemClickListener(new ExampleDaysAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(String day) {
+                Toast.makeText(MyApplication.getAppContext(), day, Toast.LENGTH_SHORT).show();
+            }
+        });
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(adapter);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(recyclerView);
+        builder.setTitle(R.string.days_of_the_week);
+        builder.setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        }).setCancelable(false);
+        builder.show();
+
+    }
+
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.close:
@@ -157,6 +204,9 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
                 break;
             case R.id.description:
                 presenter.onDescriptionWasClicked();
+                break;
+            case R.id.dayOfWeek:
+                presenter.onDaysWasClicked();
                 break;
         }
     }

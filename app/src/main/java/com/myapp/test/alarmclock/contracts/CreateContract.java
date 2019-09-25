@@ -1,5 +1,7 @@
 package com.myapp.test.alarmclock.contracts;
 
+import java.util.List;
+
 public interface CreateContract {
     interface view {
         void close();
@@ -11,6 +13,8 @@ public interface CreateContract {
         Boolean getVibrationInfo();
         String getDescription();
         void showAlarmClockOn(String hour, String minute);
+        List<String> getDaysList();
+        void showDaysDialog(List<String>daysList);
     }
 
     interface presenter{
@@ -18,6 +22,7 @@ public interface CreateContract {
         void onDoneWasClicked();
         void onDescriptionWasClicked();
         void onDescriptionDone(String description);
+        void onDaysWasClicked();
     }
 
 }
