@@ -1,12 +1,9 @@
 package com.myapp.test.alarmclock.presenter;
 
-import android.widget.Toast;
-
 import com.myapp.test.alarmclock.contracts.CreateContract;
 import com.myapp.test.alarmclock.contracts.RepositoryContract;
 import com.myapp.test.alarmclock.entity.AlarmClock;
 import com.myapp.test.alarmclock.model.Repository;
-import com.myapp.test.alarmclock.myAppContext.MyApplication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +12,6 @@ public class CreatePresenter implements CreateContract.presenter {
 
     private CreateContract.view view;
     private RepositoryContract repository;
-    private int mMonday = 0, mTuesday = 0, mWednesday = 0, mThursday = 0, mFriday = 0, mSaturday = 0, mSunday = 0;
     private int monday = 0, tuesday = 0, wednesday = 0, thursday = 0, friday = 0, saturday = 0, sunday = 0;
 
     public CreatePresenter(CreateContract.view view) {
@@ -52,29 +48,26 @@ public class CreatePresenter implements CreateContract.presenter {
 
     @Override
     public void onDaysWasClicked() {
-        view.showDaysDialog(view.getDaysList());
+        List<Integer> checkedDays = new ArrayList<>();
+        checkedDays.add(monday);
+        checkedDays.add(tuesday);
+        checkedDays.add(wednesday);
+        checkedDays.add(thursday);
+        checkedDays.add(friday);
+        checkedDays.add(saturday);
+        checkedDays.add(sunday);
+        view.showDaysDialog(view.getDaysList(), checkedDays);
     }
 
     @Override
-    public void daysWasChecked(int monday, int tuesday, int wednesday, int thursday, int friday, int saturday, int sunday) {
-         mMonday = monday;
-         mTuesday = tuesday;
-         mWednesday = wednesday;
-         mThursday = thursday;
-         mFriday = friday;
-         mSaturday = saturday;
-         mSunday = sunday;
-    }
-
-    @Override
-    public void saveDaysWasClicked() {
-        monday = mMonday;
-        tuesday = mTuesday;
-        wednesday = mWednesday;
-        thursday = mThursday;
-        friday = mFriday;
-        saturday = mSaturday;
-        sunday = mSunday;
+    public void saveDaysWasClicked(int monday, int tuesday, int wednesday, int thursday, int friday, int saturday, int sunday) {
+        this.monday = monday;
+        this.tuesday = tuesday;
+        this.wednesday = wednesday;
+        this.thursday = thursday;
+        this.friday = friday;
+        this.saturday = saturday;
+        this.sunday = sunday;
     }
 
 }

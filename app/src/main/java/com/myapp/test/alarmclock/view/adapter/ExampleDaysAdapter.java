@@ -3,6 +3,7 @@ package com.myapp.test.alarmclock.view.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,9 +22,18 @@ public class ExampleDaysAdapter extends RecyclerView.Adapter<ExampleDaysAdapter.
     private OnItemClickListener onItemClickListener;
 
     private List<String> exampleItems;
+    private List<Integer> checkedDays;
+    private static int monday = 111;
+    private static int tuesday = 111;
+    private static int wednesday = 111;
+    private static int thursday = 111;
+    private static int friday = 111;
+    private static int saturday = 111;
+    private static int sunday = 111;
 
-    public ExampleDaysAdapter(List<String> exampleItems) {
+    public ExampleDaysAdapter(List<String> exampleItems, List<Integer> checkedDays) {
         this.exampleItems = exampleItems;
+        this.checkedDays = checkedDays;
 
     }
 
@@ -38,18 +48,13 @@ public class ExampleDaysAdapter extends RecyclerView.Adapter<ExampleDaysAdapter.
     public static class ExampleViewHolder extends RecyclerView.ViewHolder {
         public TextView day;
         public CheckBox check;
-        public int monday = 0;
-        public int tuesday = 0;
-        public int wednesday = 0;
-        public int thursday = 0;
-        public int friday = 0;
-        public int saturday = 0;
-        public int sunday = 0;
+
 
         public ExampleViewHolder(@NonNull View itemView, final OnItemClickListener listener ) {
             super(itemView);
             day = itemView.findViewById(R.id.dayOfWeek);
             check = itemView.findViewById(R.id.check);
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -114,7 +119,6 @@ public class ExampleDaysAdapter extends RecyclerView.Adapter<ExampleDaysAdapter.
                                     sunday = 0;
                                 }
                             }
-
                             listener.onItemClick( monday, tuesday, wednesday, thursday,
                                     friday, saturday, sunday);
 
@@ -128,6 +132,7 @@ public class ExampleDaysAdapter extends RecyclerView.Adapter<ExampleDaysAdapter.
         private void setChecked(){
             check.setChecked(!check.isChecked());
         }
+
     }
 
     @NonNull
@@ -141,7 +146,9 @@ public class ExampleDaysAdapter extends RecyclerView.Adapter<ExampleDaysAdapter.
     @Override
     public void onBindViewHolder(@NonNull ExampleViewHolder exampleViewHolder, int i) {
         String currentItem = exampleItems.get(i);
+        Boolean isChecked = checkedDays.get(i) !=0 ? true : false;
         exampleViewHolder.day.setText(currentItem);
+        exampleViewHolder.check.setChecked(isChecked);
     }
 
     @Override

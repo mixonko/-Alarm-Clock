@@ -143,11 +143,30 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void createNotification(int id, AlarmClock alarmClock) {
+
+        Calendar calendar = Calendar.getInstance();
+
+        if (alarmClock.getMonday() == calendar.get(Calendar.DAY_OF_WEEK))
+            showNotification(id, alarmClock);
+        if (alarmClock.getTuesday() == calendar.get(Calendar.DAY_OF_WEEK))
+            showNotification(id, alarmClock);
+        if (alarmClock.getWednesday() == calendar.get(Calendar.DAY_OF_WEEK))
+            showNotification(id, alarmClock);
+        if (alarmClock.getThursday() == calendar.get(Calendar.DAY_OF_WEEK))
+            showNotification(id, alarmClock);
+        if (alarmClock.getFriday() == calendar.get(Calendar.DAY_OF_WEEK))
+            showNotification(id, alarmClock);
+        if (alarmClock.getSaturday() == calendar.get(Calendar.DAY_OF_WEEK))
+            showNotification(id, alarmClock);
+        if (alarmClock.getSunday() == calendar.get(Calendar.DAY_OF_WEEK)){
+            showNotification(id, alarmClock);
+        }
+
+    }
+
+    private void showNotification(int id, AlarmClock alarmClock){
         long[] vibrate = new long[]{100, 100, 100, 100, 100, 100, 100, 100};
         final String NOTIFICATION_CHANNEL_ID = String.valueOf(alarmClock.getId());
-
-//        Toast.makeText(MyApplication.getAppContext(), String.valueOf(alarmClock.getSunday()), Toast.LENGTH_SHORT).show();
-
         Notification.Builder mBuilder = new Notification.Builder(MyApplication.getAppContext());
         NotificationManager notificationManager = (NotificationManager) MyApplication.getAppContext().
                 getSystemService(Context.NOTIFICATION_SERVICE);
@@ -181,7 +200,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         }
         assert notificationManager != null;
         notificationManager.notify(id, mBuilder.build());
-
     }
 
     @Override
@@ -228,7 +246,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     protected void onResume() {
         super.onResume();
-        presenter.onResume();
+//        presenter.onResume();
     }
 
     public void createBroadcastReceiver() {

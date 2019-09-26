@@ -14,7 +14,7 @@ public interface CreateContract {
         String getDescription();
         void showAlarmClockOn(String hour, String minute);
         List<String> getDaysList();
-        void showDaysDialog(List<String>daysList);
+        void showDaysDialog(List<String>daysList, List<Integer>checkedDays);
     }
 
     interface presenter{
@@ -23,8 +23,7 @@ public interface CreateContract {
         void onDescriptionWasClicked();
         void onDescriptionDone(String description);
         void onDaysWasClicked();
-        void daysWasChecked(int monday, int tuesday, int wednesday, int thursday, int friday, int saturday, int sunday);
-        void saveDaysWasClicked();
+        void saveDaysWasClicked(int monday, int tuesday, int wednesday, int thursday, int friday, int saturday, int sunday);
     }
 
 }

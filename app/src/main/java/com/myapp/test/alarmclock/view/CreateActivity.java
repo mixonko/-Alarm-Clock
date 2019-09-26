@@ -38,7 +38,14 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     private TextView sound, description;
     private Switch vibrationSignal;
     private TextView daysOfWeek;
-    int a;
+    private int mMonday = 0;
+    private int mTuesday = 0;
+    private int mWednesday = 0;
+    private int mThursday = 0;
+    private int mFriday = 0;
+    private int mSaturday = 0;
+    private int mSunday = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,9 +108,9 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
 
     @Override
     public void setDescription(String description) {
-        if (description.isEmpty()){
+        if (description.isEmpty()) {
             this.description.setText(R.string.alarm_clock);
-        }else{
+        } else {
             this.description.setText(description);
         }
     }
@@ -152,17 +159,24 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     }
 
     @Override
-    public void showDaysDialog(List<String> daysList) {
+    public void showDaysDialog(List<String> daysList, List<Integer> checkedDays) {
 
         RecyclerView recyclerView = new RecyclerView(MyApplication.getAppContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MyApplication.getAppContext());
-        ExampleDaysAdapter adapter = new ExampleDaysAdapter(daysList);
+        ExampleDaysAdapter adapter = new ExampleDaysAdapter(daysList, checkedDays);
 
         adapter.setOnItemClickListener(new ExampleDaysAdapter.OnItemClickListener() {
 
             @Override
             public void onItemClick(int monday, int tuesday, int wednesday, int thursday, int friday, int saturday, int sunday) {
-                presenter.daysWasChecked(monday, tuesday, wednesday, thursday, friday, saturday, sunday);
+                mMonday = monday;
+                mTuesday = tuesday;
+                mWednesday = wednesday;
+                mThursday = thursday;
+                mFriday = friday;
+                mSaturday = saturday;
+                mSunday = sunday;
+
             }
         });
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -174,7 +188,7 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
         builder.setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                 presenter.saveDaysWasClicked();
+                presenter.saveDaysWasClicked(mMonday, mTuesday, mWednesday, mThursday, mFriday, mSaturday, mSunday);
             }
         }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
