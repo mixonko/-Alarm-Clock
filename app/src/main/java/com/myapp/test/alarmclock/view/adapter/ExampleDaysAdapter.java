@@ -23,13 +23,13 @@ public class ExampleDaysAdapter extends RecyclerView.Adapter<ExampleDaysAdapter.
 
     private List<String> exampleItems;
     private List<Integer> checkedDays;
-    private static int monday = 111;
-    private static int tuesday = 111;
-    private static int wednesday = 111;
-    private static int thursday = 111;
-    private static int friday = 111;
-    private static int saturday = 111;
-    private static int sunday = 111;
+    private static int monday = 0;
+    private static int tuesday = 0;
+    private static int wednesday = 0;
+    private static int thursday = 0;
+    private static int friday = 0;
+    private static int saturday = 0;
+    private static int sunday = 0;
 
     public ExampleDaysAdapter(List<String> exampleItems, List<Integer> checkedDays) {
         this.exampleItems = exampleItems;

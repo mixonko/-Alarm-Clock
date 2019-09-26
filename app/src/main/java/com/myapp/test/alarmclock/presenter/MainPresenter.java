@@ -26,8 +26,8 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void onItemWasLongClicked(AlarmClock alarmClock) {
-        view.showDeleteDialog(alarmClock);
+    public void onItemWasLongClicked(AlarmClock alarmClock, int position) {
+        view.showDeleteDialog(alarmClock, position);
     }
 
     @Override
@@ -52,10 +52,10 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void onDeleteWasClicked(AlarmClock alarmClock) {
+    public void onDeleteWasClicked(AlarmClock alarmClock, int position) {
         view.alarmClockOff(alarmClock.getId());
         repository.deleteAlarmClock(alarmClock);
-        view.setAdapter(repository.getAllAlarmClock());
+        view.deleteItem(position);
     }
 
     @Override

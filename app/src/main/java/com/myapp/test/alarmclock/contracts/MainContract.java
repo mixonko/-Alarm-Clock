@@ -16,16 +16,17 @@ public interface MainContract {
         void deleteNotification(int id);
         void showAlarmClockOff(String hour, String minute);
         void showAlarmClockOn(String hour, String minute);
-        void showDeleteDialog(AlarmClock alarmClock); 
+        void showDeleteDialog(AlarmClock alarmClock, int position);
+        void deleteItem(int position);
     }
 
     interface Presenter{
         void onCreateActivity();
         void onItemWasClicked(AlarmClock alarmClock);
-        void onItemWasLongClicked(AlarmClock alarmClock);
+        void onItemWasLongClicked(AlarmClock alarmClock, int position);
         void onSwitchWasChanged(Boolean b, AlarmClock alarmClock);
         void onCreateButtonWasClicked();
-        void onDeleteWasClicked(AlarmClock alarmClock);
+        void onDeleteWasClicked(AlarmClock alarmClock, int position);
         void onResume();
         void onReceive(int id);
         void onReceiveOff(int id);

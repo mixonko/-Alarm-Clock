@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private RecyclerView recyclerView;
     private ExampleAdapter exampleAdapter;
     private LinearLayoutManager linearLayoutManager;
+    private List<AlarmClock> list;
     public static final String ACTION_ON = "action_on";
     public static final String ACTION_OFF = "action_off";
     public static final String INTENT_EXTRA = "extra";
@@ -86,21 +87,22 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void setAdapter(final List<AlarmClock> list) {
-        if (list.size() != 0) {
-            exampleAdapter = new ExampleAdapter(list);
+        this.list = list;
+            exampleAdapter = new ExampleAdapter(this.list);
             recyclerView.setAdapter(exampleAdapter);
             exampleAdapter.setOnItemClickListener(new ExampleAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
                     AlarmClock alarmClock = list.get(position);
                     presenter.onItemWasClicked(alarmClock);
+
                 }
             });
             exampleAdapter.setOnItemLongClickListener(new ExampleAdapter.OnItemLongClickListener() {
                 @Override
                 public void onItemLongClick(int position) {
                     AlarmClock alarmClock = list.get(position);
-                    presenter.onItemWasLongClicked(alarmClock);
+                    presenter.onItemWasLongClicked(alarmClock, position);
                 }
             });
             exampleAdapter.setOnCheckedChangeListener(new ExampleAdapter.OnCheckedChangeListener() {
@@ -111,8 +113,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 }
             });
         }
-
-    }
 
     @Override
     public void alarmClockOn(int hour, int minute, int id) {
@@ -145,23 +145,30 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public void createNotification(int id, AlarmClock alarmClock) {
 
         Calendar calendar = Calendar.getInstance();
+        int monday = alarmClock.getMonday();
+        int tuesday = alarmClock.getTuesday();
+        int wednesday = alarmClock.getWednesday();
+        int thursday = alarmClock.getThursday();
+        int friday = alarmClock.getFriday();
+        int saturday = alarmClock.getSaturday();
+        int sunday = alarmClock.getSunday();
 
-        if (alarmClock.getMonday() == calendar.get(Calendar.DAY_OF_WEEK))
+        if (monday == calendar.get(Calendar.DAY_OF_WEEK))
             showNotification(id, alarmClock);
-        if (alarmClock.getTuesday() == calendar.get(Calendar.DAY_OF_WEEK))
+        if (tuesday == calendar.get(Calendar.DAY_OF_WEEK))
             showNotification(id, alarmClock);
-        if (alarmClock.getWednesday() == calendar.get(Calendar.DAY_OF_WEEK))
+        if (wednesday == calendar.get(Calendar.DAY_OF_WEEK))
             showNotification(id, alarmClock);
-        if (alarmClock.getThursday() == calendar.get(Calendar.DAY_OF_WEEK))
+        if (thursday == calendar.get(Calendar.DAY_OF_WEEK))
             showNotification(id, alarmClock);
-        if (alarmClock.getFriday() == calendar.get(Calendar.DAY_OF_WEEK))
+        if (friday == calendar.get(Calendar.DAY_OF_WEEK))
             showNotification(id, alarmClock);
-        if (alarmClock.getSaturday() == calendar.get(Calendar.DAY_OF_WEEK))
+        if (saturday == calendar.get(Calendar.DAY_OF_WEEK))
             showNotification(id, alarmClock);
-        if (alarmClock.getSunday() == calendar.get(Calendar.DAY_OF_WEEK)){
+        if (sunday == calendar.get(Calendar.DAY_OF_WEEK))
             showNotification(id, alarmClock);
-        }
-
+        if (monday == 0 && tuesday == 0 && wednesday == 0 && thursday == 0 & friday == 0 && saturday == 0 && sunday == 0)
+            showNotification(id, alarmClock);
     }
 
     private void showNotification(int id, AlarmClock alarmClock){
@@ -223,7 +230,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void showDeleteDialog(final AlarmClock alarmClock) {
+    public void showDeleteDialog(final AlarmClock alarmClock, final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Удалить будильник на " + alarmClock.getHour() +
                 ":" + alarmClock.getMinute() + "?")
@@ -231,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 .setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        presenter.onDeleteWasClicked(alarmClock);
+                        presenter.onDeleteWasClicked(alarmClock, position);
                     }
                 })
                 .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
@@ -244,9 +251,17 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
+    public void deleteItem(int position) {
+        list.remove(position);
+        recyclerView.removeViewAt(position);
+        exampleAdapter.notifyItemRemoved(position);
+        exampleAdapter.notifyItemRangeChanged(position, list.size());
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
-//        presenter.onResume();
+        presenter.onResume();
     }
 
     public void createBroadcastReceiver() {
