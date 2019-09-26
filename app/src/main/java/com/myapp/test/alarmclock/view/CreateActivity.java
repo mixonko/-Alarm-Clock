@@ -2,25 +2,17 @@ package com.myapp.test.alarmclock.view;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.SparseArray;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.myapp.test.alarmclock.R;
 import com.myapp.test.alarmclock.contracts.CreateContract;
@@ -28,14 +20,12 @@ import com.myapp.test.alarmclock.myAppContext.MyApplication;
 import com.myapp.test.alarmclock.presenter.CreatePresenter;
 import com.myapp.test.alarmclock.view.adapter.ExampleDaysAdapter;
 
-import java.sql.Array;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -48,7 +38,7 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     private TextView sound, description;
     private Switch vibrationSignal;
     private TextView daysOfWeek;
-
+    int a;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -163,13 +153,16 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
 
     @Override
     public void showDaysDialog(List<String> daysList) {
+
         RecyclerView recyclerView = new RecyclerView(MyApplication.getAppContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MyApplication.getAppContext());
         ExampleDaysAdapter adapter = new ExampleDaysAdapter(daysList);
+
         adapter.setOnItemClickListener(new ExampleDaysAdapter.OnItemClickListener() {
+
             @Override
-            public void onItemClick(String day) {
-                Toast.makeText(MyApplication.getAppContext(), day, Toast.LENGTH_SHORT).show();
+            public void onItemClick(int monday, int tuesday, int wednesday, int thursday, int friday, int saturday, int sunday) {
+                presenter.daysWasChecked(monday, tuesday, wednesday, thursday, friday, saturday, sunday);
             }
         });
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -181,7 +174,7 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
         builder.setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
+                 presenter.saveDaysWasClicked();
             }
         }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
@@ -205,7 +198,7 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
             case R.id.description:
                 presenter.onDescriptionWasClicked();
                 break;
-            case R.id.dayOfWeek:
+            case R.id.days_of_week:
                 presenter.onDaysWasClicked();
                 break;
         }

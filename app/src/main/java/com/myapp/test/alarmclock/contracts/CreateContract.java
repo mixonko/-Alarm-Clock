@@ -23,6 +23,8 @@ public interface CreateContract {
         void onDescriptionWasClicked();
         void onDescriptionDone(String description);
         void onDaysWasClicked();
+        void daysWasChecked(int monday, int tuesday, int wednesday, int thursday, int friday, int saturday, int sunday);
+        void saveDaysWasClicked();
     }
 
 }

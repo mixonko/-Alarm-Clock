@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         long[] vibrate = new long[]{100, 100, 100, 100, 100, 100, 100, 100};
         final String NOTIFICATION_CHANNEL_ID = String.valueOf(alarmClock.getId());
 
-//        Toast.makeText(MyApplication.getAppContext(), String.valueOf(alarmClock.getVibration()), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(MyApplication.getAppContext(), String.valueOf(alarmClock.getSunday()), Toast.LENGTH_SHORT).show();
 
         Notification.Builder mBuilder = new Notification.Builder(MyApplication.getAppContext());
         NotificationManager notificationManager = (NotificationManager) MyApplication.getAppContext().
