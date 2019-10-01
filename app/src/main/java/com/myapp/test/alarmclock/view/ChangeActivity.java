@@ -33,7 +33,7 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
     private TimePicker timePicker;
     private TextView sound, description;
     private Switch vibrationSignal;
-    private FrameLayout daysOfWeek;
+    private TextView daysOfWeek;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
