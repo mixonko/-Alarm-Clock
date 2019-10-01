@@ -15,7 +15,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -38,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private ExampleAdapter exampleAdapter;
     private LinearLayoutManager linearLayoutManager;
     private List<AlarmClock> list;
+    private Vibrator vibrator;
+    private Ringtone ringtone;
     public static final String ACTION_ON = "action_on";
     public static final String ACTION_OFF = "action_off";
     public static final String INTENT_EXTRA = "extra";
@@ -169,6 +177,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             showNotification(id, alarmClock);
         if (monday == 0 && tuesday == 0 && wednesday == 0 && thursday == 0 & friday == 0 && saturday == 0 && sunday == 0)
             showNotification(id, alarmClock);
+
     }
 
     private void showNotification(int id, AlarmClock alarmClock){
@@ -193,13 +202,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 .setAutoCancel(false);
         mBuilder.addAction(action);
 
-
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, String.valueOf(id), NotificationManager.IMPORTANCE_HIGH);
-            if (alarmClock.getVibration()) {
-                notificationChannel.enableVibration(true);
-                notificationChannel.setVibrationPattern(vibrate);
-            }
+//                notificationChannel.enableVibration(true);
+//                notificationChannel.setVibrationPattern(vibrate);
             notificationChannel.enableLights(true);
             assert notificationManager != null;
             mBuilder.setChannelId(NOTIFICATION_CHANNEL_ID);
@@ -213,6 +219,21 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public void deleteNotification(int id) {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(id);
+    }
+
+    @Override
+    public void startVibration(long milliseconds) {
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator.vibrate(VibrationEffect.createOneShot(milliseconds, VibrationEffect.DEFAULT_AMPLITUDE));
+        } else {
+            vibrator.vibrate(milliseconds);
+        }
+    }
+
+    @Override
+    public void stopVibration() {
+        vibrator.cancel();
     }
 
     @Override
@@ -256,6 +277,21 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         recyclerView.removeViewAt(position);
         exampleAdapter.notifyItemRemoved(position);
         exampleAdapter.notifyItemRangeChanged(position, list.size());
+    }
+
+    @Override
+    public void playRingtone(String uri) {
+        try {
+            ringtone = RingtoneManager.getRingtone(getApplicationContext(), Uri.parse(uri));
+            ringtone.play();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void stopRingtone() {
+        ringtone.stop();
     }
 
     @Override

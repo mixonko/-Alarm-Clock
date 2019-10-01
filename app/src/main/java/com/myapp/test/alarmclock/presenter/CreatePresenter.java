@@ -28,7 +28,9 @@ public class CreatePresenter implements CreateContract.presenter {
     public void onDoneWasClicked() {
         AlarmClock alarmClock = new AlarmClock(String.valueOf(view.getHour()),
                 String.valueOf(view.getMinute()), true,
-                view.getVibrationInfo(), view.getDescription(), monday, tuesday, wednesday, thursday, friday, saturday, sunday);
+                view.getVibrationInfo(), view.getDescription(),
+                monday, tuesday, wednesday, thursday, friday, saturday, sunday,
+                view.getRingtone());
         repository.addAlarmClock(alarmClock);
         view.createAlarmClock(Integer.parseInt(alarmClock.getHour()),
                 Integer.parseInt(alarmClock.getMinute()), alarmClock.getId());
@@ -68,6 +70,11 @@ public class CreatePresenter implements CreateContract.presenter {
         this.friday = friday;
         this.saturday = saturday;
         this.sunday = sunday;
+    }
+
+    @Override
+    public void onRingtonesWasClicked() {
+        view.showRingtones();
     }
 
 }

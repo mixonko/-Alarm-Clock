@@ -42,6 +42,8 @@ public class MainPresenter implements MainContract.Presenter {
             view.alarmClockOff(alarmClock.getId());
             view.showAlarmClockOff(alarmClock.getHour(), alarmClock.getMinute());
             view.deleteNotification(alarmClock.getId());
+            view.stopVibration();
+            view.stopRingtone();
         }
     }
 
@@ -67,6 +69,9 @@ public class MainPresenter implements MainContract.Presenter {
     public void onReceive(int id) {
         AlarmClock alarmClock = repository.getAlarmClock(id);
         view.createNotification(alarmClock.getId(), alarmClock);
+        view.playRingtone(alarmClock.getRingtone());
+        if (alarmClock.getVibration())
+            view.startVibration(25000);
     }
 
     @Override
@@ -76,6 +81,8 @@ public class MainPresenter implements MainContract.Presenter {
         repository.updateAlarmClock(alarmClock);
         view.alarmClockOff(alarmClock.getId());
         view.deleteNotification(alarmClock.getId());
+        view.stopVibration();
+        view.stopRingtone();
         view.setAdapter(repository.getAllAlarmClock());
         view.showAlarmClockOff(alarmClock.getHour(), alarmClock.getMinute());
     }

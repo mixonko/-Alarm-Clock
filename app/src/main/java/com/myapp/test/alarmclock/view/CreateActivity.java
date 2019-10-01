@@ -1,9 +1,12 @@
 package com.myapp.test.alarmclock.view;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +34,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class CreateActivity extends AppCompatActivity implements CreateContract.view, View.OnClickListener {
 
+    private static final int REQUEST_CODE_RINGTONE = 5;
     private CreateContract.presenter presenter;
     private Button close;
     private Button done;
@@ -45,6 +49,7 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     private int mFriday = 0;
     private int mSaturday = 0;
     private int mSunday = 0;
+    private String ringtone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,7 +220,41 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
             case R.id.days_of_week:
                 presenter.onDaysWasClicked();
                 break;
+            case R.id.sound:
+                presenter.onRingtonesWasClicked();
+                break;
         }
     }
 
+    @Override
+    public void showRingtones(){
+        Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
+        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Tone");
+        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
+        this.startActivityForResult(intent, REQUEST_CODE_RINGTONE);
+    }
+
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent intent)
+    {
+        if (resultCode == Activity.RESULT_OK && requestCode == 5)
+        {
+            Uri uri = intent.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+
+            if (uri != null)
+            {
+                this.ringtone = uri.toString();
+            }
+            else
+            {
+                this.ringtone = null;
+            }
+        }
+    }
+
+    @Override
+    public String getRingtone() {
+        return ringtone;
+    }
 }

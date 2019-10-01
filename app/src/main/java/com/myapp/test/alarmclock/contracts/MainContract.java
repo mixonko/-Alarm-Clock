@@ -14,10 +14,14 @@ public interface MainContract {
         void alarmClockOff(int id);
         void createNotification(int id, AlarmClock alarmClock);
         void deleteNotification(int id);
+        void startVibration(long milliseconds);
+        void stopVibration();
         void showAlarmClockOff(String hour, String minute);
         void showAlarmClockOn(String hour, String minute);
         void showDeleteDialog(AlarmClock alarmClock, int position);
         void deleteItem(int position);
+        void playRingtone(String Uri);
+        void stopRingtone();
     }
 
     interface Presenter{

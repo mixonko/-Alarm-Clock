@@ -7,7 +7,9 @@ import androidx.room.PrimaryKey;
 @Entity( tableName = "alarm_clock" )
 public class AlarmClock {
 
-    public AlarmClock(String hour, String minute, Boolean alarmClockOn, Boolean vibration, String description, int monday, int tuesday, int wednesday, int thursday, int friday, int saturday, int sunday) {
+    public AlarmClock(String hour, String minute, Boolean alarmClockOn, Boolean vibration,
+                      String description, int monday, int tuesday, int wednesday, int thursday,
+                      int friday, int saturday, int sunday, String ringtone) {
         this.hour = hour;
         this.minute = minute;
         this.alarmClockOn = alarmClockOn;
@@ -20,6 +22,7 @@ public class AlarmClock {
         this.friday = friday;
         this.saturday = saturday;
         this.sunday = sunday;
+        this.ringtone = ringtone;
     }
 
     @PrimaryKey( autoGenerate = true )
@@ -48,6 +51,8 @@ public class AlarmClock {
     private int saturday;
     @ColumnInfo( name = "sunday" )
     private int sunday;
+    @ColumnInfo( name = "ringtone" )
+    private String ringtone;
 
 
     public int getId() {
@@ -152,5 +157,13 @@ public class AlarmClock {
 
     public void setSunday(int sunday) {
         this.sunday = sunday;
+    }
+
+    public String getRingtone() {
+        return ringtone;
+    }
+
+    public void setRingtone(String ringtone) {
+        this.ringtone = ringtone;
     }
 }
