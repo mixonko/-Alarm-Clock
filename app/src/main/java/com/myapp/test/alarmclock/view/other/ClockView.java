@@ -1,4 +1,4 @@
-package com.myapp.test.alarmclock.view;
+package com.myapp.test.alarmclock.view.other;
 
 import android.content.Context;
 import android.graphics.Canvas;

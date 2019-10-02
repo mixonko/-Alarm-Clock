@@ -21,6 +21,8 @@
         </activity>
         <activity android:name=".view.CreateActivity" />
         <activity android:name=".view.ChangeActivity" />
+        <receiver android:name="com.myapp.test.alarmclock.receivers.AlarmClockReceiver"/>
+        <receiver android:name="com.myapp.test.alarmclock.receivers.NotificationCancelReceiver"/>
     </application>
 
 </manifest>

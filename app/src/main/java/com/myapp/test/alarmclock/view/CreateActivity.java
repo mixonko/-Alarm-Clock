@@ -21,6 +21,7 @@ import com.myapp.test.alarmclock.R;
 import com.myapp.test.alarmclock.contracts.CreateContract;
 import com.myapp.test.alarmclock.myAppContext.MyApplication;
 import com.myapp.test.alarmclock.presenter.CreatePresenter;
+import com.myapp.test.alarmclock.receivers.AlarmClockReceiver;
 import com.myapp.test.alarmclock.view.adapter.ExampleDaysAdapter;
 
 import java.util.Arrays;
@@ -126,10 +127,10 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
-        if (calendar.before(Calendar.getInstance())) {
+        if(calendar.before(Calendar.getInstance())) {
             calendar.add(Calendar.DATE, 1);
         }
-        Intent intent = new Intent(MainActivity.ACTION_ON);
+        Intent intent = new Intent(MyApplication.getAppContext(), AlarmClockReceiver.class);
         intent.putExtra(MainActivity.INTENT_EXTRA, id);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(MyApplication.getAppContext(),
                 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);

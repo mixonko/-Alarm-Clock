@@ -3,14 +3,10 @@ package com.myapp.test.alarmclock.view.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.myapp.test.alarmclock.R;
-import com.myapp.test.alarmclock.myAppContext.MyApplication;
 
 import java.util.List;
 

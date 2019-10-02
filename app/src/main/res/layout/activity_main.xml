@@ -6,7 +6,7 @@
     android:orientation="vertical"
     tools:context=".view.MainActivity">
 
-    <com.myapp.test.alarmclock.view.ClockView
+    <com.myapp.test.alarmclock.view.other.ClockView
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_gravity="center"/>

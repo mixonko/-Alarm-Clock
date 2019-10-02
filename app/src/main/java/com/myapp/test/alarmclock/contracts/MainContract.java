@@ -12,16 +12,10 @@ public interface MainContract {
         void setAdapter(List<AlarmClock> list);
         void alarmClockOn(int hour, int minute, int id);
         void alarmClockOff(int id);
-        void createNotification(int id, AlarmClock alarmClock);
-        void deleteNotification(int id);
-        void startVibration(long milliseconds);
-        void stopVibration();
         void showAlarmClockOff(String hour, String minute);
         void showAlarmClockOn(String hour, String minute);
         void showDeleteDialog(AlarmClock alarmClock, int position);
         void deleteItem(int position);
-        void playRingtone(String Uri);
-        void stopRingtone();
     }
 
     interface Presenter{
@@ -32,8 +26,6 @@ public interface MainContract {
         void onCreateButtonWasClicked();
         void onDeleteWasClicked(AlarmClock alarmClock, int position);
         void onResume();
-        void onReceive(int id);
-        void onReceiveOff(int id);
 
     }
 
