@@ -1,9 +1,11 @@
 package com.myapp.test.alarmclock.view;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -12,7 +14,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.myapp.test.alarmclock.R;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public static final String ACTION_ON = "com.myapp.test.alarmclock.action_on";
     public static final String INTENT_EXTRA = "extra";
     public static final String ALARM_CLOCK_ID = "alarm_clock_id";
+    private static final int CREATE_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +97,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void startCreateActivity() {
-        startActivity(new Intent(MyApplication.getAppContext(), CreateActivity.class));
+        startActivityForResult(new Intent(MyApplication.getAppContext(), CreateActivity.class),
+                CREATE_REQUEST_CODE);
     }
 
     @Override
@@ -184,9 +187,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        presenter.onResume();
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == CREATE_REQUEST_CODE) {
+             presenter.onActivityResult();
+        }
     }
 
 }

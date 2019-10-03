@@ -26,7 +26,7 @@ public interface MainContract {
         void onSwitchWasChanged(Boolean b, AlarmClock alarmClock);
         void onCreateButtonWasClicked();
         void onDeleteWasClicked(AlarmClock alarmClock, int position);
-        void onResume();
+        void onActivityResult();
 
     }
 

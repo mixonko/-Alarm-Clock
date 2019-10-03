@@ -74,11 +74,17 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
         sound.setOnClickListener(this);
         description.setOnClickListener(this);
 
+        ringtone = RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI;
     }
 
     @Override
     public void close() {
         finish();
+    }
+
+    @Override
+    public void setResult(){
+        setResult(RESULT_OK);
     }
 
     @Override
@@ -131,11 +137,11 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
 //            calendar.add(Calendar.DATE, 1);
 //        }
         Intent intent = new Intent(MyApplication.getAppContext(), AlarmClockReceiver.class);
+        intent.addFlags(Intent.FLAG_RECEIVER_NO_ABORT);
         intent.putExtra(MainActivity.INTENT_EXTRA, id);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(MyApplication.getAppContext(),
-                0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 
     }
@@ -243,8 +249,6 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
 
             if (uri != null) {
                 this.ringtone = uri.toString();
-            } else {
-                this.ringtone = null;
             }
         }
     }

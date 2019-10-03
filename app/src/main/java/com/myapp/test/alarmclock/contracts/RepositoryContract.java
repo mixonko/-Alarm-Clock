@@ -8,7 +8,7 @@ public interface RepositoryContract{
     void addAlarmClock(AlarmClock alarmClock);
     void deleteAlarmClock(AlarmClock alarmClock);
     void updateAlarmClock(AlarmClock alarmClock);
-    List<AlarmClock> getAllAlarmClock();
+    List<AlarmClock> getAllAlarmClocks();
     AlarmClock getAlarmClock(int id);
 
 }

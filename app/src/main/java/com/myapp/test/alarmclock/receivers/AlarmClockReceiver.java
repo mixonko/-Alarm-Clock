@@ -17,11 +17,10 @@ public class AlarmClockReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         int id = intent.getIntExtra(MainActivity.INTENT_EXTRA, 1);
         AlarmClock alarmClock = database.alarmClockDao().getAlarmClock(id);
-
-         MyNotification myNotification = MyNotification.getMyNotification();
-         myNotification.showNotification(alarmClock.getDescription(),
-                 alarmClock.getHour() + ":" + alarmClock.getMinute() , id);
-         myNotification.playRingtone(Uri.parse(alarmClock.getRingtone()));
-         myNotification.startVibration(20000);
+        MyNotification myNotification = MyNotification.getMyNotification();
+        myNotification.showNotification(alarmClock.getDescription(),
+                alarmClock.getHour() + ":" + alarmClock.getMinute(), id);
+        myNotification.playRingtone(Uri.parse(alarmClock.getRingtone()));
+        myNotification.startVibration(20000);
     }
 }

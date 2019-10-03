@@ -17,7 +17,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onCreateActivity() {
-        view.setList(repository.getAllAlarmClock());
+        view.setList(repository.getAllAlarmClocks());
     }
 
     @Override
@@ -58,8 +58,8 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void onResume() {
-        view.updateList(repository.getAllAlarmClock());
+    public void onActivityResult() {
+        view.updateList(repository.getAllAlarmClocks());
     }
 
     private void updateAlarmClock(AlarmClock alarmClock, Boolean b){

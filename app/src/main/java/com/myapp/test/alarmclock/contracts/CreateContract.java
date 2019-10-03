@@ -5,6 +5,7 @@ import java.util.List;
 public interface CreateContract {
     interface view {
         void close();
+        public void setResult();
         int getHour();
         int getMinute();
         void showDescriptionDialog();

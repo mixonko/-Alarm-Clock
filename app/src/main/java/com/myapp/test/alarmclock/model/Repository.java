@@ -30,7 +30,7 @@ public class Repository implements RepositoryContract {
     }
 
     @Override
-    public List<AlarmClock> getAllAlarmClock() {
+    public List<AlarmClock> getAllAlarmClocks() {
         return database.alarmClockDao().getAllAlarmClock();
     }
 

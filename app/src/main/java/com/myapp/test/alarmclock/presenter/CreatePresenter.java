@@ -1,9 +1,12 @@
 package com.myapp.test.alarmclock.presenter;
 
+import android.widget.Toast;
+
 import com.myapp.test.alarmclock.contracts.CreateContract;
 import com.myapp.test.alarmclock.contracts.RepositoryContract;
 import com.myapp.test.alarmclock.entity.AlarmClock;
 import com.myapp.test.alarmclock.model.Repository;
+import com.myapp.test.alarmclock.myAppContext.MyApplication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +35,12 @@ public class CreatePresenter implements CreateContract.presenter {
                 monday, tuesday, wednesday, thursday, friday, saturday, sunday,
                 view.getRingtone());
         repository.addAlarmClock(alarmClock);
+        List<AlarmClock> list = repository.getAllAlarmClocks();
+        alarmClock = list.get(list.size() - 1);
         view.createAlarmClock(Integer.parseInt(alarmClock.getHour()),
                 Integer.parseInt(alarmClock.getMinute()), alarmClock.getId());
         view.showAlarmClockOn(alarmClock.getHour(), alarmClock.getMinute());
+        view.setResult();
         view.close();
     }
 
