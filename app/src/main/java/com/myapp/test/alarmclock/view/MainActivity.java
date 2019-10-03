@@ -57,7 +57,35 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         });
 
         presenter.onCreateActivity();
+        exampleAdapter = new ExampleAdapter(this.list);
+        recyclerView.setAdapter(exampleAdapter);
+        exampleAdapter.setOnItemClickListener(new ExampleAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                AlarmClock alarmClock = list.get(position);
+                presenter.onItemWasClicked(alarmClock);
 
+            }
+        });
+        exampleAdapter.setOnItemLongClickListener(new ExampleAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(int position) {
+                AlarmClock alarmClock = list.get(position);
+                presenter.onItemWasLongClicked(alarmClock, position);
+            }
+        });
+        exampleAdapter.setOnCheckedChangeListener(new ExampleAdapter.OnChangeListener() {
+            @Override
+            public void onChangedListener(int position, boolean b) {
+                AlarmClock alarmClock = list.get(position);
+                presenter.onSwitchWasChanged(b, alarmClock);
+            }
+        });
+    }
+
+    @Override
+    public void setList(List<AlarmClock> list) {
+        this.list = list;
     }
 
     @Override
@@ -74,37 +102,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public void startChangeActivity(int id) {
         Intent intent = new Intent(MyApplication.getAppContext(), ChangeActivity.class);
         intent.putExtra(ALARM_CLOCK_ID, id);
-        startActivityForResult(intent, 1);
+        startActivity(intent);
     }
-
-    @Override
-    public void setAdapter(final List<AlarmClock> list) {
-        this.list = list;
-            exampleAdapter = new ExampleAdapter(this.list);
-            recyclerView.setAdapter(exampleAdapter);
-            exampleAdapter.setOnItemClickListener(new ExampleAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(int position) {
-                    AlarmClock alarmClock = list.get(position);
-                    presenter.onItemWasClicked(alarmClock);
-
-                }
-            });
-            exampleAdapter.setOnItemLongClickListener(new ExampleAdapter.OnItemLongClickListener() {
-                @Override
-                public void onItemLongClick(int position) {
-                    AlarmClock alarmClock = list.get(position);
-                    presenter.onItemWasLongClicked(alarmClock, position);
-                }
-            });
-            exampleAdapter.setOnCheckedChangeListener(new ExampleAdapter.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(int position, CompoundButton compoundButton, boolean b) {
-                    AlarmClock alarmClock = list.get(position);
-                    presenter.onSwitchWasChanged(b, alarmClock);
-                }
-            });
-        }
 
     @Override
     public void alarmClockOn(int hour, int minute, int id) {
@@ -112,9 +111,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
-//        if(calendar.before(Calendar.getInstance())) {
-//            calendar.add(Calendar.DATE, 1);
-//        }
+// if(calendar.before(Calendar.getInstance())) {
+// calendar.add(Calendar.DATE, 1);
+// }
         Intent intent = new Intent(MyApplication.getAppContext(), AlarmClockReceiver.class);
         intent.addFlags(Intent.FLAG_RECEIVER_NO_ABORT);
         intent.putExtra(INTENT_EXTRA, id);
@@ -175,6 +174,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         recyclerView.removeViewAt(position);
         exampleAdapter.notifyItemRemoved(position);
         exampleAdapter.notifyItemRangeChanged(position, list.size());
+    }
+
+    @Override
+    public void updateList(List<AlarmClock> list) {
+        this.list.clear();
+        this.list.addAll(list);
+        exampleAdapter.updateData(list);
     }
 
     @Override

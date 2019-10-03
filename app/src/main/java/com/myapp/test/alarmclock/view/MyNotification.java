@@ -108,13 +108,18 @@ public class MyNotification {
     }
 
     public void startVibration(long milliseconds) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            vibrator = getSystemService(MyApplication.getAppContext(), Vibrator.class);
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibrator = getSystemService(MyApplication.getAppContext(), Vibrator.class);
 
-            vibrator.vibrate(VibrationEffect.createOneShot(milliseconds, VibrationEffect.DEFAULT_AMPLITUDE));
-        } else {
-            vibrator.vibrate(milliseconds);
+                vibrator.vibrate(VibrationEffect.createOneShot(milliseconds, VibrationEffect.DEFAULT_AMPLITUDE));
+            } else {
+                vibrator.vibrate(milliseconds);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
     }
 
     public void stopVibration() {

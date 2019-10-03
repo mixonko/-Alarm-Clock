@@ -127,9 +127,9 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
-        if(calendar.before(Calendar.getInstance())) {
-            calendar.add(Calendar.DATE, 1);
-        }
+//        if (calendar.before(Calendar.getInstance())) {
+//            calendar.add(Calendar.DATE, 1);
+//        }
         Intent intent = new Intent(MyApplication.getAppContext(), AlarmClockReceiver.class);
         intent.putExtra(MainActivity.INTENT_EXTRA, id);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(MyApplication.getAppContext(),
@@ -228,7 +228,7 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     }
 
     @Override
-    public void showRingtones(){
+    public void showRingtones() {
         Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Tone");
@@ -237,18 +237,13 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     }
 
     @Override
-    protected void onActivityResult(final int requestCode, final int resultCode, final Intent intent)
-    {
-        if (resultCode == Activity.RESULT_OK && requestCode == 5)
-        {
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent intent) {
+        if (resultCode == Activity.RESULT_OK && requestCode == 5) {
             Uri uri = intent.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
 
-            if (uri != null)
-            {
+            if (uri != null) {
                 this.ringtone = uri.toString();
-            }
-            else
-            {
+            } else {
                 this.ringtone = null;
             }
         }

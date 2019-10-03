@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleViewHolder> {
     private OnItemClickListener onItemClickListener;
     private OnItemLongClickListener onItemLongClickListener;
-    private OnCheckedChangeListener onCheckedChangeListener;
+    private OnChangeListener onChangedListener;
 
     private List<AlarmClock> exampleItems;
 
@@ -34,8 +34,8 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
         void onItemLongClick(int position);
     }
 
-    public interface OnCheckedChangeListener{
-        void onCheckedChanged(int position, CompoundButton compoundButton, boolean b);
+    public interface OnChangeListener{
+        void onChangedListener(int position, boolean b);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -46,8 +46,8 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
         onItemLongClickListener = listener;
     }
 
-    public void setOnCheckedChangeListener(OnCheckedChangeListener listener){
-        onCheckedChangeListener = listener;
+    public void setOnCheckedChangeListener(OnChangeListener listener){
+        onChangedListener = listener;
     }
 
     public static class ExampleViewHolder extends RecyclerView.ViewHolder {
@@ -58,7 +58,7 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
 
         public ExampleViewHolder(@NonNull View itemView, final OnItemClickListener listener,
                                  final OnItemLongClickListener longClickListener,
-                                 final OnCheckedChangeListener checkedChangeListener) {
+                                 final OnChangeListener changedListener) {
             super(itemView);
             time = itemView.findViewById(R.id.time);
             daysOfWeek = itemView.findViewById(R.id.days_of_week);
@@ -90,13 +90,13 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
                 }
             });
 
-            mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            mySwitch.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    if (checkedChangeListener != null) {
+                public void onClick(View view) {
+                    if (changedListener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            checkedChangeListener.onCheckedChanged(position, compoundButton, b);
+                            changedListener.onChangedListener(position, mySwitch.isChecked());
                         }
                     }
                 }
@@ -108,7 +108,7 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
     @Override
     public ExampleViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.example_alarms_item, viewGroup, false);
-        ExampleViewHolder exampleViewHolder = new ExampleViewHolder(v, onItemClickListener, onItemLongClickListener, onCheckedChangeListener);
+        ExampleViewHolder exampleViewHolder = new ExampleViewHolder(v, onItemClickListener, onItemLongClickListener, onChangedListener);
         return exampleViewHolder;
     }
 
@@ -120,6 +120,8 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
         exampleViewHolder.description.setText(currentItem.getDescription());
         if (currentItem.getAlarmClockOn()){
             exampleViewHolder.mySwitch.setChecked(true);
+        }else {
+            exampleViewHolder.mySwitch.setChecked(false);
         }
 
     }
@@ -129,4 +131,9 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
         return exampleItems.size();
     }
 
+    public void updateData(List<AlarmClock> list) {
+        exampleItems.clear();
+        exampleItems.addAll(list);
+        notifyDataSetChanged();
+    }
 }

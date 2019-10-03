@@ -9,13 +9,14 @@ public interface MainContract {
         void setInfoText(String infoText);
         void startCreateActivity();
         void startChangeActivity(int id);
-        void setAdapter(List<AlarmClock> list);
         void alarmClockOn(int hour, int minute, int id);
         void alarmClockOff(int id);
         void showAlarmClockOff(String hour, String minute);
         void showAlarmClockOn(String hour, String minute);
         void showDeleteDialog(AlarmClock alarmClock, int position);
         void deleteItem(int position);
+        public void updateList(List<AlarmClock> list);
+        public void setList(List<AlarmClock> list);
     }
 
     interface Presenter{
