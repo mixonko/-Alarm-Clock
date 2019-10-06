@@ -15,7 +15,8 @@ import android.os.Vibrator;
 
 import com.myapp.test.alarmclock.R;
 import com.myapp.test.alarmclock.myAppContext.MyApplication;
-import com.myapp.test.alarmclock.receivers.NotificationCancelReceiver;
+import com.myapp.test.alarmclock.receiver.NotificationCancelReceiver;
+
 
 import static androidx.core.content.ContextCompat.getSystemService;
 
@@ -26,7 +27,6 @@ public class MyNotification {
     private NotificationManager notificationManager;
     private Ringtone ringtone;
     private Vibrator vibrator;
-    public static final String CANCEL_ALARM_CLOCK_EXTRA = "CANCEL_ALARM_CLOCK_EXTRA" ;
 
     private MyNotification(){}
 
@@ -60,7 +60,6 @@ public class MyNotification {
                 getSystemService(Context.NOTIFICATION_SERVICE);
 
         Intent intent = new Intent(MyApplication.getAppContext(), NotificationCancelReceiver.class);
-        intent.putExtra(CANCEL_ALARM_CLOCK_EXTRA, id);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(MyApplication.getAppContext(),
                 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
@@ -83,6 +82,7 @@ public class MyNotification {
         }
         assert notificationManager != null;
         notificationManager.notify(id, mBuilder.build());
+
     }
 
     public void deleteNotification(int id){

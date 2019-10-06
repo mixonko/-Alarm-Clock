@@ -15,7 +15,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.myapp.test.alarmclock.R;
-import com.myapp.test.alarmclock.contracts.ChangeContract;
+import com.myapp.test.alarmclock.contract.ChangeContract;
 import com.myapp.test.alarmclock.myAppContext.MyApplication;
 import com.myapp.test.alarmclock.presenter.ChangePresenter;
 

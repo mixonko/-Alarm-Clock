@@ -1,6 +1,6 @@
 package com.myapp.test.alarmclock.model;
 
-import com.myapp.test.alarmclock.contracts.RepositoryContract;
+import com.myapp.test.alarmclock.contract.RepositoryContract;
 import com.myapp.test.alarmclock.database.MyAppDatabase;
 import com.myapp.test.alarmclock.entity.AlarmClock;
 import com.myapp.test.alarmclock.myAppContext.MyApplication;

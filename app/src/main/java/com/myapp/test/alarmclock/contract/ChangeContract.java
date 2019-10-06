@@ -1,4 +1,4 @@
-package com.myapp.test.alarmclock.contracts;
+package com.myapp.test.alarmclock.contract;
 
 public interface ChangeContract {
     interface view{

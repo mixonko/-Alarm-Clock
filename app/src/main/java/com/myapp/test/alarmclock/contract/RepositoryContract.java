@@ -1,4 +1,4 @@
-package com.myapp.test.alarmclock.contracts;
+package com.myapp.test.alarmclock.contract;
 
 import com.myapp.test.alarmclock.entity.AlarmClock;
 

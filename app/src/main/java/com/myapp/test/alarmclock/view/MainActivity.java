@@ -9,19 +9,22 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.myapp.test.alarmclock.R;
-import com.myapp.test.alarmclock.contracts.MainContract;
+import com.myapp.test.alarmclock.contract.MainContract;
 import com.myapp.test.alarmclock.entity.AlarmClock;
 import com.myapp.test.alarmclock.myAppContext.MyApplication;
 import com.myapp.test.alarmclock.presenter.MainPresenter;
-import com.myapp.test.alarmclock.receivers.AlarmClockReceiver;
+import com.myapp.test.alarmclock.receiver.AlarmClockReceiver;
 import com.myapp.test.alarmclock.view.adapter.ExampleAdapter;
 
 import java.util.Calendar;
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private ExampleAdapter exampleAdapter;
     private LinearLayoutManager linearLayoutManager;
     private List<AlarmClock> list;
+    private BroadcastReceiver stopAlarmClockReceiver;
     public static final String ACTION_ON = "com.myapp.test.alarmclock.action_on";
     public static final String INTENT_EXTRA = "extra";
     public static final String ALARM_CLOCK_ID = "alarm_clock_id";
@@ -194,4 +198,25 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        stopAlarmClockReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Toast.makeText(MyApplication.getAppContext(), "xxxxxxx" , Toast.LENGTH_SHORT).show();
+
+                presenter.cancelWasReceived();
+             }
+        };
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("aaa");
+        registerReceiver(stopAlarmClockReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(stopAlarmClockReceiver);
+    }
 }

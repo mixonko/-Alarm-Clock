@@ -18,10 +18,10 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.myapp.test.alarmclock.R;
-import com.myapp.test.alarmclock.contracts.CreateContract;
+import com.myapp.test.alarmclock.contract.CreateContract;
 import com.myapp.test.alarmclock.myAppContext.MyApplication;
 import com.myapp.test.alarmclock.presenter.CreatePresenter;
-import com.myapp.test.alarmclock.receivers.AlarmClockReceiver;
+import com.myapp.test.alarmclock.receiver.AlarmClockReceiver;
 import com.myapp.test.alarmclock.view.adapter.ExampleDaysAdapter;
 
 import java.util.Arrays;

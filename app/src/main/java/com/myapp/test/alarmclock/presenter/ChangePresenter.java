@@ -1,7 +1,7 @@
 package com.myapp.test.alarmclock.presenter;
 
-import com.myapp.test.alarmclock.contracts.ChangeContract;
-import com.myapp.test.alarmclock.contracts.RepositoryContract;
+import com.myapp.test.alarmclock.contract.ChangeContract;
+import com.myapp.test.alarmclock.contract.RepositoryContract;
 import com.myapp.test.alarmclock.entity.AlarmClock;
 import com.myapp.test.alarmclock.model.Repository;
 

@@ -1,4 +1,4 @@
-package com.myapp.test.alarmclock.contracts;
+package com.myapp.test.alarmclock.contract;
 
 import com.myapp.test.alarmclock.entity.AlarmClock;
 
@@ -15,8 +15,8 @@ public interface MainContract {
         void showAlarmClockOn(String hour, String minute);
         void showDeleteDialog(AlarmClock alarmClock, int position);
         void deleteItem(int position);
-        public void updateList(List<AlarmClock> list);
-        public void setList(List<AlarmClock> list);
+        void updateList(List<AlarmClock> list);
+        void setList(List<AlarmClock> list);
     }
 
     interface Presenter{
@@ -27,7 +27,7 @@ public interface MainContract {
         void onCreateButtonWasClicked();
         void onDeleteWasClicked(AlarmClock alarmClock, int position);
         void onActivityResult();
-
+        void cancelWasReceived();
     }
 
 }
