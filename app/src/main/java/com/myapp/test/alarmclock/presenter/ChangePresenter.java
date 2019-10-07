@@ -5,10 +5,14 @@ import com.myapp.test.alarmclock.contract.RepositoryContract;
 import com.myapp.test.alarmclock.entity.AlarmClock;
 import com.myapp.test.alarmclock.model.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ChangePresenter implements ChangeContract.presenter {
     private ChangeContract.view view;
     private RepositoryContract repository;
     private AlarmClock alarmClock;
+    private int monday = 0, tuesday = 0, wednesday = 0, thursday = 0, friday = 0, saturday = 0, sunday = 0;
 
     public ChangePresenter(ChangeContract.view view) {
         this.view = view;
@@ -19,10 +23,19 @@ public class ChangePresenter implements ChangeContract.presenter {
     @Override
     public void onCreate(int id) {
         alarmClock = repository.getAlarmClock(id);
+
+        monday = alarmClock.getMonday();
+        tuesday = alarmClock.getTuesday();
+        wednesday = alarmClock.getWednesday();
+        thursday = alarmClock.getThursday();
+        friday = alarmClock.getFriday();
+        saturday = alarmClock.getSaturday();
+        sunday = alarmClock.getSunday();
         view.setHour(Integer.parseInt(alarmClock.getHour()));
         view.setMinute(Integer.parseInt(alarmClock.getMinute()));
         view.setVibration(alarmClock.getVibration());
         view.setDescription(alarmClock.getDescription());
+        view.setRingtone(alarmClock.getRingtone());
     }
 
     @Override
@@ -37,10 +50,19 @@ public class ChangePresenter implements ChangeContract.presenter {
         alarmClock.setAlarmClockOn(true);
         alarmClock.setVibration(view.getVibrationInfo());
         alarmClock.setDescription(view.getDescription());
+        alarmClock.setMonday(monday);
+        alarmClock.setTuesday(tuesday);
+        alarmClock.setWednesday(wednesday);
+        alarmClock.setThursday(thursday);
+        alarmClock.setFriday(friday);
+        alarmClock.setSaturday(saturday);
+        alarmClock.setSunday(sunday);
+        alarmClock.setRingtone(view.getRingtone());
         repository.updateAlarmClock(alarmClock);
         view.createAlarmClock(Integer.parseInt(alarmClock.getHour()),
                 Integer.parseInt(alarmClock.getMinute()), alarmClock.getId());
         view.showAlarmClockOn(alarmClock.getHour(), alarmClock.getMinute());
+        view.setResult();
         view.close();
     }
 
@@ -52,5 +74,34 @@ public class ChangePresenter implements ChangeContract.presenter {
     @Override
     public void onDescriptionDone(String description) {
         view.setDescription(description);
+    }
+
+    @Override
+    public void onDaysWasClicked() {
+        List<Integer> checkedDays = new ArrayList<>();
+        checkedDays.add(monday);
+        checkedDays.add(tuesday);
+        checkedDays.add(wednesday);
+        checkedDays.add(thursday);
+        checkedDays.add(friday);
+        checkedDays.add(saturday);
+        checkedDays.add(sunday);
+        view.showDaysDialog(view.getDaysList(), checkedDays);
+    }
+
+    @Override
+    public void saveDaysWasClicked(int monday, int tuesday, int wednesday, int thursday, int friday, int saturday, int sunday) {
+        this.monday = monday;
+        this.tuesday = tuesday;
+        this.wednesday = wednesday;
+        this.thursday = thursday;
+        this.friday = friday;
+        this.saturday = saturday;
+        this.sunday = sunday;
+    }
+
+    @Override
+    public void onRingtonesWasClicked() {
+        view.showRingtones();
     }
 }

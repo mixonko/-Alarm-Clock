@@ -1,9 +1,13 @@
 package com.myapp.test.alarmclock.view;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,21 +22,36 @@ import com.myapp.test.alarmclock.R;
 import com.myapp.test.alarmclock.contract.ChangeContract;
 import com.myapp.test.alarmclock.myAppContext.MyApplication;
 import com.myapp.test.alarmclock.presenter.ChangePresenter;
+import com.myapp.test.alarmclock.receiver.AlarmClockReceiver;
+import com.myapp.test.alarmclock.view.adapter.ExampleDaysAdapter;
 
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class ChangeActivity extends AppCompatActivity implements ChangeContract.view, View.OnClickListener {
     private ChangeContract.presenter presenter;
+    private static final int REQUEST_CODE_RINGTONE = 5;
     private Button close;
     private Button done;
     private TimePicker timePicker;
     private TextView sound, description;
     private Switch vibrationSignal;
     private TextView daysOfWeek;
+    private String ringtone;
+    private int mMonday = 0;
+    private int mTuesday = 0;
+    private int mWednesday = 0;
+    private int mThursday = 0;
+    private int mFriday = 0;
+    private int mSaturday = 0;
+    private int mSunday = 0;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +91,12 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
                 break;
             case R.id.description:
                 presenter.onDescriptionWasClicked();
+                break;
+                case R.id.days_of_week:
+                presenter.onDaysWasClicked();
+                break;
+            case R.id.sound:
+                presenter.onRingtonesWasClicked();
                 break;
         }
     }
@@ -138,15 +163,15 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
-        if (calendar.before(Calendar.getInstance())) {
-            calendar.add(Calendar.DATE, 1);
-        }
-        Intent intent = new Intent(MainActivity.ACTION_ON);
+//        if (calendar.before(Calendar.getInstance())) {
+//            calendar.add(Calendar.DATE, 1);
+//        }
+        Intent intent = new Intent(MyApplication.getAppContext(), AlarmClockReceiver.class);
+        intent.addFlags(Intent.FLAG_RECEIVER_NO_ABORT);
         intent.putExtra(MainActivity.INTENT_EXTRA, id);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(MyApplication.getAppContext(),
-                0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }
 
@@ -165,5 +190,85 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
         Toast.makeText(MyApplication.getAppContext(),
                 "Будильник включен на " + hour + ":" + minute,
                 Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showDaysDialog(List<String>daysList, List<Integer>checkedDays) {
+        RecyclerView recyclerView = new RecyclerView(MyApplication.getAppContext());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MyApplication.getAppContext());
+        ExampleDaysAdapter adapter = new ExampleDaysAdapter(daysList, checkedDays);
+
+        adapter.setOnItemClickListener(new ExampleDaysAdapter.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(int monday, int tuesday, int wednesday, int thursday, int friday, int saturday, int sunday) {
+                mMonday = monday;
+                mTuesday = tuesday;
+                mWednesday = wednesday;
+                mThursday = thursday;
+                mFriday = friday;
+                mSaturday = saturday;
+                mSunday = sunday;
+            }
+        });
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(adapter);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(recyclerView);
+        builder.setTitle(R.string.days_of_the_week);
+        builder.setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                presenter.saveDaysWasClicked(mMonday, mTuesday, mWednesday, mThursday, mFriday, mSaturday, mSunday );
+            }
+        }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        }).setCancelable(false);
+        builder.show();
+    }
+
+    @Override
+    public List<String> getDaysList() {
+        String[] s = MyApplication.getAppContext().getResources().getStringArray(R.array.daysOfWeek);
+        List<String> list = Arrays.asList(s);
+        return list;
+    }
+
+    @Override
+    public void setRingtone(String ringtoneUri) {
+        ringtone = ringtoneUri;
+    }
+
+    @Override
+    public String getRingtone() {
+        return ringtone;
+    }
+
+    @Override
+    public void showRingtones() {
+        Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
+        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Tone");
+        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
+        this.startActivityForResult(intent, REQUEST_CODE_RINGTONE);
+    }
+
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent intent) {
+        if (resultCode == Activity.RESULT_OK && requestCode == 5) {
+            Uri uri = intent.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+            if (uri != null) {
+                this.ringtone = uri.toString();
+            }
+        }
+    }
+
+    @Override
+    public void setResult(){
+        setResult(RESULT_OK);
     }
 }

@@ -10,5 +10,5 @@ public interface RepositoryContract{
     void updateAlarmClock(AlarmClock alarmClock);
     List<AlarmClock> getAllAlarmClocks();
     AlarmClock getAlarmClock(int id);
-
+    List<Long> getSortByTimemillis(Boolean b);
 }

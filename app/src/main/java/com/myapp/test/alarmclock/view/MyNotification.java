@@ -35,24 +35,6 @@ public class MyNotification {
     }
 
     public void showNotification(String title, String text, int id){
-//        Calendar calendar = Calendar.getInstance();
-//        int monday = alarmClock.getMonday();
-//        int tuesday = alarmClock.getTuesday();
-//        int wednesday = alarmClock.getWednesday();
-//        int thursday = alarmClock.getThursday();
-//        int friday = alarmClock.getFriday();
-//        int saturday = alarmClock.getSaturday();
-//        int sunday = alarmClock.getSunday();
-//
-//        if (monday == calendar.get(Calendar.DAY_OF_WEEK) || tuesday == calendar.get(Calendar.DAY_OF_WEEK)
-//                || wednesday == calendar.get(Calendar.DAY_OF_WEEK) || thursday == calendar.get(Calendar.DAY_OF_WEEK)
-//                || friday == calendar.get(Calendar.DAY_OF_WEEK) || saturday == calendar.get(Calendar.DAY_OF_WEEK)
-//                || sunday == calendar.get(Calendar.DAY_OF_WEEK)){
-//            showNotification(id, alarmClock.getHour() + ":" + alarmClock.getMinute(), alarmClock.getDescription());
-//        }
-//
-//        if (monday == 0 && tuesday == 0 && wednesday == 0 && thursday == 0 & friday == 0 && saturday == 0 && sunday == 0)
-//            showNotification(id, alarmClock.getHour() + ":" + alarmClock.getMinute(), alarmClock.getDescription());
 
         final String NOTIFICATION_CHANNEL_ID = String.valueOf(id);
         Notification.Builder mBuilder = new Notification.Builder(MyApplication.getAppContext());

@@ -17,6 +17,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.myapp.test.alarmclock.R;
@@ -33,14 +34,15 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements MainContract.View {
     private MainContract.Presenter presenter;
     private Button create;
+    private TextView info;
     private RecyclerView recyclerView;
     private ExampleAdapter exampleAdapter;
     private LinearLayoutManager linearLayoutManager;
     private List<AlarmClock> list;
     private BroadcastReceiver stopAlarmClockReceiver;
-    public static final String ACTION_ON = "com.myapp.test.alarmclock.action_on";
-    public static final String INTENT_EXTRA = "extra";
-    public static final String ALARM_CLOCK_ID = "alarm_clock_id";
+    public static final String INTENT_EXTRA = "INTENT_EXTRA";
+    public static final String ALARM_CLOCK_ID = "ALARM_CLOCK_ID";
+    public static final String STOP_ALARM_RECEIVER = "STOP_ALARM_RECEIVER";
     private static final int CREATE_REQUEST_CODE = 1;
 
     @Override
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         presenter = new MainPresenter(this);
 
         create = findViewById(R.id.create);
+        info = findViewById(R.id.info);
         recyclerView = findViewById(R.id.list);
         linearLayoutManager = new LinearLayoutManager(MyApplication.getAppContext());
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -87,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 presenter.onSwitchWasChanged(b, alarmClock);
             }
         });
+
     }
 
     @Override
@@ -97,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void setInfoText(String infoText) {
 
+        info.setText(infoText);
     }
 
     @Override
@@ -109,11 +114,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public void startChangeActivity(int id) {
         Intent intent = new Intent(MyApplication.getAppContext(), ChangeActivity.class);
         intent.putExtra(ALARM_CLOCK_ID, id);
-        startActivity(intent);
+        startActivityForResult(intent, CREATE_REQUEST_CODE);
     }
 
     @Override
-    public void alarmClockOn(int hour, int minute, int id) {
+    public long alarmClockOn(int hour, int minute, int id) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
@@ -125,9 +130,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         intent.addFlags(Intent.FLAG_RECEIVER_NO_ABORT);
         intent.putExtra(INTENT_EXTRA, id);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(MyApplication.getAppContext(),
-                id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                id, intent, PendingIntent.FLAG_IMMUTABLE);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+//        AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), pendingIntent);
+//        alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
+        return calendar.getTimeInMillis();
     }
 
     @Override
@@ -204,14 +212,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         stopAlarmClockReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Toast.makeText(MyApplication.getAppContext(), "xxxxxxx" , Toast.LENGTH_SHORT).show();
-
                 presenter.cancelWasReceived();
              }
         };
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("aaa");
+        intentFilter.addAction(STOP_ALARM_RECEIVER);
         registerReceiver(stopAlarmClockReceiver, intentFilter);
+
     }
 
     @Override

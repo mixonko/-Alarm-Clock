@@ -38,4 +38,9 @@ public class Repository implements RepositoryContract {
     public AlarmClock getAlarmClock(int id) {
         return database.alarmClockDao().getAlarmClock(id);
     }
+
+    @Override
+    public List<Long> getSortByTimemillis(Boolean alarmClockOn) {
+        return database.alarmClockDao().getSortByTimeInMillis(alarmClockOn);
+    }
 }

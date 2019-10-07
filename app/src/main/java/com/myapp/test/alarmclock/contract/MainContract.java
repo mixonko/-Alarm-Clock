@@ -9,7 +9,7 @@ public interface MainContract {
         void setInfoText(String infoText);
         void startCreateActivity();
         void startChangeActivity(int id);
-        void alarmClockOn(int hour, int minute, int id);
+        long alarmClockOn(int hour, int minute, int id);
         void alarmClockOff(int id);
         void showAlarmClockOff(String hour, String minute);
         void showAlarmClockOn(String hour, String minute);

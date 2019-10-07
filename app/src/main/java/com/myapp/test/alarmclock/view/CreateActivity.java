@@ -128,7 +128,7 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     }
 
     @Override
-    public void createAlarmClock(int hour, int minute, int id) {
+    public long createAlarmClock(int hour, int minute, int id) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
@@ -143,7 +143,7 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
                 id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-
+        return calendar.getTimeInMillis();
     }
 
     @Override
@@ -172,7 +172,6 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
 
     @Override
     public void showDaysDialog(List<String> daysList, List<Integer> checkedDays) {
-
         RecyclerView recyclerView = new RecyclerView(MyApplication.getAppContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MyApplication.getAppContext());
         ExampleDaysAdapter adapter = new ExampleDaysAdapter(daysList, checkedDays);
@@ -188,7 +187,6 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
                 mFriday = friday;
                 mSaturday = saturday;
                 mSunday = sunday;
-
             }
         });
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -200,7 +198,7 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
         builder.setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                presenter.saveDaysWasClicked(mMonday, mTuesday, mWednesday, mThursday, mFriday, mSaturday, mSunday);
+                presenter.saveDaysWasClicked(mMonday, mTuesday, mWednesday, mThursday, mFriday, mSaturday, mSunday );
             }
         }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
@@ -246,7 +244,6 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent intent) {
         if (resultCode == Activity.RESULT_OK && requestCode == 5) {
             Uri uri = intent.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-
             if (uri != null) {
                 this.ringtone = uri.toString();
             }
@@ -257,4 +254,5 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     public String getRingtone() {
         return ringtone;
     }
+
 }

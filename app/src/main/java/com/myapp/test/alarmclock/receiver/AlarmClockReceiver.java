@@ -16,7 +16,6 @@ public class AlarmClockReceiver extends BroadcastReceiver {
         Intent myIntent = new Intent(MyApplication.getAppContext(), MyService.class);
         myIntent.putExtra(SERVICE_INTENT, id);
         MyApplication.getAppContext().startService(myIntent);
-
     }
 
 }

@@ -5,6 +5,10 @@ import com.myapp.test.alarmclock.contract.RepositoryContract;
 import com.myapp.test.alarmclock.entity.AlarmClock;
 import com.myapp.test.alarmclock.model.Repository;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class MainPresenter implements MainContract.Presenter {
     private MainContract.View view;
     private RepositoryContract repository;
@@ -17,6 +21,7 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void onCreateActivity() {
         view.setList(repository.getAllAlarmClocks());
+//        view.setInfoText(getDifferenceTime());
     }
 
     @Override
@@ -32,13 +37,13 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void onSwitchWasChanged(Boolean b, AlarmClock alarmClock) {
         if (b){
-            updateAlarmClock(alarmClock,true);
             view.alarmClockOn(Integer.parseInt(alarmClock.getHour()),
                     Integer.parseInt(alarmClock.getMinute()), alarmClock.getId());
+            updateAlarmClock(alarmClock,true);
             view.showAlarmClockOn(alarmClock.getHour(), alarmClock.getMinute());
         }else {
-            updateAlarmClock(alarmClock,false);
             view.alarmClockOff(alarmClock.getId());
+            updateAlarmClock(alarmClock,false);
             view.showAlarmClockOff(alarmClock.getHour(), alarmClock.getMinute());
         }
     }
@@ -71,4 +76,14 @@ public class MainPresenter implements MainContract.Presenter {
         repository.updateAlarmClock(alarmClock);
     }
 
+    private String getDifferenceTime(){
+        Calendar calendar = Calendar.getInstance();
+        long timeInMillis = calendar.getTimeInMillis();
+        long myTimeInMillis = repository.getSortByTimemillis(true).get(0);
+        long difference = myTimeInMillis - timeInMillis;
+        calendar.setTimeInMillis(difference);
+        DateFormat df = new SimpleDateFormat("HH:mm");
+        String time = df.format(calendar.getTime());
+        return time;
+    }
 }
