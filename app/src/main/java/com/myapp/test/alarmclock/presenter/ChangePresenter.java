@@ -59,10 +59,7 @@ public class ChangePresenter implements ChangeContract.presenter {
         alarmClock.setSunday(sunday);
         alarmClock.setRingtone(view.getRingtone());
         repository.updateAlarmClock(alarmClock);
-        view.createAlarmClock(Integer.parseInt(alarmClock.getHour()),
-                Integer.parseInt(alarmClock.getMinute()), alarmClock.getId());
-        view.showAlarmClockOn(alarmClock.getHour(), alarmClock.getMinute());
-        view.setResult();
+        view.setActivityResult(alarmClock.getId());
         view.close();
     }
 

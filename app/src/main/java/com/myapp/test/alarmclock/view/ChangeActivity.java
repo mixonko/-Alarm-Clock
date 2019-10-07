@@ -1,11 +1,8 @@
 package com.myapp.test.alarmclock.view;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,17 +13,14 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.myapp.test.alarmclock.R;
 import com.myapp.test.alarmclock.contract.ChangeContract;
 import com.myapp.test.alarmclock.myAppContext.MyApplication;
 import com.myapp.test.alarmclock.presenter.ChangePresenter;
-import com.myapp.test.alarmclock.receiver.AlarmClockReceiver;
 import com.myapp.test.alarmclock.view.adapter.ExampleDaysAdapter;
 
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 import androidx.annotation.Nullable;
@@ -34,6 +28,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import static com.myapp.test.alarmclock.view.MainActivity.RESULT_ID;
 
 public class ChangeActivity extends AppCompatActivity implements ChangeContract.view, View.OnClickListener {
     private ChangeContract.presenter presenter;
@@ -158,24 +154,6 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
     }
 
     @Override
-    public void createAlarmClock(int hour, int minute, int id) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.set(Calendar.MINUTE, minute);
-        calendar.set(Calendar.SECOND, 0);
-//        if (calendar.before(Calendar.getInstance())) {
-//            calendar.add(Calendar.DATE, 1);
-//        }
-        Intent intent = new Intent(MyApplication.getAppContext(), AlarmClockReceiver.class);
-        intent.addFlags(Intent.FLAG_RECEIVER_NO_ABORT);
-        intent.putExtra(MainActivity.INTENT_EXTRA, id);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(MyApplication.getAppContext(),
-                id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-    }
-
-    @Override
     public Boolean getVibrationInfo() {
         return vibrationSignal.isChecked();
     }
@@ -183,13 +161,6 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
     @Override
     public String getDescription() {
         return description.getText().toString();
-    }
-
-    @Override
-    public void showAlarmClockOn(String hour, String minute) {
-        Toast.makeText(MyApplication.getAppContext(),
-                "Будильник включен на " + hour + ":" + minute,
-                Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -268,7 +239,9 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
     }
 
     @Override
-    public void setResult(){
-        setResult(RESULT_OK);
+    public void setActivityResult(int id) {
+        Intent intent = new Intent();
+        intent.putExtra(RESULT_ID, id);
+        setResult(RESULT_OK, intent);
     }
 }

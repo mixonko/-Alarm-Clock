@@ -43,7 +43,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public static final String INTENT_EXTRA = "INTENT_EXTRA";
     public static final String ALARM_CLOCK_ID = "ALARM_CLOCK_ID";
     public static final String STOP_ALARM_RECEIVER = "STOP_ALARM_RECEIVER";
-    private static final int CREATE_REQUEST_CODE = 1;
+    public static final String RESULT_ID = "RESULT_ID";
+    public static final int RESULT_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,18 +108,18 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void startCreateActivity() {
         startActivityForResult(new Intent(MyApplication.getAppContext(), CreateActivity.class),
-                CREATE_REQUEST_CODE);
+                RESULT_REQUEST_CODE);
     }
 
     @Override
     public void startChangeActivity(int id) {
         Intent intent = new Intent(MyApplication.getAppContext(), ChangeActivity.class);
         intent.putExtra(ALARM_CLOCK_ID, id);
-        startActivityForResult(intent, CREATE_REQUEST_CODE);
+        startActivityForResult(intent, RESULT_REQUEST_CODE);
     }
 
     @Override
-    public long alarmClockOn(int hour, int minute, int id) {
+    public void alarmClockOn(int hour, int minute, int id) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
@@ -135,14 +136,15 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 //        AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), pendingIntent);
 //        alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
-        return calendar.getTimeInMillis();
     }
 
     @Override
     public void alarmClockOff(int id) {
         Intent intent = new Intent(MyApplication.getAppContext(), AlarmClockReceiver.class);
+        intent.addFlags(Intent.FLAG_RECEIVER_NO_ABORT);
+        intent.putExtra(INTENT_EXTRA, id);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(MyApplication.getAppContext(),
-                id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                id, intent, PendingIntent.FLAG_IMMUTABLE);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
         pendingIntent.cancel();
@@ -201,8 +203,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && requestCode == CREATE_REQUEST_CODE) {
-             presenter.onActivityResult();
+        if (resultCode == Activity.RESULT_OK && requestCode == RESULT_REQUEST_CODE) {
+            int id = data.getIntExtra(RESULT_ID, 1);
+             presenter.onActivityResult(id);
         }
     }
 

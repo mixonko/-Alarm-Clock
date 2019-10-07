@@ -9,6 +9,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import static com.myapp.test.alarmclock.model.Repository.database;
+
 public class MainPresenter implements MainContract.Presenter {
     private MainContract.View view;
     private RepositoryContract repository;
@@ -62,7 +64,11 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void onActivityResult() {
+    public void onActivityResult(int id) {
+        AlarmClock alarmClock = database.alarmClockDao().getAlarmClock(id);
+        view.alarmClockOn(Integer.parseInt(alarmClock.getHour()),
+                Integer.parseInt(alarmClock.getMinute()), alarmClock.getId());
+        view.showAlarmClockOn(alarmClock.getHour(), alarmClock.getMinute());
         view.updateList(repository.getAllAlarmClocks());
     }
 

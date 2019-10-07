@@ -12,16 +12,14 @@ public interface ChangeContract {
         void setDescription(String description);
         int getHour();
         int getMinute();
-        void createAlarmClock(int hour, int minute, int id);
         Boolean getVibrationInfo();
         String getDescription();
-        void showAlarmClockOn(String hour, String minute);
         void showDaysDialog(List<String>daysList, List<Integer>checkedDays);
         List<String> getDaysList();
         void setRingtone(String ringtoneUri);
         String getRingtone();
         void showRingtones();
-        void setResult();
+        void setActivityResult(int id);
     }
     
     interface presenter{ 

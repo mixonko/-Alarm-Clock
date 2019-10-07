@@ -33,6 +33,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import static com.myapp.test.alarmclock.view.MainActivity.RESULT_ID;
+
 public class CreateActivity extends AppCompatActivity implements CreateContract.view, View.OnClickListener {
 
     private static final int REQUEST_CODE_RINGTONE = 5;
@@ -83,11 +85,6 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     }
 
     @Override
-    public void setResult(){
-        setResult(RESULT_OK);
-    }
-
-    @Override
     public int getHour() {
         return timePicker.getHour();
     }
@@ -128,25 +125,6 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     }
 
     @Override
-    public long createAlarmClock(int hour, int minute, int id) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.set(Calendar.MINUTE, minute);
-        calendar.set(Calendar.SECOND, 0);
-//        if (calendar.before(Calendar.getInstance())) {
-//            calendar.add(Calendar.DATE, 1);
-//        }
-        Intent intent = new Intent(MyApplication.getAppContext(), AlarmClockReceiver.class);
-        intent.addFlags(Intent.FLAG_RECEIVER_NO_ABORT);
-        intent.putExtra(MainActivity.INTENT_EXTRA, id);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(MyApplication.getAppContext(),
-                id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-        return calendar.getTimeInMillis();
-    }
-
-    @Override
     public Boolean getVibrationInfo() {
         return vibrationSignal.isChecked();
     }
@@ -154,13 +132,6 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     @Override
     public String getDescription() {
         return description.getText().toString();
-    }
-
-    @Override
-    public void showAlarmClockOn(String hour, String minute) {
-        Toast.makeText(MyApplication.getAppContext(),
-                "Будильник включен на " + hour + ":" + minute,
-                Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -253,6 +224,22 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     @Override
     public String getRingtone() {
         return ringtone;
+    }
+
+    @Override
+    public long getTimeInMillis(int hour, int minute) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
+        return calendar.getTimeInMillis();
+    }
+
+    @Override
+    public void setActivityResult(int id) {
+        Intent intent = new Intent();
+        intent.putExtra(RESULT_ID, id);
+        setResult(RESULT_OK, intent);
     }
 
 }

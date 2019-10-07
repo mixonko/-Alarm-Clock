@@ -27,19 +27,15 @@ public class CreatePresenter implements CreateContract.presenter {
     @Override
     public void onDoneWasClicked() {
         AlarmClock alarmClock = new AlarmClock(String.valueOf(view.getHour()),
-                String.valueOf(view.getMinute()), 0, true,
+                String.valueOf(view.getMinute()), view.getTimeInMillis(view.getHour(),
+                view.getMinute()), true,
                 view.getVibrationInfo(), view.getDescription(),
                 monday, tuesday, wednesday, thursday, friday, saturday, sunday,
                 view.getRingtone());
         repository.addAlarmClock(alarmClock);
         List<AlarmClock> list = repository.getAllAlarmClocks();
         alarmClock = list.get(list.size() - 1);
-        long timeInMillis = view.createAlarmClock(Integer.parseInt(alarmClock.getHour()),
-                Integer.parseInt(alarmClock.getMinute()), alarmClock.getId());
-        alarmClock.setTimeInMillis(timeInMillis);
-        repository.updateAlarmClock(alarmClock);
-        view.showAlarmClockOn(alarmClock.getHour(), alarmClock.getMinute());
-        view.setResult();
+        view.setActivityResult(alarmClock.getId());
         view.close();
     }
 
