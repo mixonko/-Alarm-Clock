@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             }
         });
 
-        presenter.onCreateActivity();
+        presenter.onActivityCreate();
         exampleAdapter = new ExampleAdapter(this.list);
         recyclerView.setAdapter(exampleAdapter);
         exampleAdapter.setOnItemClickListener(new ExampleAdapter.OnItemClickListener() {
@@ -101,8 +101,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void setInfoText(String infoText) {
-
         info.setText(infoText);
+    }
+
+    @Override
+    public void clearInfoText(){
+        info.setText("");
     }
 
     @Override
@@ -133,9 +137,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         PendingIntent pendingIntent = PendingIntent.getBroadcast(MyApplication.getAppContext(),
                 id, intent, PendingIntent.FLAG_IMMUTABLE);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-//        AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), pendingIntent);
-//        alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
+//        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), pendingIntent);
+        alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
     }
 
     @Override
@@ -221,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(STOP_ALARM_RECEIVER);
         registerReceiver(stopAlarmClockReceiver, intentFilter);
-
+        presenter.onActivityResume();
     }
 
     @Override

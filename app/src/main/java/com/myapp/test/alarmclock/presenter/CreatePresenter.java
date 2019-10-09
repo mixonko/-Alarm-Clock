@@ -1,9 +1,12 @@
 package com.myapp.test.alarmclock.presenter;
 
+import android.widget.Toast;
+
 import com.myapp.test.alarmclock.contract.CreateContract;
 import com.myapp.test.alarmclock.contract.RepositoryContract;
 import com.myapp.test.alarmclock.entity.AlarmClock;
 import com.myapp.test.alarmclock.model.Repository;
+import com.myapp.test.alarmclock.myAppContext.MyApplication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +29,8 @@ public class CreatePresenter implements CreateContract.presenter {
 
     @Override
     public void onDoneWasClicked() {
-        AlarmClock alarmClock = new AlarmClock(String.valueOf(view.getHour()),
-                String.valueOf(view.getMinute()), view.getTimeInMillis(view.getHour(),
+        AlarmClock alarmClock = new AlarmClock(getHour(view.getHour()),
+                getMinute(view.getMinute()), view.getTimeInMillis(view.getHour(),
                 view.getMinute()), true,
                 view.getVibrationInfo(), view.getDescription(),
                 monday, tuesday, wednesday, thursday, friday, saturday, sunday,
@@ -77,6 +80,24 @@ public class CreatePresenter implements CreateContract.presenter {
     @Override
     public void onRingtonesWasClicked() {
         view.showRingtones();
+    }
+
+    private String getHour(int hour){
+        String mHour = String.valueOf(hour);
+        if (mHour.length() == 1){
+            return "0" + mHour;
+        }else {
+            return mHour;
+        }
+    }
+
+    private String getMinute(int minute){
+        String mMinute = String.valueOf(minute);
+        if (mMinute.length() == 1){
+            return "0" + mMinute;
+        }else {
+            return mMinute;
+        }
     }
 
 }

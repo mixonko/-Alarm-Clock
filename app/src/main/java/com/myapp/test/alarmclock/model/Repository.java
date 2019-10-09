@@ -5,6 +5,7 @@ import com.myapp.test.alarmclock.database.MyAppDatabase;
 import com.myapp.test.alarmclock.entity.AlarmClock;
 import com.myapp.test.alarmclock.myAppContext.MyApplication;
 
+import java.util.EmptyStackException;
 import java.util.List;
 
 public class Repository implements RepositoryContract {
@@ -40,7 +41,7 @@ public class Repository implements RepositoryContract {
     }
 
     @Override
-    public List<Long> getSortByTimemillis(Boolean alarmClockOn) {
+    public List<Long> getSortByTimemillis(Boolean alarmClockOn) throws EmptyStackException {
         return database.alarmClockDao().getSortByTimeInMillis(alarmClockOn);
     }
 }

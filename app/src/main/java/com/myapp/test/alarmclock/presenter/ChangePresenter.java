@@ -48,8 +48,8 @@ public class ChangePresenter implements ChangeContract.presenter {
 
     @Override
     public void onDoneWasClicked() {
-        alarmClock.setHour(String.valueOf(view.getHour()));
-        alarmClock.setMinute(String.valueOf(view.getMinute()));
+        alarmClock.setHour(getHour(view.getHour()));
+        alarmClock.setMinute(getMinute(view.getMinute()));
         alarmClock.setAlarmClockOn(true);
         alarmClock.setVibration(view.getVibrationInfo());
         alarmClock.setDescription(view.getDescription());
@@ -105,5 +105,23 @@ public class ChangePresenter implements ChangeContract.presenter {
     @Override
     public void onRingtonesWasClicked() {
         view.showRingtones();
+    }
+
+    private String getHour(int hour){
+        String mHour = String.valueOf(hour);
+        if (mHour.length() == 1){
+            return "0" + mHour;
+        }else {
+            return mHour;
+        }
+    }
+
+    private String getMinute(int minute){
+        String mMinute = String.valueOf(minute);
+        if (mMinute.length() == 1){
+            return "0" + mMinute;
+        }else {
+            return mMinute;
+        }
     }
 }

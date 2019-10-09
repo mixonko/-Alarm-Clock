@@ -4,7 +4,9 @@ import com.myapp.test.alarmclock.contract.MainContract;
 import com.myapp.test.alarmclock.contract.RepositoryContract;
 import com.myapp.test.alarmclock.entity.AlarmClock;
 import com.myapp.test.alarmclock.model.Repository;
+import com.myapp.test.alarmclock.myAppContext.MyApplication;
 
+import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -21,9 +23,17 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void onCreateActivity() {
+    public void onActivityCreate() {
         view.setList(repository.getAllAlarmClocks());
-//        view.setInfoText(getDifferenceTime());
+    }
+
+    @Override
+    public void onActivityResume() {
+        try {
+            view.setInfoText(getDifferenceTime());
+        } catch (Exception e) {
+            view.clearInfoText();
+        }
     }
 
     @Override
@@ -47,6 +57,11 @@ public class MainPresenter implements MainContract.Presenter {
             view.alarmClockOff(alarmClock.getId());
             updateAlarmClock(alarmClock,false);
             view.showAlarmClockOff(alarmClock.getHour(), alarmClock.getMinute());
+            try {
+                view.setInfoText(getDifferenceTime());
+            } catch (Exception e) {
+                view.clearInfoText();
+            }
         }
     }
 
@@ -82,14 +97,16 @@ public class MainPresenter implements MainContract.Presenter {
         repository.updateAlarmClock(alarmClock);
     }
 
-    private String getDifferenceTime(){
+    private String getDifferenceTime() throws Exception {
         Calendar calendar = Calendar.getInstance();
         long timeInMillis = calendar.getTimeInMillis();
         long myTimeInMillis = repository.getSortByTimemillis(true).get(0);
-        long difference = myTimeInMillis - timeInMillis;
+        long difference = myTimeInMillis - timeInMillis - 10800000;
         calendar.setTimeInMillis(difference);
-        DateFormat df = new SimpleDateFormat("HH:mm");
-        String time = df.format(calendar.getTime());
+        Date date = new Date(difference);
+        DateFormat df = new SimpleDateFormat("HH ч mm мин.");
+        String time = df.format(date);
         return time;
     }
+
 }

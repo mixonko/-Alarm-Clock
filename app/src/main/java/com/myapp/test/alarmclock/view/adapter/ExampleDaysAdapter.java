@@ -148,7 +148,7 @@ public class ExampleDaysAdapter extends RecyclerView.Adapter<ExampleDaysAdapter.
                             stringBuffer.append(st);
                             stringBuffer.append(sn);
                             String days;
-                            if (stringBuffer.length() != 0){
+                            if (stringBuffer.toString().length() != 0){
                                 days = stringBuffer.toString();
                             }else {
                                 days = MyApplication.getAppContext().getString(R.string.without_replay);
