@@ -17,6 +17,8 @@ public interface CreateContract {
         String getRingtone();
         long getTimeInMillis(int hour, int minute);
         void setActivityResult(int id);
+        String getDaysOfWeek();
+        void setDaysOfWeekText(String daysOfWeekText);
     }
 
     interface presenter{
@@ -25,7 +27,8 @@ public interface CreateContract {
         void onDescriptionWasClicked();
         void onDescriptionDone(String description);
         void onDaysWasClicked();
-        void saveDaysWasClicked(int monday, int tuesday, int wednesday, int thursday, int friday, int saturday, int sunday);
+        void saveDaysWasClicked(int monday, int tuesday, int wednesday, int thursday, int friday,
+                                int saturday, int sunday);
         void onRingtonesWasClicked();
     }
 

@@ -1,8 +1,6 @@
 package com.myapp.test.alarmclock.view;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.RingtoneManager;
@@ -15,13 +13,11 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.myapp.test.alarmclock.R;
 import com.myapp.test.alarmclock.contract.CreateContract;
 import com.myapp.test.alarmclock.myAppContext.MyApplication;
 import com.myapp.test.alarmclock.presenter.CreatePresenter;
-import com.myapp.test.alarmclock.receiver.AlarmClockReceiver;
 import com.myapp.test.alarmclock.view.adapter.ExampleDaysAdapter;
 
 import java.util.Arrays;
@@ -52,6 +48,7 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     private int mFriday = 0;
     private int mSaturday = 0;
     private int mSunday = 0;
+    private String mDays = "";
     private String ringtone;
 
     @Override
@@ -150,7 +147,7 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
         adapter.setOnItemClickListener(new ExampleDaysAdapter.OnItemClickListener() {
 
             @Override
-            public void onItemClick(int monday, int tuesday, int wednesday, int thursday, int friday, int saturday, int sunday) {
+            public void onItemClick(int monday, int tuesday, int wednesday, int thursday, int friday, int saturday, int sunday, String days) {
                 mMonday = monday;
                 mTuesday = tuesday;
                 mWednesday = wednesday;
@@ -158,6 +155,7 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
                 mFriday = friday;
                 mSaturday = saturday;
                 mSunday = sunday;
+                mDays = days;
             }
         });
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -169,7 +167,8 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
         builder.setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                presenter.saveDaysWasClicked(mMonday, mTuesday, mWednesday, mThursday, mFriday, mSaturday, mSunday );
+                presenter.saveDaysWasClicked(mMonday, mTuesday, mWednesday, mThursday, mFriday, mSaturday, mSunday);
+
             }
         }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
@@ -233,6 +232,16 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
         return calendar.getTimeInMillis();
+    }
+
+    @Override
+    public String getDaysOfWeek() {
+        return mDays;
+    }
+
+    @Override
+    public void setDaysOfWeekText(String daysOfWeekText) {
+        daysOfWeek.setText(daysOfWeekText);
     }
 
     @Override

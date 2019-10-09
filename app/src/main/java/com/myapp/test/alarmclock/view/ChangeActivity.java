@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.myapp.test.alarmclock.R;
 import com.myapp.test.alarmclock.contract.ChangeContract;
@@ -41,6 +42,7 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
     private Switch vibrationSignal;
     private TextView daysOfWeek;
     private String ringtone;
+    private String mDays;
     private int mMonday = 0;
     private int mTuesday = 0;
     private int mWednesday = 0;
@@ -73,7 +75,7 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
         Intent intent = getIntent();
         int id = intent.getIntExtra(MainActivity.ALARM_CLOCK_ID, 1);
 
-        presenter.onCreate(id);
+        presenter.onActivityCreate(id);
     }
 
     @Override
@@ -172,7 +174,7 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
         adapter.setOnItemClickListener(new ExampleDaysAdapter.OnItemClickListener() {
 
             @Override
-            public void onItemClick(int monday, int tuesday, int wednesday, int thursday, int friday, int saturday, int sunday) {
+            public void onItemClick(int monday, int tuesday, int wednesday, int thursday, int friday, int saturday, int sunday, String days) {
                 mMonday = monday;
                 mTuesday = tuesday;
                 mWednesday = wednesday;
@@ -180,6 +182,7 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
                 mFriday = friday;
                 mSaturday = saturday;
                 mSunday = sunday;
+                mDays = days;
             }
         });
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -217,6 +220,16 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
     @Override
     public String getRingtone() {
         return ringtone;
+    }
+
+    @Override
+    public String getDaysOfWeek() {
+        return mDays;
+    }
+
+    @Override
+    public void setDaysOfWeekText(String daysOfWeekText) {
+            daysOfWeek.setText(daysOfWeekText);
     }
 
     @Override

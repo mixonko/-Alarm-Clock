@@ -32,23 +32,24 @@ public class MyService extends Service {
         id = intent.getIntExtra(SERVICE_INTENT, 1);
         AlarmClock alarmClock = database.alarmClockDao().getAlarmClock(id);
 
+//        Calendar calendar = Calendar.getInstance();
+//        int monday = alarmClock.getMonday();
+//        int tuesday = alarmClock.getTuesday();
+//        int wednesday = alarmClock.getWednesday();
+//        int thursday = alarmClock.getThursday();
+//        int friday = alarmClock.getFriday();
+//        int saturday = alarmClock.getSaturday();
+//        int sunday = alarmClock.getSunday();
+//
+//        if (monday == calendar.get(Calendar.DAY_OF_WEEK) || tuesday == calendar.get(Calendar.DAY_OF_WEEK)
+//                || wednesday == calendar.get(Calendar.DAY_OF_WEEK) || thursday == calendar.get(Calendar.DAY_OF_WEEK)
+//                || friday == calendar.get(Calendar.DAY_OF_WEEK) || saturday == calendar.get(Calendar.DAY_OF_WEEK)
+//                || sunday == calendar.get(Calendar.DAY_OF_WEEK)){
+//            startNotification(alarmClock);
+//
+//        }
+                    startNotification(alarmClock);
 
-                Calendar calendar = Calendar.getInstance();
-        int monday = alarmClock.getMonday();
-        int tuesday = alarmClock.getTuesday();
-        int wednesday = alarmClock.getWednesday();
-        int thursday = alarmClock.getThursday();
-        int friday = alarmClock.getFriday();
-        int saturday = alarmClock.getSaturday();
-        int sunday = alarmClock.getSunday();
-
-        if (monday == calendar.get(Calendar.DAY_OF_WEEK) || tuesday == calendar.get(Calendar.DAY_OF_WEEK)
-                || wednesday == calendar.get(Calendar.DAY_OF_WEEK) || thursday == calendar.get(Calendar.DAY_OF_WEEK)
-                || friday == calendar.get(Calendar.DAY_OF_WEEK) || saturday == calendar.get(Calendar.DAY_OF_WEEK)
-                || sunday == calendar.get(Calendar.DAY_OF_WEEK)){
-            startNotification(alarmClock);
-
-        }
         return super.onStartCommand(intent, flags, startId);
     }
 

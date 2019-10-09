@@ -31,7 +31,7 @@ public class CreatePresenter implements CreateContract.presenter {
                 view.getMinute()), true,
                 view.getVibrationInfo(), view.getDescription(),
                 monday, tuesday, wednesday, thursday, friday, saturday, sunday,
-                view.getRingtone());
+                view.getRingtone(), view.getDaysOfWeek());
         repository.addAlarmClock(alarmClock);
         List<AlarmClock> list = repository.getAllAlarmClocks();
         alarmClock = list.get(list.size() - 1);
@@ -71,6 +71,7 @@ public class CreatePresenter implements CreateContract.presenter {
         this.friday = friday;
         this.saturday = saturday;
         this.sunday = sunday;
+            view.setDaysOfWeekText(view.getDaysOfWeek());
     }
 
     @Override

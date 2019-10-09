@@ -1,5 +1,7 @@
 package com.myapp.test.alarmclock.presenter;
 
+import android.widget.Toast;
+
 import com.myapp.test.alarmclock.contract.ChangeContract;
 import com.myapp.test.alarmclock.contract.RepositoryContract;
 import com.myapp.test.alarmclock.entity.AlarmClock;
@@ -21,7 +23,7 @@ public class ChangePresenter implements ChangeContract.presenter {
 
 
     @Override
-    public void onCreate(int id) {
+    public void onActivityCreate(int id) {
         alarmClock = repository.getAlarmClock(id);
 
         monday = alarmClock.getMonday();
@@ -36,6 +38,7 @@ public class ChangePresenter implements ChangeContract.presenter {
         view.setVibration(alarmClock.getVibration());
         view.setDescription(alarmClock.getDescription());
         view.setRingtone(alarmClock.getRingtone());
+        view.setDaysOfWeekText(alarmClock.getDays());
     }
 
     @Override
@@ -58,6 +61,7 @@ public class ChangePresenter implements ChangeContract.presenter {
         alarmClock.setSaturday(saturday);
         alarmClock.setSunday(sunday);
         alarmClock.setRingtone(view.getRingtone());
+        alarmClock.setDays(view.getDaysOfWeek());
         repository.updateAlarmClock(alarmClock);
         view.setActivityResult(alarmClock.getId());
         view.close();
@@ -95,6 +99,7 @@ public class ChangePresenter implements ChangeContract.presenter {
         this.friday = friday;
         this.saturday = saturday;
         this.sunday = sunday;
+        view.setDaysOfWeekText(view.getDaysOfWeek());
     }
 
     @Override

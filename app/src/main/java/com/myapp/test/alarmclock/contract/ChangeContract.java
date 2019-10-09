@@ -20,10 +20,12 @@ public interface ChangeContract {
         String getRingtone();
         void showRingtones();
         void setActivityResult(int id);
+        String getDaysOfWeek();
+        void setDaysOfWeekText(String daysOfWeekText);
     }
     
     interface presenter{ 
-        void onCreate(int id);
+        void onActivityCreate(int id);
         void onCloseWasClicked();
         void onDoneWasClicked();
         void onDescriptionWasClicked();

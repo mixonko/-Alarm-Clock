@@ -5,8 +5,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.myapp.test.alarmclock.R;
+import com.myapp.test.alarmclock.myAppContext.MyApplication;
 
 import java.util.List;
 
@@ -26,6 +28,13 @@ public class ExampleDaysAdapter extends RecyclerView.Adapter<ExampleDaysAdapter.
     private static int friday = 0;
     private static int saturday = 0;
     private static int sunday = 0;
+    private static String mn = "";
+    private static String ts = "";
+    private static String wd = "";
+    private static String th = "";
+    private static String fr = "";
+    private static String st = "";
+    private static String sn = "";
 
     public ExampleDaysAdapter(List<String> exampleItems, List<Integer> checkedDays) {
         this.exampleItems = exampleItems;
@@ -34,7 +43,7 @@ public class ExampleDaysAdapter extends RecyclerView.Adapter<ExampleDaysAdapter.
     }
 
     public interface OnItemClickListener {
-        void onItemClick(int monday, int tuesday, int wednesday, int thursday, int friday, int saturday, int sunday);
+        void onItemClick(int monday, int tuesday, int wednesday, int thursday, int friday, int saturday, int sunday, String days);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -51,7 +60,6 @@ public class ExampleDaysAdapter extends RecyclerView.Adapter<ExampleDaysAdapter.
             day = itemView.findViewById(R.id.dayOfWeek);
             check = itemView.findViewById(R.id.check);
 
-
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -63,60 +71,90 @@ public class ExampleDaysAdapter extends RecyclerView.Adapter<ExampleDaysAdapter.
                                 setChecked();
                                 if (check.isChecked()){
                                     monday = 2;
+                                    mn = " пн";
                                 }else {
                                     monday = 0;
+                                    mn = "";
                                 }
                             }
                             if (position == 1){
                                 setChecked();
                                 if (check.isChecked()){
                                     tuesday = 3;
+                                    ts = " вт";
                                 }else{
                                     tuesday = 0;
+                                    ts = "";
                                 }
                             }
                             if (position == 2){
                                 setChecked();
                                 if (check.isChecked()){
                                     wednesday = 4;
+                                    wd = " ср";
+
                                 }else {
                                     wednesday = 0;
+                                    wd = "";
                                 }
                             }
                             if (position == 3){
                                 setChecked();
                                 if (check.isChecked()){
                                     thursday = 5;
+                                    th = " чт";
                                 }else {
                                     thursday = 0;
+                                    th = "";
                                 }
                             }
                             if (position == 4){
                                 setChecked();
                                 if (check.isChecked()){
                                     friday = 6;
+                                    fr = " пт";
                                 }else {
                                     friday = 0;
+                                    fr = "";
                                 }
                             }
                             if (position == 5){
                                 setChecked();
                                 if (check.isChecked()){
                                     saturday = 7;
+                                    st = " сб";
                                 }else {
                                     saturday = 0;
+                                    st = "";
                                 }
                             }
                             if (position == 6){
                                 setChecked();
                                 if (check.isChecked()){
                                     sunday = 1;
+                                    sn = " вс";
+
                                 }else {
                                     sunday = 0;
+                                    sn = "";
                                 }
                             }
+                            StringBuffer stringBuffer = new StringBuffer();
+                            stringBuffer.append(mn);
+                            stringBuffer.append(ts);
+                            stringBuffer.append(wd);
+                            stringBuffer.append(th);
+                            stringBuffer.append(fr);
+                            stringBuffer.append(st);
+                            stringBuffer.append(sn);
+                            String days;
+                            if (stringBuffer.length() != 0){
+                                days = stringBuffer.toString();
+                            }else {
+                                days = MyApplication.getAppContext().getString(R.string.without_replay);
+                            }
                             listener.onItemClick( monday, tuesday, wednesday, thursday,
-                                    friday, saturday, sunday);
+                                    friday, saturday, sunday, days);
 
                         }
                     }

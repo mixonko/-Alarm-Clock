@@ -9,7 +9,8 @@ public class AlarmClock {
 
     public AlarmClock(String hour, String minute, long timeInMillis, Boolean alarmClockOn,
                       Boolean vibration, String description, int monday, int tuesday,
-                      int wednesday, int thursday, int friday, int saturday, int sunday, String ringtone) {
+                      int wednesday, int thursday, int friday, int saturday, int sunday,
+                      String ringtone, String days) {
         this.hour = hour;
         this.minute = minute;
         this.timeInMillis = timeInMillis;
@@ -24,6 +25,7 @@ public class AlarmClock {
         this.saturday = saturday;
         this.sunday = sunday;
         this.ringtone = ringtone;
+        this.days = days;
     }
 
     @PrimaryKey( autoGenerate = true )
@@ -56,6 +58,8 @@ public class AlarmClock {
     private int sunday;
     @ColumnInfo( name = "ringtone" )
     private String ringtone;
+    @ColumnInfo( name = "days" )
+    private String days;
 
 
     public int getId() {
@@ -176,5 +180,13 @@ public class AlarmClock {
 
     public void setTimeInMillis(long timeInMillis) {
         this.timeInMillis = timeInMillis;
+    }
+
+    public String getDays() {
+        return days;
+    }
+
+    public void setDays(String days) {
+        this.days = days;
     }
 }
