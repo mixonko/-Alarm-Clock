@@ -4,7 +4,6 @@ import com.myapp.test.alarmclock.contract.MainContract;
 import com.myapp.test.alarmclock.contract.RepositoryContract;
 import com.myapp.test.alarmclock.entity.AlarmClock;
 import com.myapp.test.alarmclock.model.Repository;
-import com.myapp.test.alarmclock.myAppContext.MyApplication;
 
 import java.sql.Date;
 import java.text.DateFormat;
@@ -29,11 +28,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onActivityResume() {
-        try {
-            view.setInfoText(getDifferenceTime());
-        } catch (Exception e) {
-            view.clearInfoText();
-        }
+        setInfoText();
     }
 
     @Override
@@ -57,12 +52,8 @@ public class MainPresenter implements MainContract.Presenter {
             view.alarmClockOff(alarmClock.getId());
             updateAlarmClock(alarmClock,false);
             view.showAlarmClockOff(alarmClock.getHour(), alarmClock.getMinute());
-            try {
-                view.setInfoText(getDifferenceTime());
-            } catch (Exception e) {
-                view.clearInfoText();
-            }
         }
+        setInfoText();
     }
 
     @Override
@@ -90,6 +81,7 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void cancelWasReceived() {
         view.updateList(repository.getAllAlarmClocks());
+        setInfoText();
     }
 
     private void updateAlarmClock(AlarmClock alarmClock, Boolean b){
@@ -104,9 +96,17 @@ public class MainPresenter implements MainContract.Presenter {
         long difference = myTimeInMillis - timeInMillis - 10800000;
         calendar.setTimeInMillis(difference);
         Date date = new Date(difference);
-        DateFormat df = new SimpleDateFormat("HH ч mm мин.");
+        DateFormat df = new SimpleDateFormat("Сработает через HH ч mm мин.");
         String time = df.format(date);
         return time;
+    }
+
+    private void setInfoText() {
+        try {
+            view.setInfoText(getDifferenceTime());
+        } catch (Exception e) {
+            view.clearInfoText();
+        }
     }
 
 }

@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.myapp.test.alarmclock.myAppContext.MyApplication;
-import com.myapp.test.alarmclock.view.service.MyService;
+import com.myapp.test.alarmclock.service.MyService;
 
 public class NotificationCancelReceiver extends BroadcastReceiver {
     @Override

@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private BroadcastReceiver stopAlarmClockReceiver;
     public static final String INTENT_EXTRA = "INTENT_EXTRA";
     public static final String ALARM_CLOCK_ID = "ALARM_CLOCK_ID";
-    public static final String STOP_ALARM_RECEIVER = "STOP_ALARM_RECEIVER";
+    public static final String ALARM_CLOCK_OFF = "ALARM_CLOCK_OFF";
     public static final String RESULT_ID = "RESULT_ID";
     public static final int RESULT_REQUEST_CODE = 1;
 
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void clearInfoText(){
+    public void clearInfoText() {
         info.setText("");
     }
 
@@ -128,9 +128,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
-// if(calendar.before(Calendar.getInstance())) {
-// calendar.add(Calendar.DATE, 1);
-// }
+        if (calendar.before(Calendar.getInstance())) {
+            calendar.add(Calendar.DATE, 1);
+        }
         Intent intent = new Intent(MyApplication.getAppContext(), AlarmClockReceiver.class);
         intent.addFlags(Intent.FLAG_RECEIVER_NO_ABORT);
         intent.putExtra(INTENT_EXTRA, id);
@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && requestCode == RESULT_REQUEST_CODE) {
             int id = data.getIntExtra(RESULT_ID, 1);
-             presenter.onActivityResult(id);
+            presenter.onActivityResult(id);
         }
     }
 
@@ -220,10 +220,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             @Override
             public void onReceive(Context context, Intent intent) {
                 presenter.cancelWasReceived();
-             }
+            }
         };
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(STOP_ALARM_RECEIVER);
+        intentFilter.addAction(ALARM_CLOCK_OFF);
         registerReceiver(stopAlarmClockReceiver, intentFilter);
         presenter.onActivityResume();
     }

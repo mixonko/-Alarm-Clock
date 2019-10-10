@@ -1,7 +1,5 @@
 package com.myapp.test.alarmclock.presenter;
 
-import android.widget.Toast;
-
 import com.myapp.test.alarmclock.contract.ChangeContract;
 import com.myapp.test.alarmclock.contract.RepositoryContract;
 import com.myapp.test.alarmclock.entity.AlarmClock;

@@ -5,7 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.myapp.test.alarmclock.R;
 import com.myapp.test.alarmclock.myAppContext.MyApplication;
@@ -53,8 +52,6 @@ public class ExampleDaysAdapter extends RecyclerView.Adapter<ExampleDaysAdapter.
     public static class ExampleViewHolder extends RecyclerView.ViewHolder {
         public TextView day;
         public CheckBox check;
-
-
         public ExampleViewHolder(@NonNull View itemView, final OnItemClickListener listener ) {
             super(itemView);
             day = itemView.findViewById(R.id.dayOfWeek);
@@ -139,6 +136,7 @@ public class ExampleDaysAdapter extends RecyclerView.Adapter<ExampleDaysAdapter.
                                     sn = "";
                                 }
                             }
+
                             StringBuffer stringBuffer = new StringBuffer();
                             stringBuffer.append(mn);
                             stringBuffer.append(ts);
@@ -147,10 +145,9 @@ public class ExampleDaysAdapter extends RecyclerView.Adapter<ExampleDaysAdapter.
                             stringBuffer.append(fr);
                             stringBuffer.append(st);
                             stringBuffer.append(sn);
-                            String days;
-                            if (stringBuffer.toString().length() != 0){
-                                days = stringBuffer.toString();
-                            }else {
+                            String days = stringBuffer.toString();
+
+                            if (days.length()==0){
                                 days = MyApplication.getAppContext().getString(R.string.without_replay);
                             }
                             listener.onItemClick( monday, tuesday, wednesday, thursday,

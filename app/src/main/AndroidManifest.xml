@@ -23,7 +23,7 @@
         <activity android:name=".view.ChangeActivity" />
         <receiver android:name="com.myapp.test.alarmclock.receiver.AlarmClockReceiver"/>
         <receiver android:name="com.myapp.test.alarmclock.receiver.NotificationCancelReceiver"/>
-        <service android:name=".view.service.MyService" />
+        <service android:name=".service.MyService" />
     </application>
 
 </manifest>

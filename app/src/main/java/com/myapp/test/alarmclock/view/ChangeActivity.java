@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.myapp.test.alarmclock.R;
 import com.myapp.test.alarmclock.contract.ChangeContract;
@@ -75,6 +74,7 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
         Intent intent = getIntent();
         int id = intent.getIntExtra(MainActivity.ALARM_CLOCK_ID, 1);
 
+        mDays = MyApplication.getAppContext().getString(R.string.without_replay); 
         presenter.onActivityCreate(id);
     }
 

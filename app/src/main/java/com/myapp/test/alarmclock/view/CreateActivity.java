@@ -48,7 +48,7 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     private int mFriday = 0;
     private int mSaturday = 0;
     private int mSunday = 0;
-    private String mDays = "";
+    private String mDays;
     private String ringtone;
 
     @Override
@@ -74,6 +74,7 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
         description.setOnClickListener(this);
 
         ringtone = RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI;
+        mDays = MyApplication.getAppContext().getString(R.string.without_replay);
     }
 
     @Override

@@ -14,21 +14,21 @@ import androidx.room.Update;
 public interface AlarmClockDao {
 
     @Insert
-    public void addAlarmClock(AlarmClock alarmClock);
+    void addAlarmClock(AlarmClock alarmClock);
 
     @Delete
-    public void deleteAlarmClock(AlarmClock alarmClock);
+    void deleteAlarmClock(AlarmClock alarmClock);
 
     @Update
-    public void updateAlarmClock(AlarmClock alarmClock);
+    void updateAlarmClock(AlarmClock alarmClock);
 
     @Query("select * from alarm_clock")
-    public List<AlarmClock> getAllAlarmClock();
+    List<AlarmClock> getAllAlarmClock();
 
     @Query("select * from alarm_clock where id = :id")
-    public AlarmClock getAlarmClock(int id);
+    AlarmClock getAlarmClock(int id);
 
     @Query("select timeInMillis from alarm_clock where alarm_clock_on = :alarmClockOn ORDER BY timeInMillis")
-    public List<Long> getSortByTimeInMillis(Boolean alarmClockOn);
+    List<Long> getSortByTimeInMillis(Boolean alarmClockOn);
 
 }

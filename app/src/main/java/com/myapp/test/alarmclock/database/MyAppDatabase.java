@@ -24,7 +24,6 @@ public abstract class MyAppDatabase extends RoomDatabase {
                             .allowMainThreadQueries()
                             .fallbackToDestructiveMigration()
                             .build();
-
         }
         return INSTANCE;
     }
