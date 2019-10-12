@@ -10,7 +10,7 @@ public class AlarmClock {
     public AlarmClock(String hour, String minute, long timeInMillis, Boolean alarmClockOn,
                       Boolean vibration, String description, int monday, int tuesday,
                       int wednesday, int thursday, int friday, int saturday, int sunday,
-                      String ringtone, String days) {
+                      String ringtoneName, String ringtonePath, String pickedDays) {
         this.hour = hour;
         this.minute = minute;
         this.timeInMillis = timeInMillis;
@@ -24,8 +24,9 @@ public class AlarmClock {
         this.friday = friday;
         this.saturday = saturday;
         this.sunday = sunday;
-        this.ringtone = ringtone;
-        this.days = days;
+        this.ringtoneName = ringtoneName;
+        this.ringtonePath = ringtonePath;
+        this.pickedDays = pickedDays;
     }
 
     @PrimaryKey( autoGenerate = true )
@@ -56,11 +57,12 @@ public class AlarmClock {
     private int saturday;
     @ColumnInfo( name = "sunday" )
     private int sunday;
-    @ColumnInfo( name = "ringtone" )
-    private String ringtone;
-    @ColumnInfo( name = "days" )
-    private String days;
-
+    @ColumnInfo( name = "ringtoneName" )
+    private String ringtoneName;
+    @ColumnInfo( name = "ringtonePath" )
+    private String ringtonePath;
+    @ColumnInfo( name = "pickedDays" )
+    private String pickedDays;
 
     public int getId() {
         return id;
@@ -86,6 +88,14 @@ public class AlarmClock {
         this.minute = minute;
     }
 
+    public long getTimeInMillis() {
+        return timeInMillis;
+    }
+
+    public void setTimeInMillis(long timeInMillis) {
+        this.timeInMillis = timeInMillis;
+    }
+
     public Boolean getAlarmClockOn() {
         return alarmClockOn;
     }
@@ -98,8 +108,8 @@ public class AlarmClock {
         return vibration;
     }
 
-    public void setVibration(Boolean mySwitch) {
-        this.vibration = mySwitch;
+    public void setVibration(Boolean vibration) {
+        this.vibration = vibration;
     }
 
     public String getDescription() {
@@ -166,27 +176,27 @@ public class AlarmClock {
         this.sunday = sunday;
     }
 
-    public String getRingtone() {
-        return ringtone;
+    public String getRingtoneName() {
+        return ringtoneName;
     }
 
-    public void setRingtone(String ringtone) {
-        this.ringtone = ringtone;
+    public void setRingtoneName(String ringtoneName) {
+        this.ringtoneName = ringtoneName;
     }
 
-    public long getTimeInMillis() {
-        return timeInMillis;
+    public String getRingtonePath() {
+        return ringtonePath;
     }
 
-    public void setTimeInMillis(long timeInMillis) {
-        this.timeInMillis = timeInMillis;
+    public void setRingtonePath(String ringtonePath) {
+        this.ringtonePath = ringtonePath;
     }
 
-    public String getDays() {
-        return days;
+    public String getPickedDays() {
+        return pickedDays;
     }
 
-    public void setDays(String days) {
-        this.days = days;
+    public void setPickedDays(String days) {
+        this.pickedDays = days;
     }
 }

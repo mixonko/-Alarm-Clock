@@ -14,11 +14,12 @@ public interface CreateContract {
         List<String> getDaysList();
         void showDaysDialog(List<String>daysList, List<Integer>checkedDays);
         void showRingtones();
-        String getRingtone();
+        String getRingtonePath();
         long getTimeInMillis(int hour, int minute);
         void setActivityResult(int id);
-        String getDaysOfWeek();
+        String getPickedDays();
         void setDaysOfWeekText(String daysOfWeekText);
+        String getRingtoneName();
     }
 
     interface presenter{

@@ -16,12 +16,14 @@ public interface ChangeContract {
         String getDescription();
         void showDaysDialog(List<String>daysList, List<Integer>checkedDays);
         List<String> getDaysList();
-        void setRingtone(String ringtoneUri);
-        String getRingtone();
+        void setRingtonePath(String ringtoneUri);
+        String getRingtonePath();
+        String getRingtoneName();
+        void setRingtoneName(String ringtoneName);
         void showRingtones();
         void setActivityResult(int id);
-        String getDaysOfWeek();
-        void setDaysOfWeekText(String daysOfWeekText);
+        String getPickedDaysText();
+        void setPickedDaysText(String daysOfWeekText);
     }
     
     interface presenter{ 

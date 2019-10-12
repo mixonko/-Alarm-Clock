@@ -1,11 +1,14 @@
 package com.myapp.test.alarmclock.view;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -13,10 +16,12 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.myapp.test.alarmclock.R;
 import com.myapp.test.alarmclock.contract.CreateContract;
 import com.myapp.test.alarmclock.myAppContext.MyApplication;
+import com.myapp.test.alarmclock.permission.CheckReadStoragePermission;
 import com.myapp.test.alarmclock.presenter.CreatePresenter;
 import com.myapp.test.alarmclock.view.adapter.ExampleDaysAdapter;
 
@@ -26,6 +31,7 @@ import java.util.List;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -48,8 +54,9 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     private int mFriday = 0;
     private int mSaturday = 0;
     private int mSunday = 0;
-    private String mDays;
-    private String ringtone;
+    private String pickedDays;
+    private String ringtonePath;
+    private String ringtoneName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +80,10 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
         sound.setOnClickListener(this);
         description.setOnClickListener(this);
 
-        ringtone = RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI;
-        mDays = MyApplication.getAppContext().getString(R.string.without_replay);
+        ringtonePath = RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI;
+        ringtoneName = MyApplication.getAppContext().getString(R.string.defauly_ringtone);
+        pickedDays = MyApplication.getAppContext().getString(R.string.without_replay);
+
     }
 
     @Override
@@ -156,7 +165,7 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
                 mFriday = friday;
                 mSaturday = saturday;
                 mSunday = sunday;
-                mDays = days;
+                pickedDays = days;
             }
         });
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -197,7 +206,12 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
                 presenter.onDaysWasClicked();
                 break;
             case R.id.sound:
-                presenter.onRingtonesWasClicked();
+                if (CheckReadStoragePermission.checkSelfPermission(MyApplication.getAppContext())){
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            1);
+                }else {
+                    presenter.onRingtonesWasClicked();
+                }
                 break;
         }
     }
@@ -215,15 +229,49 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent intent) {
         if (resultCode == Activity.RESULT_OK && requestCode == 5) {
             Uri uri = intent.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+
             if (uri != null) {
-                this.ringtone = uri.toString();
+                ringtonePath = uri.toString();
+                ringtoneName = getRingtoneName(uri);
+                Toast.makeText(MyApplication.getAppContext(), ringtoneName, Toast.LENGTH_LONG).show();
             }
         }
     }
 
+    private String getRingtoneName(Uri uri){
+        String fileName = "";
+        if (uri.getScheme().equals("file")) {
+            fileName = uri.getLastPathSegment();
+        } else {
+            Cursor cursor = null;
+            try {
+                cursor = getContentResolver().query(uri, new String[]{
+                        MediaStore.Images.ImageColumns.DISPLAY_NAME
+                }, null, null, null);
+
+                if (cursor != null && cursor.moveToFirst()) {
+                    fileName = cursor.getString(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DISPLAY_NAME));
+                }
+            } catch (Exception e){
+                Toast.makeText(MyApplication.getAppContext(), String.valueOf(e), Toast.LENGTH_LONG).show();
+            }finally {
+
+                if (cursor != null) {
+                    cursor.close();
+                }
+            }
+        }
+        return  fileName;
+    }
+
     @Override
-    public String getRingtone() {
-        return ringtone;
+    public String getRingtoneName(){
+        return ringtoneName;
+    }
+
+    @Override
+    public String getRingtonePath() {
+        return ringtonePath;
     }
 
     @Override
@@ -233,15 +281,15 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-        if(calendar.before(Calendar.getInstance())) {
+        if (calendar.before(Calendar.getInstance())) {
             calendar.add(Calendar.DATE, 1);
         }
         return calendar.getTimeInMillis();
     }
 
     @Override
-    public String getDaysOfWeek() {
-        return mDays;
+    public String getPickedDays() {
+        return pickedDays;
     }
 
     @Override
@@ -255,6 +303,5 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
         intent.putExtra(RESULT_ID, id);
         setResult(RESULT_OK, intent);
     }
-
 
 }

@@ -35,8 +35,9 @@ public class ChangePresenter implements ChangeContract.presenter {
         view.setMinute(Integer.parseInt(alarmClock.getMinute()));
         view.setVibration(alarmClock.getVibration());
         view.setDescription(alarmClock.getDescription());
-        view.setRingtone(alarmClock.getRingtone());
-        view.setDaysOfWeekText(alarmClock.getDays());
+        view.setRingtonePath(alarmClock.getRingtonePath());
+        view.setPickedDaysText(alarmClock.getPickedDays());
+
     }
 
     @Override
@@ -58,8 +59,8 @@ public class ChangePresenter implements ChangeContract.presenter {
         alarmClock.setFriday(friday);
         alarmClock.setSaturday(saturday);
         alarmClock.setSunday(sunday);
-        alarmClock.setRingtone(view.getRingtone());
-        alarmClock.setDays(view.getDaysOfWeek());
+        alarmClock.setRingtonePath(view.getRingtonePath());
+        alarmClock.setPickedDays(view.getPickedDaysText());
         repository.updateAlarmClock(alarmClock);
         view.setActivityResult(alarmClock.getId());
         view.close();
@@ -97,7 +98,7 @@ public class ChangePresenter implements ChangeContract.presenter {
         this.friday = friday;
         this.saturday = saturday;
         this.sunday = sunday;
-        view.setDaysOfWeekText(view.getDaysOfWeek());
+        view.setPickedDaysText(view.getPickedDaysText());
     }
 
     @Override

@@ -117,7 +117,7 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
 
         exampleViewHolder.time.setText(currentItem.getHour() + ":" + currentItem.getMinute());
         exampleViewHolder.description.setText(currentItem.getDescription() + ", ");
-        exampleViewHolder.daysOfWeek.setText(currentItem.getDays());
+        exampleViewHolder.daysOfWeek.setText(currentItem.getPickedDays());
         if (currentItem.getAlarmClockOn()){
             exampleViewHolder.mySwitch.setChecked(true);
         }else {

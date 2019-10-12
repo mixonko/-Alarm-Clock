@@ -45,15 +45,16 @@ public class MyService extends Service {
         int sunday = alarmClock.getSunday();
 
         startNotification(alarmClock);
+        alarmClockOff(alarmClock);
 
-        if (monday == dayOfWeek || tuesday == dayOfWeek
-                || wednesday == dayOfWeek || thursday == dayOfWeek
-                || friday == dayOfWeek || saturday == dayOfWeek
-                || sunday == dayOfWeek) {
-            reuseAlarmClock(alarmClock);
-        } else {
-            alarmClockOff(alarmClock);
-        }
+//        if (monday == dayOfWeek || tuesday == dayOfWeek
+//                || wednesday == dayOfWeek || thursday == dayOfWeek
+//                || friday == dayOfWeek || saturday == dayOfWeek
+//                || sunday == dayOfWeek) {
+//            reuseAlarmClock(alarmClock);
+//        } else {
+//        }
+
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -61,7 +62,7 @@ public class MyService extends Service {
         MyNotification myNotification = MyNotification.getMyNotification();
         myNotification.showNotification(alarmClock.getDescription(),
                 alarmClock.getHour() + ":" + alarmClock.getMinute(), id);
-        myNotification.playRingtone(Uri.parse(alarmClock.getRingtone()));
+        myNotification.playRingtone(Uri.parse(alarmClock.getRingtonePath()));
         if (alarmClock.getVibration())
             myNotification.startVibration(20000);
     }

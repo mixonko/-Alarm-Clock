@@ -3,9 +3,11 @@ package com.myapp.test.alarmclock.view;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -40,8 +42,9 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
     private TextView sound, description;
     private Switch vibrationSignal;
     private TextView daysOfWeek;
-    private String ringtone;
-    private String mDays;
+    private String ringtonePath;
+    private String ringtoneName;
+    private String pickedDays;
     private int mMonday = 0;
     private int mTuesday = 0;
     private int mWednesday = 0;
@@ -74,7 +77,7 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
         Intent intent = getIntent();
         int id = intent.getIntExtra(MainActivity.ALARM_CLOCK_ID, 1);
 
-        mDays = MyApplication.getAppContext().getString(R.string.without_replay); 
+        pickedDays = MyApplication.getAppContext().getString(R.string.without_replay);
         presenter.onActivityCreate(id);
     }
 
@@ -182,7 +185,7 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
                 mFriday = friday;
                 mSaturday = saturday;
                 mSunday = sunday;
-                mDays = days;
+                pickedDays = days;
             }
         });
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -213,22 +216,22 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
     }
 
     @Override
-    public void setRingtone(String ringtoneUri) {
-        ringtone = ringtoneUri;
+    public void setRingtonePath(String ringtoneUri) {
+        ringtonePath = ringtoneUri;
     }
 
     @Override
-    public String getRingtone() {
-        return ringtone;
+    public String getRingtonePath() {
+        return ringtonePath;
     }
 
     @Override
-    public String getDaysOfWeek() {
-        return mDays;
+    public String getPickedDaysText() {
+        return pickedDays;
     }
 
     @Override
-    public void setDaysOfWeekText(String daysOfWeekText) {
+    public void setPickedDaysText(String daysOfWeekText) {
             daysOfWeek.setText(daysOfWeekText);
     }
 
@@ -246,9 +249,44 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
         if (resultCode == Activity.RESULT_OK && requestCode == 5) {
             Uri uri = intent.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
             if (uri != null) {
-                this.ringtone = uri.toString();
+                ringtonePath = uri.toString();
+                ringtoneName = getRingtoneName(uri);
             }
         }
+    }
+
+    private String getRingtoneName(Uri uri){
+        String fileName = "";
+        if (uri.getScheme().equals("file")) {
+            fileName = uri.getLastPathSegment();
+        } else {
+            Cursor cursor = null;
+            try {
+                cursor = getContentResolver().query(uri, new String[]{
+                        MediaStore.Images.ImageColumns.DISPLAY_NAME
+                }, null, null, null);
+
+                if (cursor != null && cursor.moveToFirst()) {
+                    fileName = cursor.getString(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DISPLAY_NAME));
+                }
+            } finally {
+
+                if (cursor != null) {
+                    cursor.close();
+                }
+            }
+        }
+        return  fileName;
+    }
+
+    @Override
+    public String getRingtoneName(){
+        return ringtoneName;
+    }
+
+    @Override
+    public void setRingtoneName(String ringtoneName) {
+
     }
 
     @Override
