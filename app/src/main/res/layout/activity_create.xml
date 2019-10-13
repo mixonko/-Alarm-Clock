@@ -3,104 +3,90 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
-        style="@style/Title">
-
-        <Button
-            android:id="@+id/close"
-            style="@style/TitleButtons"
-            android:layout_gravity="left|center"/>
-
-        <TextView
-            style="@style/TitleText"
-            android:text="@string/create_title" />
-
-        <Button
-            android:id="@+id/done"
-            style="@style/TitleButtons"
-            android:layout_gravity="right|center"/>
-
-    </FrameLayout>
-
     <TimePicker
         android:id="@+id/timePicker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        style="@style/TimePicker" />
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <LinearLayout
+        style="@style/LayoutInfo">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:text="@string/days_of_the_week" />
+        <View
+            style="@style/Line" />
 
-        <TextView
+        <FrameLayout
             android:id="@+id/days_of_week"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:text="@string/without_replay"
-            android:drawableRight="@drawable/ic_arrow_right_black"/>
+            style="@style/InfoItem" >
 
-    </FrameLayout>
+            <TextView
+                style="@style/TextLeft"
+                android:text="@string/days_of_the_week" />
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/days"
+                style="@style/TextRight"
+                android:text="@string/without_replay" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:text="@string/sound" />
+        </FrameLayout>
 
-        <TextView
-            android:id="@+id/sound"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:text="@string/default_text"
-            android:drawableRight="@drawable/ic_arrow_right_black"/>
+        <View
+            style="@style/Line" />
 
-    </FrameLayout>
+        <FrameLayout
+            android:id="@+id/sound_layout"
+            style="@style/InfoItem">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            <TextView
+                style="@style/TextLeft"
+                android:text="@string/sound" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:text="@string/vibration_signal" />
+            <TextView
+                android:id="@+id/sound"
+                style="@style/TextRight"
+                android:text="@string/default_text"
+                android:maxLength="12"
+                android:drawableRight="@drawable/ic_arrow_right_black"/>
 
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/vibration_signal"
-            style="@style/SwitchButton" />
+        </FrameLayout>
 
-    </FrameLayout>
+        <View
+            style="@style/Line" />
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        <FrameLayout
+            android:id="@+id/vibration_layout"
+            style="@style/InfoItem">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:text="@string/description" />
+            <TextView
+                style="@style/TextLeft"
+                android:text="@string/vibration_signal" />
 
-        <TextView
-            android:id="@+id/description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:text="@string/alarm_clock"
-            android:drawableRight="@drawable/ic_arrow_right_black"/>
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/vibration"
+                style="@style/SwitchButtonInfo" />
 
-    </FrameLayout>
+        </FrameLayout>
+
+        <View
+            style="@style/Line" />
+
+        <FrameLayout
+            android:id="@+id/description_layout"
+            style="@style/InfoItem">
+
+            <TextView
+                style="@style/TextLeft"
+                android:text="@string/description" />
+
+            <TextView
+                android:id="@+id/description"
+                style="@style/TextRight"
+                android:text="@string/alarm_clock"
+                android:drawableRight="@drawable/ic_arrow_right_black"/>
+
+        </FrameLayout>
+
+        <View
+            style="@style/Line" />
+
+    </LinearLayout>
 
 </LinearLayout>

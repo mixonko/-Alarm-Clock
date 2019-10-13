@@ -39,12 +39,7 @@ public class ChangePresenter implements ChangeContract.presenter {
         view.setPickedDaysText(alarmClock.getPickedDays());
 
     }
-
-    @Override
-    public void onCloseWasClicked() {
-        view.close();
-    }
-
+ 
     @Override
     public void onDoneWasClicked() {
         alarmClock.setHour(getHour(view.getHour()));

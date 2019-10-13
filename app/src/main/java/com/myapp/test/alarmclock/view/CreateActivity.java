@@ -10,10 +10,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Switch;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -28,6 +31,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -40,12 +44,10 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
 
     private static final int REQUEST_CODE_RINGTONE = 5;
     private CreateContract.presenter presenter;
-    private Button close;
-    private Button done;
     private TimePicker timePicker;
-    private TextView sound, description;
+    private FrameLayout soundLayout, descriptionLayout, daysLayout, vibrationLayout;
+    private TextView ringtoneText, description, days;
     private androidx.appcompat.widget.SwitchCompat vibrationSignal;
-    private TextView daysOfWeek;
     private int mMonday = 0;
     private int mTuesday = 0;
     private int mWednesday = 0;
@@ -61,28 +63,52 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle(R.string.alarm_clock);
 
         presenter = new CreatePresenter(this);
 
-        close = findViewById(R.id.close);
-        done = findViewById(R.id.done);
         timePicker = findViewById(R.id.timePicker);
         timePicker.setIs24HourView(true);
-        daysOfWeek = findViewById(R.id.days_of_week);
-        sound = findViewById(R.id.sound);
-        vibrationSignal = findViewById(R.id.vibration_signal);
+        daysLayout = findViewById(R.id.days_of_week);
+        days = findViewById(R.id.days);
+        soundLayout = findViewById(R.id.sound_layout);
+        ringtoneText = findViewById(R.id.sound);
+        vibrationLayout = findViewById(R.id.vibration_layout);
+        vibrationSignal = findViewById(R.id.vibration);
+        descriptionLayout = findViewById(R.id.description_layout);
         description = findViewById(R.id.description);
 
-        close.setOnClickListener(this);
-        done.setOnClickListener(this);
-        daysOfWeek.setOnClickListener(this);
-        sound.setOnClickListener(this);
-        description.setOnClickListener(this);
+        daysLayout.setOnClickListener(this);
+        soundLayout.setOnClickListener(this);
+        vibrationLayout.setOnClickListener(this);
+        descriptionLayout.setOnClickListener(this);
 
         ringtonePath = RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI;
         ringtoneName = MyApplication.getAppContext().getString(R.string.defauly_ringtone);
         pickedDays = MyApplication.getAppContext().getString(R.string.without_replay);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.create_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.done:
+                presenter.onDoneWasClicked();
+                break;
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -192,19 +218,16 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.close:
-                presenter.onCloseWasClicked();
-                break;
-            case R.id.done:
-                presenter.onDoneWasClicked();
-                break;
-            case R.id.description:
+            case R.id.description_layout:
                 presenter.onDescriptionWasClicked();
                 break;
             case R.id.days_of_week:
                 presenter.onDaysWasClicked();
                 break;
-            case R.id.sound:
+            case R.id.vibration_layout:
+                 presenter.onVibrationWasClicked();
+                break;
+            case R.id.sound_layout:
                 if (CheckReadStoragePermission.checkSelfPermission(MyApplication.getAppContext())){
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                             1);
@@ -232,6 +255,7 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
             if (uri != null) {
                 ringtonePath = uri.toString();
                 ringtoneName = getRingtoneName(uri);
+                presenter.onRingtoneResult(ringtoneName);
             }
         }
     }
@@ -266,6 +290,16 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     }
 
     @Override
+    public void setRingtoneText(String ringtoneName) {
+        ringtoneText.setText(ringtoneName);
+    }
+
+    @Override
+    public void setVibration(Boolean vibration) {
+        vibrationSignal.setChecked(vibration);
+    }
+
+    @Override
     public String getRingtonePath() {
         return ringtonePath;
     }
@@ -290,7 +324,7 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
 
     @Override
     public void setDaysOfWeekText(String daysOfWeekText) {
-        daysOfWeek.setText(daysOfWeekText);
+        days.setText(daysOfWeekText);
     }
 
     @Override

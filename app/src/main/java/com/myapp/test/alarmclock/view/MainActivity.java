@@ -1,6 +1,7 @@
 package com.myapp.test.alarmclock.view;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(R.string.alarm_clock);
 
         presenter = new MainPresenter(this);
 
@@ -103,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public void setInfoText(String infoText) {
         this.infoText.setText(infoText);
     }
- 
+
     @Override
     public void startCreateActivity() {
         startActivityForResult(new Intent(MyApplication.getAppContext(), CreateActivity.class),

@@ -20,11 +20,6 @@ public class CreatePresenter implements CreateContract.presenter {
     }
 
     @Override
-    public void onCloseWasClicked() {
-        view.close();
-    }
-
-    @Override
     public void onDoneWasClicked() {
         AlarmClock alarmClock = new AlarmClock(getHour(view.getHour()),
                 getMinute(view.getMinute()), view.getTimeInMillis(view.getHour(),
@@ -77,6 +72,16 @@ public class CreatePresenter implements CreateContract.presenter {
     @Override
     public void onRingtonesWasClicked() {
         view.showRingtones();
+    }
+
+    @Override
+    public void onRingtoneResult(String ringtoneName) {
+        view.setRingtoneText(ringtoneName);
+    }
+
+    @Override
+    public void onVibrationWasClicked() {
+        view.setVibration(!view.getVibrationInfo());
     }
 
     private String getHour(int hour){

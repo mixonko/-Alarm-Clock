@@ -9,6 +9,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,8 +40,6 @@ import static com.myapp.test.alarmclock.view.MainActivity.RESULT_ID;
 public class ChangeActivity extends AppCompatActivity implements ChangeContract.view, View.OnClickListener {
     private ChangeContract.presenter presenter;
     private static final int REQUEST_CODE_RINGTONE = 5;
-    private Button close;
-    private Button done;
     private TimePicker timePicker;
     private TextView sound, description;
     private androidx.appcompat.widget.SwitchCompat vibrationSignal;
@@ -56,20 +58,19 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle(R.string.alarm_clock);
 
         presenter = new ChangePresenter(this);
 
-        close = findViewById(R.id.close);
-        done = findViewById(R.id.done);
         timePicker = findViewById(R.id.timePicker);
         timePicker.setIs24HourView(true);
         daysOfWeek = findViewById(R.id.days_of_week);
         sound = findViewById(R.id.sound);
-        vibrationSignal = findViewById(R.id.vibration_signal);
+        vibrationSignal = findViewById(R.id.vibration);
         description = findViewById(R.id.description);
 
-        close.setOnClickListener(this);
-        done.setOnClickListener(this);
         daysOfWeek.setOnClickListener(this);
         sound.setOnClickListener(this);
         description.setOnClickListener(this);
@@ -82,14 +83,28 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
     }
 
     @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.close:
-                presenter.onCloseWasClicked();
-                break;
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.create_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.done:
                 presenter.onDoneWasClicked();
                 break;
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.description:
                 presenter.onDescriptionWasClicked();
                 break;

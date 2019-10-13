@@ -28,7 +28,6 @@ public interface ChangeContract {
     
     interface presenter{ 
         void onActivityCreate(int id);
-        void onCloseWasClicked();
         void onDoneWasClicked();
         void onDescriptionWasClicked();
         void onDescriptionDone(String description);

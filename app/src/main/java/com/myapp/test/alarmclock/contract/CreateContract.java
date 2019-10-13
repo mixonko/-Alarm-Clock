@@ -20,10 +20,11 @@ public interface CreateContract {
         String getPickedDays();
         void setDaysOfWeekText(String daysOfWeekText);
         String getRingtoneName();
+        void setRingtoneText(String ringtoneName);
+        void setVibration(Boolean vibration);
     }
 
     interface presenter{
-        void onCloseWasClicked();
         void onDoneWasClicked();
         void onDescriptionWasClicked();
         void onDescriptionDone(String description);
@@ -31,6 +32,8 @@ public interface CreateContract {
         void saveDaysWasClicked(int monday, int tuesday, int wednesday, int thursday, int friday,
                                 int saturday, int sunday);
         void onRingtonesWasClicked();
+        void onRingtoneResult(String ringtoneName);
+        void onVibrationWasClicked();
     }
 
 }

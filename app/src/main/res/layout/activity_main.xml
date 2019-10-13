@@ -7,14 +7,8 @@
     android:layout_margin="10dp"
     tools:context=".view.MainActivity">
 
-    <TextView
-        style="@style/TitleText"
-        android:text="@string/alarm_clock" />
-
     <com.myapp.test.alarmclock.view.other.ClockView
-        android:layout_width="280dp"
-        android:layout_height="280dp"
-        android:layout_gravity="center"/>
+        style="@style/myClockView"/>
 
     <TextView
         android:id="@+id/infoText"
@@ -24,18 +18,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <View
+            style="@style/Line" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            style="@style/RecyclerView" />
 
         <Button
             android:id="@+id/create"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="bottom|center"
-            android:background="@drawable/add_button_selector"
-            android:layout_marginBottom="25dp"/>
+            style="@style/AddButton" />
 
     </FrameLayout>
 

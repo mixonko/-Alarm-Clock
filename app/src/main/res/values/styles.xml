@@ -1,7 +1,7 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimaryDark">@color/colorWhite</item>
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <item name="colorPrimaryDark">@color/colorGray</item>
         <item name="colorAccent">@color/colorBlack</item>
     </style>
 
@@ -17,23 +17,42 @@
         <item name="android:textColor">@color/colorBlack</item>
     </style>
 
-    <style name="Title">
+    <style name="TimePicker">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">45dp</item>
-        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">50dp</item>
+        <item name="android:timePickerMode">spinner</item>
     </style>
 
-    <style name="TitleButtons">
+    <style name="AlarmClockInfoText">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">17sp</item>
     </style>
 
-    <style name="TitleText">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">20sp</item>
+    <style name="TextLeft" parent="AlarmClockInfoText">
+        <item name="android:layout_gravity">left|center</item>
         <item name="android:textColor">@color/colorBlack</item>
-        <item name="android:paddingBottom">10dp</item>
+    </style>
+
+    <style name="TextRight" parent="AlarmClockInfoText">
+        <item name="android:layout_gravity">right|center</item>
+        <item name="android:drawableRight">@drawable/ic_arrow_right_black</item>
+    </style>
+
+    <style name="InfoItem" >
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:background">@drawable/layout_selector</item>
+    </style>
+
+    <style name="LayoutInfo" >
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">50dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:orientation">vertical</item>
     </style>
 
     <style name="SwitchButton">
@@ -41,6 +60,11 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:checked">true</item>
         <item name="android:layout_gravity">center|right</item>
+    </style>
+
+    <style name="SwitchButtonInfo" parent="SwitchButton">
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:clickable">false</item>
     </style>
 
     <style name="InfoText" >
@@ -51,8 +75,7 @@
         <item name="android:layout_marginBottom">10dp</item>
     </style>
 
-    <style name="LayoutExampleItem">
-        <item name="android:layout_width">match_parent</item>
+    <style name="LayoutExampleItem" parent="InfoItem">
         <item name="android:layout_height">70dp</item>
         <item name="android:paddingBottom">10dp</item>
         <item name="android:paddingTop">10dp</item>
@@ -62,6 +85,25 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">1dp</item>
         <item name="android:background">@color/colorGray</item>
+    </style>
+
+    <style name="AddButton">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_gravity">bottom|center</item>
+        <item name="android:background">@drawable/add_button_selector</item>
+        <item name="android:layout_marginBottom">15dp</item>
+    </style>
+
+    <style name="RecyclerView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="myClockView">
+        <item name="android:layout_width">280dp</item>
+        <item name="android:layout_height">280dp</item>
+        <item name="android:layout_gravity">center</item>
     </style>
 
 </resources>

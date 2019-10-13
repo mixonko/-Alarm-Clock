@@ -67,6 +67,7 @@ public class MainPresenter implements MainContract.Presenter {
         view.alarmClockOff(alarmClock.getId());
         repository.deleteAlarmClock(alarmClock);
         view.deleteItem(position);
+        view.setInfoText(getDifferenceTime());
     }
 
     @Override
@@ -89,24 +90,27 @@ public class MainPresenter implements MainContract.Presenter {
         repository.updateAlarmClock(alarmClock);
     }
 
-    private String getDifferenceTime() throws Exception {
+    private String getDifferenceTime()  {
         Calendar calendar = Calendar.getInstance();
         long timeInMillis = calendar.getTimeInMillis();
-        long myTimeInMillis = repository.getSortByTimemillis(true).get(0);
-        long difference = myTimeInMillis - timeInMillis - 10800000;
-        calendar.setTimeInMillis(difference);
-        Date date = new Date(difference);
-        DateFormat df = new SimpleDateFormat("Сработает через HH ч mm мин.");
-        String time = df.format(date);
+        long myTimeInMillis = 0;
+        String time;
+        try {
+            myTimeInMillis = repository.getSortByTimemillis(true).get(0);
+            long difference = myTimeInMillis - timeInMillis - 10800000;
+            calendar.setTimeInMillis(difference);
+            Date date = new Date(difference);
+            DateFormat df = new SimpleDateFormat("Сработает через HH ч mm мин.");
+            time = df.format(date);
+        } catch (Exception e) {
+            time = "Без будильников";
+        }
+
         return time;
     }
 
     private void setInfoText() {
-        try {
-            view.setInfoText(getDifferenceTime());
-        } catch (Exception e) {
-            view.setInfoText("Без будильников");
-        }
+        view.setInfoText(getDifferenceTime());
     }
 
 }
