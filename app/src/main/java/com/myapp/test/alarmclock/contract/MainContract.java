@@ -7,7 +7,6 @@ import java.util.List;
 public interface MainContract {
     interface View{
         void setInfoText(String infoText);
-        void clearInfoText();
         void startCreateActivity();
         void startChangeActivity(int id);
         void alarmClockOn(int hour, int minute, int id);

@@ -19,7 +19,6 @@ public class ChangePresenter implements ChangeContract.presenter {
         repository = new Repository();
     }
 
-
     @Override
     public void onActivityCreate(int id) {
         alarmClock = repository.getAlarmClock(id);
@@ -36,6 +35,7 @@ public class ChangePresenter implements ChangeContract.presenter {
         view.setVibration(alarmClock.getVibration());
         view.setDescription(alarmClock.getDescription());
         view.setRingtonePath(alarmClock.getRingtonePath());
+        view.setRingtoneName(alarmClock.getRingtoneName());
         view.setPickedDaysText(alarmClock.getPickedDays());
 
     }
@@ -60,6 +60,7 @@ public class ChangePresenter implements ChangeContract.presenter {
         alarmClock.setSaturday(saturday);
         alarmClock.setSunday(sunday);
         alarmClock.setRingtonePath(view.getRingtonePath());
+        alarmClock.setRingtoneName(view.getRingtoneName());
         alarmClock.setPickedDays(view.getPickedDaysText());
         repository.updateAlarmClock(alarmClock);
         view.setActivityResult(alarmClock.getId());

@@ -40,7 +40,7 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
     private Button done;
     private TimePicker timePicker;
     private TextView sound, description;
-    private Switch vibrationSignal;
+    private androidx.appcompat.widget.SwitchCompat vibrationSignal;
     private TextView daysOfWeek;
     private String ringtonePath;
     private String ringtoneName;
@@ -286,7 +286,7 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
 
     @Override
     public void setRingtoneName(String ringtoneName) {
-
+        this.ringtoneName = ringtoneName;
     }
 
     @Override

@@ -52,7 +52,7 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
     public static class ExampleViewHolder extends RecyclerView.ViewHolder {
         public TextView time;
         public TextView daysOfWeek;
-        public Switch mySwitch;
+        public androidx.appcompat.widget.SwitchCompat mySwitch;
         public TextView description;
 
         public ExampleViewHolder(@NonNull View itemView, final OnItemClickListener listener,

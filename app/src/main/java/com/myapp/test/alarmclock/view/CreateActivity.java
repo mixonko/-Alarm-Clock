@@ -16,7 +16,6 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.myapp.test.alarmclock.R;
 import com.myapp.test.alarmclock.contract.CreateContract;
@@ -45,7 +44,7 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     private Button done;
     private TimePicker timePicker;
     private TextView sound, description;
-    private Switch vibrationSignal;
+    private androidx.appcompat.widget.SwitchCompat vibrationSignal;
     private TextView daysOfWeek;
     private int mMonday = 0;
     private int mTuesday = 0;
@@ -233,7 +232,6 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
             if (uri != null) {
                 ringtonePath = uri.toString();
                 ringtoneName = getRingtoneName(uri);
-                Toast.makeText(MyApplication.getAppContext(), ringtoneName, Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -252,9 +250,7 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
                 if (cursor != null && cursor.moveToFirst()) {
                     fileName = cursor.getString(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DISPLAY_NAME));
                 }
-            } catch (Exception e){
-                Toast.makeText(MyApplication.getAppContext(), String.valueOf(e), Toast.LENGTH_LONG).show();
-            }finally {
+            } finally {
 
                 if (cursor != null) {
                     cursor.close();

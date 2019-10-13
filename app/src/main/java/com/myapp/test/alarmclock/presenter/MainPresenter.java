@@ -105,7 +105,7 @@ public class MainPresenter implements MainContract.Presenter {
         try {
             view.setInfoText(getDifferenceTime());
         } catch (Exception e) {
-            view.clearInfoText();
+            view.setInfoText("Без будильников");
         }
     }
 

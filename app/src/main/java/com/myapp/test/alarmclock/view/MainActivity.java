@@ -34,7 +34,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements MainContract.View {
     private MainContract.Presenter presenter;
     private Button create;
-    private TextView info;
+    private TextView infoText;
     private RecyclerView recyclerView;
     private ExampleAdapter exampleAdapter;
     private LinearLayoutManager linearLayoutManager;
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         presenter = new MainPresenter(this);
 
         create = findViewById(R.id.create);
-        info = findViewById(R.id.info);
+        infoText = findViewById(R.id.infoText);
         recyclerView = findViewById(R.id.list);
         linearLayoutManager = new LinearLayoutManager(MyApplication.getAppContext());
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -101,14 +101,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void setInfoText(String infoText) {
-        info.setText(infoText);
+        this.infoText.setText(infoText);
     }
-
-    @Override
-    public void clearInfoText() {
-        info.setText("");
-    }
-
+ 
     @Override
     public void startCreateActivity() {
         startActivityForResult(new Intent(MyApplication.getAppContext(), CreateActivity.class),
