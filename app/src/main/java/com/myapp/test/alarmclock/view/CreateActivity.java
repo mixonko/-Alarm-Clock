@@ -1,6 +1,7 @@
 package com.myapp.test.alarmclock.view;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -290,7 +291,7 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     }
 
     @Override
-    public void setRingtoneText(String ringtoneName) {
+    public void setRingtoneNameText(String ringtoneName) {
         ringtoneText.setText(ringtoneName);
     }
 
@@ -304,6 +305,7 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
         return ringtonePath;
     }
 
+    @SuppressLint( "WrongConstant" )
     @Override
     public long getTimeInMillis(int hour, int minute) {
         Calendar calendar = Calendar.getInstance();
@@ -311,9 +313,9 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-        if (calendar.before(Calendar.getInstance())) {
-            calendar.add(Calendar.DATE, 1);
-        }
+//        if (calendar.before(Calendar.getInstance())) {
+//            calendar.add(Calendar.DATE, 1);
+//        }
         return calendar.getTimeInMillis();
     }
 
@@ -323,7 +325,7 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     }
 
     @Override
-    public void setDaysOfWeekText(String daysOfWeekText) {
+    public void setPickedDaysText(String daysOfWeekText) {
         days.setText(daysOfWeekText);
     }
 

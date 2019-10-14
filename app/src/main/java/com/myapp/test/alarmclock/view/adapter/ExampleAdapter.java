@@ -114,7 +114,6 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
     @Override
     public void onBindViewHolder(@NonNull ExampleViewHolder exampleViewHolder, int i) {
         AlarmClock currentItem = exampleItems.get(i);
-
         exampleViewHolder.time.setText(currentItem.getHour() + ":" + currentItem.getMinute());
         exampleViewHolder.description.setText(currentItem.getDescription() + ", ");
         exampleViewHolder.daysOfWeek.setText(currentItem.getPickedDays());

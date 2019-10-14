@@ -1,5 +1,6 @@
 package com.myapp.test.alarmclock.view;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -22,6 +24,7 @@ import android.widget.TimePicker;
 import com.myapp.test.alarmclock.R;
 import com.myapp.test.alarmclock.contract.ChangeContract;
 import com.myapp.test.alarmclock.myAppContext.MyApplication;
+import com.myapp.test.alarmclock.permission.CheckReadStoragePermission;
 import com.myapp.test.alarmclock.presenter.ChangePresenter;
 import com.myapp.test.alarmclock.view.adapter.ExampleDaysAdapter;
 
@@ -32,6 +35,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,12 +45,9 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
     private ChangeContract.presenter presenter;
     private static final int REQUEST_CODE_RINGTONE = 5;
     private TimePicker timePicker;
-    private TextView sound, description;
+    private FrameLayout soundLayout, descriptionLayout, daysLayout, vibrationLayout;
+    private TextView ringtoneText, description, days;
     private androidx.appcompat.widget.SwitchCompat vibrationSignal;
-    private TextView daysOfWeek;
-    private String ringtonePath;
-    private String ringtoneName;
-    private String pickedDays;
     private int mMonday = 0;
     private int mTuesday = 0;
     private int mWednesday = 0;
@@ -54,6 +55,10 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
     private int mFriday = 0;
     private int mSaturday = 0;
     private int mSunday = 0;
+    private String pickedDays;
+    private String ringtonePath;
+    private String ringtoneName;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,14 +71,19 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
 
         timePicker = findViewById(R.id.timePicker);
         timePicker.setIs24HourView(true);
-        daysOfWeek = findViewById(R.id.days_of_week);
-        sound = findViewById(R.id.sound);
+        daysLayout = findViewById(R.id.days_of_week);
+        days = findViewById(R.id.days);
+        soundLayout = findViewById(R.id.sound_layout);
+        ringtoneText = findViewById(R.id.sound);
+        vibrationLayout = findViewById(R.id.vibration_layout);
         vibrationSignal = findViewById(R.id.vibration);
+        descriptionLayout = findViewById(R.id.description_layout);
         description = findViewById(R.id.description);
 
-        daysOfWeek.setOnClickListener(this);
-        sound.setOnClickListener(this);
-        description.setOnClickListener(this);
+        daysLayout.setOnClickListener(this);
+        soundLayout.setOnClickListener(this);
+        vibrationLayout.setOnClickListener(this);
+        descriptionLayout.setOnClickListener(this);
 
         Intent intent = getIntent();
         int id = intent.getIntExtra(MainActivity.ALARM_CLOCK_ID, 1);
@@ -108,11 +118,19 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
             case R.id.description:
                 presenter.onDescriptionWasClicked();
                 break;
-                case R.id.days_of_week:
+            case R.id.days_of_week:
                 presenter.onDaysWasClicked();
                 break;
-            case R.id.sound:
-                presenter.onRingtonesWasClicked();
+            case R.id.vibration_layout:
+                presenter.onVibrationWasClicked();
+                break;
+            case R.id.sound_layout:
+                if (CheckReadStoragePermission.checkSelfPermission(MyApplication.getAppContext())){
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            1);
+                }else {
+                    presenter.onRingtonesWasClicked();
+                }
                 break;
         }
     }
@@ -184,7 +202,7 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
     }
 
     @Override
-    public void showDaysDialog(List<String>daysList, List<Integer>checkedDays) {
+    public void showDaysDialog(List<String> daysList, List<Integer> checkedDays) {
         RecyclerView recyclerView = new RecyclerView(MyApplication.getAppContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MyApplication.getAppContext());
         ExampleDaysAdapter adapter = new ExampleDaysAdapter(daysList, checkedDays);
@@ -212,7 +230,7 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
         builder.setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                presenter.saveDaysWasClicked(mMonday, mTuesday, mWednesday, mThursday, mFriday, mSaturday, mSunday );
+                presenter.saveDaysWasClicked(mMonday, mTuesday, mWednesday, mThursday, mFriday, mSaturday, mSunday);
             }
         }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
@@ -231,11 +249,6 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
     }
 
     @Override
-    public void setRingtonePath(String ringtoneUri) {
-        ringtonePath = ringtoneUri;
-    }
-
-    @Override
     public String getRingtonePath() {
         return ringtonePath;
     }
@@ -247,7 +260,7 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
 
     @Override
     public void setPickedDaysText(String daysOfWeekText) {
-            daysOfWeek.setText(daysOfWeekText);
+        days.setText(daysOfWeekText);
     }
 
     @Override
@@ -266,11 +279,12 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
             if (uri != null) {
                 ringtonePath = uri.toString();
                 ringtoneName = getRingtoneName(uri);
+                presenter.onRingtoneResult(ringtoneName);
             }
         }
     }
 
-    private String getRingtoneName(Uri uri){
+    private String getRingtoneName(Uri uri) {
         String fileName = "";
         if (uri.getScheme().equals("file")) {
             fileName = uri.getLastPathSegment();
@@ -291,17 +305,17 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
                 }
             }
         }
-        return  fileName;
+        return fileName;
     }
 
     @Override
-    public String getRingtoneName(){
+    public String getRingtoneName() {
         return ringtoneName;
     }
 
     @Override
-    public void setRingtoneName(String ringtoneName) {
-        this.ringtoneName = ringtoneName;
+    public void setRingtoneNameText(String ringtoneName) {
+        ringtoneText.setText(ringtoneName);
     }
 
     @Override
@@ -310,4 +324,6 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
         intent.putExtra(RESULT_ID, id);
         setResult(RESULT_OK, intent);
     }
+
+
 }

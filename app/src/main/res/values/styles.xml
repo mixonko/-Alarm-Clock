@@ -1,7 +1,7 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light">
-        <item name="colorPrimaryDark">@color/colorGray</item>
+        <item name="colorPrimaryDark">@color/colorBlack</item>
         <item name="colorAccent">@color/colorBlack</item>
     </style>
 
@@ -10,9 +10,12 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="AlarmClockTextTime">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+    <style name="DialogTextDayItem" parent="AlarmClockTextDay">
+        <item name="android:layout_gravity">left|center</item>
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
+    <style name="AlarmClockTextTime" parent="AlarmClockTextDay">
         <item name="android:textSize">22sp</item>
         <item name="android:textColor">@color/colorBlack</item>
     </style>
@@ -24,10 +27,8 @@
         <item name="android:timePickerMode">spinner</item>
     </style>
 
-    <style name="AlarmClockInfoText">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">17sp</item>
+    <style name="AlarmClockInfoText" parent="AlarmClockTextDay">
+        <item name="android:textSize">15sp</item>
     </style>
 
     <style name="TextLeft" parent="AlarmClockInfoText">
@@ -67,9 +68,7 @@
         <item name="android:clickable">false</item>
     </style>
 
-    <style name="InfoText" >
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+    <style name="InfoText" parent="AlarmClockTextDay">
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:layout_marginBottom">10dp</item>

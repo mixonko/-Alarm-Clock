@@ -18,9 +18,9 @@ public interface CreateContract {
         long getTimeInMillis(int hour, int minute);
         void setActivityResult(int id);
         String getPickedDays();
-        void setDaysOfWeekText(String daysOfWeekText);
+        void setPickedDaysText(String daysOfWeekText);
         String getRingtoneName();
-        void setRingtoneText(String ringtoneName);
+        void setRingtoneNameText(String ringtoneName);
         void setVibration(Boolean vibration);
     }
 

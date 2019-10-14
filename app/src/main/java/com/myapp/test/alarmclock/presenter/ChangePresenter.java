@@ -34,10 +34,8 @@ public class ChangePresenter implements ChangeContract.presenter {
         view.setMinute(Integer.parseInt(alarmClock.getMinute()));
         view.setVibration(alarmClock.getVibration());
         view.setDescription(alarmClock.getDescription());
-        view.setRingtonePath(alarmClock.getRingtonePath());
-        view.setRingtoneName(alarmClock.getRingtoneName());
+        view.setRingtoneNameText(alarmClock.getRingtoneName());
         view.setPickedDaysText(alarmClock.getPickedDays());
-
     }
  
     @Override
@@ -100,6 +98,16 @@ public class ChangePresenter implements ChangeContract.presenter {
     @Override
     public void onRingtonesWasClicked() {
         view.showRingtones();
+    }
+
+    @Override
+    public void onVibrationWasClicked() {
+        view.setVibration(!view.getVibrationInfo());
+    }
+
+    @Override
+    public void onRingtoneResult(String ringtoneName) {
+        view.setRingtoneNameText(ringtoneName);
     }
 
     private String getHour(int hour){

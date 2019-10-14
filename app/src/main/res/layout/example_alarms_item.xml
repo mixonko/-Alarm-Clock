@@ -2,10 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" >
 
     <FrameLayout
         style="@style/LayoutExampleItem">
+
+        <TextView
+            android:id="@+id/time"
+            style="@style/AlarmClockTextTime"
+            android:layout_gravity="top" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -22,11 +28,6 @@
                 style="@style/AlarmClockTextDay" />
 
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/time"
-            style="@style/AlarmClockTextTime"
-            android:layout_gravity="top" />
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/mySwitch"

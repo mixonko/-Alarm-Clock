@@ -60,9 +60,9 @@ public class MyService extends Service {
 
     private void startNotification(AlarmClock alarmClock) {
         MyNotification myNotification = MyNotification.getMyNotification();
-        myNotification.showNotification(alarmClock.getDescription(),
-                alarmClock.getHour() + ":" + alarmClock.getMinute(), id);
-        myNotification.playRingtone(Uri.parse(alarmClock.getRingtonePath()));
+//        myNotification.showNotification(alarmClock.getDescription(),
+//                alarmClock.getHour() + ":" + alarmClock.getMinute(), id);
+//        myNotification.playRingtone(Uri.parse(alarmClock.getRingtonePath()));
         if (alarmClock.getVibration())
             myNotification.startVibration(20000);
     }

@@ -66,7 +66,7 @@ public class CreatePresenter implements CreateContract.presenter {
         this.friday = friday;
         this.saturday = saturday;
         this.sunday = sunday;
-            view.setDaysOfWeekText(view.getPickedDays());
+            view.setPickedDaysText(view.getPickedDays());
     }
 
     @Override
@@ -76,7 +76,7 @@ public class CreatePresenter implements CreateContract.presenter {
 
     @Override
     public void onRingtoneResult(String ringtoneName) {
-        view.setRingtoneText(ringtoneName);
+        view.setRingtoneNameText(ringtoneName);
     }
 
     @Override

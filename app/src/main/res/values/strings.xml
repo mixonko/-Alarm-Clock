@@ -15,4 +15,5 @@
     <string name="cancel">Отмена</string>
     <string name="defauly_ringtone">По умолчанию</string>
     <string name="no_alarms">Без Будильников</string>
+    <string name="everyday">Ежедневно</string>
 </resources>

@@ -136,17 +136,22 @@ public class ExampleDaysAdapter extends RecyclerView.Adapter<ExampleDaysAdapter.
                                     sn = "";
                                 }
                             }
-
+                            String days;
                             StringBuffer stringBuffer = new StringBuffer();
-                            stringBuffer.append(mn);
-                            stringBuffer.append(ts);
-                            stringBuffer.append(wd);
-                            stringBuffer.append(th);
-                            stringBuffer.append(fr);
-                            stringBuffer.append(st);
-                            stringBuffer.append(sn);
-                            String days = stringBuffer.toString();
-
+                            if (monday != 0 && tuesday != 0 && wednesday != 0 && thursday != 0 &&
+                                    friday != 0 && saturday != 0 && sunday != 0){
+                                days = MyApplication.getAppContext().getString(R.string.everyday);
+                            }else {
+                                stringBuffer.append(mn);
+                                stringBuffer.append(ts);
+                                stringBuffer.append(wd);
+                                stringBuffer.append(th);
+                                stringBuffer.append(fr);
+                                stringBuffer.append(st);
+                                stringBuffer.append(sn);
+                                days = stringBuffer.toString();
+                            }
+                             
                             if (days.length()==0){
                                 days = MyApplication.getAppContext().getString(R.string.without_replay);
                             }

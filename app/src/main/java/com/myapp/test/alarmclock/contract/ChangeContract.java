@@ -16,10 +16,9 @@ public interface ChangeContract {
         String getDescription();
         void showDaysDialog(List<String>daysList, List<Integer>checkedDays);
         List<String> getDaysList();
-        void setRingtonePath(String ringtoneUri);
         String getRingtonePath();
         String getRingtoneName();
-        void setRingtoneName(String ringtoneName);
+        void setRingtoneNameText(String ringtoneName);
         void showRingtones();
         void setActivityResult(int id);
         String getPickedDaysText();
@@ -34,6 +33,8 @@ public interface ChangeContract {
         void onDaysWasClicked();
         void saveDaysWasClicked(int monday, int tuesday, int wednesday, int thursday, int friday, int saturday, int sunday);
         void onRingtonesWasClicked();
+        void onVibrationWasClicked();
+        void onRingtoneResult(String ringtoneName);
     }
      
 }
