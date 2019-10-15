@@ -14,6 +14,7 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 
 import com.myapp.test.alarmclock.R;
+import com.myapp.test.alarmclock.entity.AlarmClock;
 import com.myapp.test.alarmclock.myAppContext.MyApplication;
 import com.myapp.test.alarmclock.receiver.NotificationCancelReceiver;
 
@@ -52,7 +53,7 @@ public class MyNotification {
         mBuilder.setSmallIcon(R.mipmap.ic_alarm);
         mBuilder.setContentTitle(title)
                 .setContentText(text)
-                .setAutoCancel(false);
+                .setAutoCancel(false) ;
         mBuilder.addAction(action);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {

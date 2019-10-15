@@ -126,16 +126,15 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
-        if (calendar.before(Calendar.getInstance())) {
-            calendar.add(Calendar.DATE, 1);
-        }
+//        if (calendar.before(Calendar.getInstance())) {
+//            calendar.add(Calendar.DATE, 1);
+//        }
         Intent intent = new Intent(MyApplication.getAppContext(), AlarmClockReceiver.class);
         intent.addFlags(Intent.FLAG_RECEIVER_NO_ABORT);
         intent.putExtra(INTENT_EXTRA, id);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(MyApplication.getAppContext(),
                 id, intent, PendingIntent.FLAG_IMMUTABLE);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-//        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
         AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), pendingIntent);
         alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
     }
@@ -150,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
         pendingIntent.cancel();
+
     }
 
     @Override
