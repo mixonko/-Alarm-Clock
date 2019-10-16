@@ -28,7 +28,7 @@ public interface AlarmClockDao {
     @Query("select * from alarm_clock where id = :id")
     AlarmClock getAlarmClock(int id);
 
-    @Query("select * from alarm_clock where alarm_clock_on = :alarmClockOn ORDER BY timeInMillis")
+    @Query("select * from alarm_clock where alarm_clock_on = :alarmClockOn ORDER BY timeInMillis DESC")
     List<AlarmClock> getSortByTimeInMillis(Boolean alarmClockOn);
 
 }

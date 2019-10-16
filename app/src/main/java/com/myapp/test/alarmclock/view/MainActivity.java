@@ -18,7 +18,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.myapp.test.alarmclock.R;
@@ -35,7 +34,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements MainContract.View {
     private MainContract.Presenter presenter;
     private Button create;
-    private TextView infoText;
     private RecyclerView recyclerView;
     private ExampleAdapter exampleAdapter;
     private LinearLayoutManager linearLayoutManager;
@@ -57,7 +55,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         presenter = new MainPresenter(this);
 
         create = findViewById(R.id.create);
-        infoText = findViewById(R.id.infoText);
         recyclerView = findViewById(R.id.list);
         linearLayoutManager = new LinearLayoutManager(MyApplication.getAppContext());
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -100,11 +97,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void setList(List<AlarmClock> list) {
         this.list = list;
-    }
-
-    @Override
-    public void setInfoText(String infoText) {
-        this.infoText.setText(infoText);
     }
 
     @Override
@@ -216,7 +208,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ALARM_CLOCK_OFF);
         registerReceiver(stopAlarmClockReceiver, intentFilter);
-        presenter.onActivityResume();
     }
 
     @Override
