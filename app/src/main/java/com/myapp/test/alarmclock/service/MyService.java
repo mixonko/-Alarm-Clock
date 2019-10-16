@@ -48,6 +48,13 @@ public class MyService extends Service {
         int sunday = alarmClock.getSunday();
 
 
+        if (monday == 0 && tuesday == 0
+                && wednesday == 0 && thursday == 0
+                && friday == 0 && saturday == 0
+                && sunday == 0) {
+            startNotification(alarmClock);
+//            alarmClockOff(alarmClock);
+        }
 
         if (monday == dayOfWeek || tuesday == dayOfWeek
                 || wednesday == dayOfWeek || thursday == dayOfWeek
@@ -55,9 +62,6 @@ public class MyService extends Service {
                 || sunday == dayOfWeek) {
             startNotification(alarmClock);
             reuseAlarmClock(alarmClock);
-        } else {
-            startNotification(alarmClock);
-            alarmClockOff(alarmClock);
         }
 
         return super.onStartCommand(intent, flags, startId);

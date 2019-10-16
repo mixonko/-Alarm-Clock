@@ -55,6 +55,7 @@ public class ChangePresenter implements ChangeContract.presenter {
         alarmClock.setRingtonePath(view.getRingtonePath());
         alarmClock.setRingtoneName(view.getRingtoneName());
         alarmClock.setPickedDays(view.getPickedDaysText());
+        alarmClock.setTimeInMillis(view.getTimeInMillis(view.getHour(), view.getMinute()));
         repository.updateAlarmClock(alarmClock);
         view.setActivityResult(alarmClock.getId());
         view.close();

@@ -38,7 +38,20 @@ public class ExampleDaysAdapter extends RecyclerView.Adapter<ExampleDaysAdapter.
     public ExampleDaysAdapter(List<String> exampleItems, List<Integer> checkedDays) {
         this.exampleItems = exampleItems;
         this.checkedDays = checkedDays;
-
+        monday = 0;
+        tuesday = 0;
+        wednesday = 0;
+        thursday = 0;
+        friday = 0;
+        saturday = 0;
+        sunday = 0;
+        mn = "";
+        ts = "";
+        wd = "";
+        th = "";
+        fr = "";
+        st = "";
+        sn = "";
     }
 
     public interface OnItemClickListener {

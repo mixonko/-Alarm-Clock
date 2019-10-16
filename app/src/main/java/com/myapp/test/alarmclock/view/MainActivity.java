@@ -126,9 +126,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
-//        if (calendar.before(Calendar.getInstance())) {
-//            calendar.add(Calendar.DATE, 1);
-//        }
+        if (calendar.before(Calendar.getInstance())) {
+            calendar.add(Calendar.DATE, 1);
+        }
         Intent intent = new Intent(MyApplication.getAppContext(), AlarmClockReceiver.class);
         intent.addFlags(Intent.FLAG_RECEIVER_NO_ABORT);
         intent.putExtra(INTENT_EXTRA, id);
@@ -153,13 +153,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void showAlarmClockOff(String hour, String minute) {
-        Toast.makeText(MyApplication.getAppContext(),
-                "Будильник на " + hour + ":" + minute + " выключен",
-                Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     public void showAlarmClockOn(String hour, String minute) {
         Toast.makeText(MyApplication.getAppContext(),
                 "Будильник включен на " + hour + ":" + minute,
@@ -167,10 +160,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void showDeleteDialog(final AlarmClock alarmClock, final int position) {
+    public void showDeleteDialog(final AlarmClock alarmClock, final int position, String days) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Удалить будильник на " + alarmClock.getHour() +
-                ":" + alarmClock.getMinute() + "?")
+                ":" + alarmClock.getMinute() + " (" + days.trim() + ")"+" ?")
                 .setCancelable(false)
                 .setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
                     @Override

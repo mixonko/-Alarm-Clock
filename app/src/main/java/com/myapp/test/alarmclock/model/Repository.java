@@ -41,7 +41,7 @@ public class Repository implements RepositoryContract {
     }
 
     @Override
-    public List<Long> getSortByTimemillis(Boolean alarmClockOn) throws EmptyStackException {
+    public List<AlarmClock> getSortByTimemillis(Boolean alarmClockOn) throws EmptyStackException {
         return database.alarmClockDao().getSortByTimeInMillis(alarmClockOn);
     }
 }

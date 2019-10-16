@@ -21,6 +21,7 @@ public interface ChangeContract {
         void setRingtoneNameText(String ringtoneName);
         void showRingtones();
         void setActivityResult(int id);
+        long getTimeInMillis(int hour, int minute);
         String getPickedDaysText();
         void setPickedDaysText(String daysOfWeekText);
     }

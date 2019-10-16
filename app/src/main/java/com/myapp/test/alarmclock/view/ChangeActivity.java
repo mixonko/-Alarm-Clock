@@ -1,6 +1,7 @@
 package com.myapp.test.alarmclock.view;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -29,6 +30,7 @@ import com.myapp.test.alarmclock.presenter.ChangePresenter;
 import com.myapp.test.alarmclock.view.adapter.ExampleDaysAdapter;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import androidx.annotation.Nullable;
@@ -323,6 +325,17 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
         Intent intent = new Intent();
         intent.putExtra(RESULT_ID, id);
         setResult(RESULT_OK, intent);
+    }
+
+    @SuppressLint( "WrongConstant" )
+    @Override
+    public long getTimeInMillis(int hour, int minute) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTimeInMillis();
     }
 
 

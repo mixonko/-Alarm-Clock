@@ -11,9 +11,8 @@ public interface MainContract {
         void startChangeActivity(int id);
         void alarmClockOn(int hour, int minute, int id);
         void alarmClockOff(int id);
-        void showAlarmClockOff(String hour, String minute);
         void showAlarmClockOn(String hour, String minute);
-        void showDeleteDialog(AlarmClock alarmClock, int position);
+        void showDeleteDialog(AlarmClock alarmClock, int position, String days);
         void deleteItem(int position);
         void updateList(List<AlarmClock> list);
         void setList(List<AlarmClock> list);

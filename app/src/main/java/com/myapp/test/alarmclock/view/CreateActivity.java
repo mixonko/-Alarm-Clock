@@ -179,7 +179,6 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
         RecyclerView recyclerView = new RecyclerView(MyApplication.getAppContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MyApplication.getAppContext());
         ExampleDaysAdapter adapter = new ExampleDaysAdapter(daysList, checkedDays);
-
         adapter.setOnItemClickListener(new ExampleDaysAdapter.OnItemClickListener() {
 
             @Override
@@ -305,17 +304,12 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
         return ringtonePath;
     }
 
-    @SuppressLint( "WrongConstant" )
-    @Override
     public long getTimeInMillis(int hour, int minute) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-//        if (calendar.before(Calendar.getInstance())) {
-//            calendar.add(Calendar.DATE, 1);
-//        }
         return calendar.getTimeInMillis();
     }
 

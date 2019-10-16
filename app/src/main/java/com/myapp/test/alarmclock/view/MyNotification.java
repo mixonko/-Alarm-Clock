@@ -14,7 +14,6 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 
 import com.myapp.test.alarmclock.R;
-import com.myapp.test.alarmclock.entity.AlarmClock;
 import com.myapp.test.alarmclock.myAppContext.MyApplication;
 import com.myapp.test.alarmclock.receiver.NotificationCancelReceiver;
 
