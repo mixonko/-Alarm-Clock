@@ -11,7 +11,7 @@
         style="@style/myClockView"/>
 
     <TextView
-        android:id="@+id/infoText"
+        android:id="@+id/info_text"
         style="@style/InfoText" />
 
     <FrameLayout

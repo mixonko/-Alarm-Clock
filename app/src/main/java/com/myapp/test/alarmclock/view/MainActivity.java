@@ -18,6 +18,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.myapp.test.alarmclock.R;
@@ -28,12 +29,17 @@ import com.myapp.test.alarmclock.presenter.MainPresenter;
 import com.myapp.test.alarmclock.receiver.AlarmClockReceiver;
 import com.myapp.test.alarmclock.view.adapter.ExampleAdapter;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
     private MainContract.Presenter presenter;
     private Button create;
+    private TextView infoText;
     private RecyclerView recyclerView;
     private ExampleAdapter exampleAdapter;
     private LinearLayoutManager linearLayoutManager;
@@ -55,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         presenter = new MainPresenter(this);
 
         create = findViewById(R.id.create);
+        infoText = findViewById(R.id.info_text);
         recyclerView = findViewById(R.id.list);
         linearLayoutManager = new LinearLayoutManager(MyApplication.getAppContext());
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -100,6 +107,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
+    public void setInfoText(String time) {
+        infoText.setText(time);
+    }
+
+    @Override
     public void startCreateActivity() {
         startActivityForResult(new Intent(MyApplication.getAppContext(), CreateActivity.class),
                 RESULT_REQUEST_CODE);
@@ -113,14 +125,46 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void alarmClockOn(int hour, int minute, int id) {
+    public Long alarmClockOn(int id, int hour, int minute, int monday, int tuesday, int wednesday, int thursday, int friday, int saturday, int sunday) {
+
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.set(Calendar.MINUTE, minute);
-        calendar.set(Calendar.SECOND, 0);
-        if (calendar.before(Calendar.getInstance())) {
-            calendar.add(Calendar.DATE, 1);
+
+        if (monday == 0 && tuesday == 0
+                && wednesday == 0 && thursday == 0
+                && friday == 0 && saturday == 0
+                && sunday == 0){
+            calendar.set(Calendar.HOUR_OF_DAY, hour);
+            calendar.set(Calendar.MINUTE, minute);
+            calendar.set(Calendar.SECOND, 0);
+            if (calendar.before(Calendar.getInstance())) {
+                calendar.add(Calendar.DATE, 1);
+            }
+        }else {
+            List<Integer> l = new ArrayList();
+            l.add(monday);
+            l.add(tuesday);
+            l.add(wednesday);
+            l.add(thursday);
+            l.add(friday);
+            l.add(saturday);
+            l.add(sunday);
+            calendar.set(Calendar.HOUR_OF_DAY, hour);
+            calendar.set(Calendar.MINUTE, minute);
+            calendar.set(Calendar.SECOND, 0);
+            for (int i = 0; i < l.size(); i++) {
+                if (l.contains(calendar.get(Calendar.DAY_OF_WEEK))){
+                    if (calendar.before(Calendar.getInstance())) {
+                        calendar.add(Calendar.DATE, 1);
+                    }
+                    break;
+                }else {
+                    calendar.add(Calendar.DATE, 1);
+                }
+            }
         }
+
+
+
         Intent intent = new Intent(MyApplication.getAppContext(), AlarmClockReceiver.class);
         intent.addFlags(Intent.FLAG_RECEIVER_NO_ABORT);
         intent.putExtra(INTENT_EXTRA, id);
@@ -129,6 +173,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), pendingIntent);
         alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
+
+
+
+        return calendar.getTimeInMillis();
     }
 
     @Override
@@ -208,6 +256,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ALARM_CLOCK_OFF);
         registerReceiver(stopAlarmClockReceiver, intentFilter);
+        presenter.onActivityResume();
     }
 
     @Override

@@ -8,13 +8,14 @@ public interface MainContract {
     interface View{
         void startCreateActivity();
         void startChangeActivity(int id);
-        void alarmClockOn(int hour, int minute, int id);
+        Long alarmClockOn(int id, int hour, int minute, int monday, int tuesday, int wednesday, int thursday, int friday, int saturday, int sunday);
         void alarmClockOff(int id);
         void showAlarmClockOn(String hour, String minute);
         void showDeleteDialog(AlarmClock alarmClock, int position, String days);
         void deleteItem(int position);
         void updateList(List<AlarmClock> list);
         void setList(List<AlarmClock> list);
+        void setInfoText(String time);
     }
 
     interface Presenter{
@@ -26,6 +27,7 @@ public interface MainContract {
         void onDeleteWasClicked(AlarmClock alarmClock, int position);
         void onActivityResult(int id);
         void cancelWasReceived();
+        void onActivityResume();
     }
 
 }

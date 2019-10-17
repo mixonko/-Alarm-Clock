@@ -205,7 +205,7 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
     public void showDaysDialog(List<String> daysList, List<Integer> checkedDays) {
         RecyclerView recyclerView = new RecyclerView(MyApplication.getAppContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MyApplication.getAppContext());
-        ExampleDaysAdapter adapter = new ExampleDaysAdapter(daysList, checkedDays);
+        final ExampleDaysAdapter adapter = new ExampleDaysAdapter(daysList, checkedDays);
 
         adapter.setOnItemClickListener(new ExampleDaysAdapter.OnItemClickListener() {
 
@@ -230,6 +230,7 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
         builder.setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                adapter.clearData();
                 presenter.saveDaysWasClicked(mMonday, mTuesday, mWednesday, mThursday, mFriday, mSaturday, mSunday);
             }
         }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
