@@ -1,6 +1,7 @@
 package com.myapp.test.alarmclock.contract;
 
 import com.myapp.test.alarmclock.entity.AlarmClock;
+import com.myapp.test.alarmclock.entity.DaysOfWeek;
 
 import java.util.List;
 
@@ -8,7 +9,7 @@ public interface MainContract {
     interface View{
         void startCreateActivity();
         void startChangeActivity(int id);
-        Long alarmClockOn(int id, int hour, int minute, int monday, int tuesday, int wednesday, int thursday, int friday, int saturday, int sunday);
+        Long alarmClockOn(int id, int hour, int minute, DaysOfWeek daysOfWeek);
         void alarmClockOff(int id);
         void showAlarmClockOn(String info);
         void showDeleteDialog(AlarmClock alarmClock, int position, String days);

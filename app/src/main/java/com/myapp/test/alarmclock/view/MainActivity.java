@@ -22,8 +22,8 @@ import android.widget.Toast;
 import com.myapp.test.alarmclock.R;
 import com.myapp.test.alarmclock.contract.MainContract;
 import com.myapp.test.alarmclock.entity.AlarmClock;
+import com.myapp.test.alarmclock.entity.DaysOfWeek;
 import com.myapp.test.alarmclock.myAppContext.MyApplication;
-import com.myapp.test.alarmclock.other.RegisterAlarmClock;
 import com.myapp.test.alarmclock.presenter.MainPresenter;
 import com.myapp.test.alarmclock.view.adapter.ExampleAdapter;
 
@@ -121,8 +121,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public Long alarmClockOn(int id, int hour, int minute, int monday, int tuesday, int wednesday, int thursday, int friday, int saturday, int sunday) {
-        return registerAlarmClock(id, hour, minute, monday, tuesday, wednesday, thursday, friday, saturday, sunday);
+    public Long alarmClockOn(int id, int hour, int minute, DaysOfWeek daysOfWeek) {
+        return registerAlarmClock(id, hour, minute, daysOfWeek);
     }
 
     @Override

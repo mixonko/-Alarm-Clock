@@ -5,8 +5,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.myapp.test.alarmclock.R;
+import com.myapp.test.alarmclock.entity.DaysOfWeek;
 import com.myapp.test.alarmclock.myAppContext.MyApplication;
 
 import java.util.List;
@@ -42,7 +44,7 @@ public class ExampleDaysAdapter extends RecyclerView.Adapter<ExampleDaysAdapter.
     }
 
     public interface OnItemClickListener {
-        void onItemClick(int monday, int tuesday, int wednesday, int thursday, int friday, int saturday, int sunday, String days);
+        void onItemClick(DaysOfWeek daysOfWeek, String pickedDaysText);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -136,11 +138,11 @@ public class ExampleDaysAdapter extends RecyclerView.Adapter<ExampleDaysAdapter.
                                     sn = "";
                                 }
                             }
-                            String days;
+                            String pickedDaysText;
                             StringBuffer stringBuffer = new StringBuffer();
                             if (monday != 0 && tuesday != 0 && wednesday != 0 && thursday != 0 &&
                                     friday != 0 && saturday != 0 && sunday != 0){
-                                days = MyApplication.getAppContext().getString(R.string.everyday);
+                                pickedDaysText = MyApplication.getAppContext().getString(R.string.everyday);
                             }else {
                                 stringBuffer.append(mn);
                                 stringBuffer.append(ts);
@@ -149,14 +151,17 @@ public class ExampleDaysAdapter extends RecyclerView.Adapter<ExampleDaysAdapter.
                                 stringBuffer.append(fr);
                                 stringBuffer.append(st);
                                 stringBuffer.append(sn);
-                                days = stringBuffer.toString();
+                                pickedDaysText = stringBuffer.toString();
                             }
                              
-                            if (days.length()==0){
-                                days = MyApplication.getAppContext().getString(R.string.without_replay);
+                            if (pickedDaysText.length()==0){
+                                pickedDaysText = MyApplication.getAppContext().getString(R.string.without_replay);
                             }
-                            listener.onItemClick( monday, tuesday, wednesday, thursday,
-                                    friday, saturday, sunday, days);
+
+                            DaysOfWeek daysOfWeek = new DaysOfWeek(monday, tuesday, wednesday, thursday, friday, saturday, sunday);
+                            Toast.makeText(MyApplication.getAppContext(), String.valueOf(daysOfWeek.getMonday()+ daysOfWeek.getTuesday()+ daysOfWeek.getWednesday()+ daysOfWeek.getThursday()+ daysOfWeek
+                            .getFriday()+ daysOfWeek.getSaturday() + daysOfWeek.getSunday()), Toast.LENGTH_LONG).show();
+                            listener.onItemClick(daysOfWeek, pickedDaysText);
 
                         }
                     }

@@ -1,5 +1,7 @@
 package com.myapp.test.alarmclock.contract;
 
+import com.myapp.test.alarmclock.entity.DaysOfWeek;
+
 import java.util.List;
 
 public interface ChangeContract {
@@ -24,6 +26,9 @@ public interface ChangeContract {
         long getTimeInMillis(int hour, int minute);
         String getPickedDaysText();
         void setPickedDaysText(String daysOfWeekText);
+        void setDaysOfWeek(DaysOfWeek daysOfWeek);
+        DaysOfWeek getDaysOfWeek();
+
     }
     
     interface presenter{ 
@@ -32,7 +37,7 @@ public interface ChangeContract {
         void onDescriptionWasClicked();
         void onDescriptionDone(String description);
         void onDaysWasClicked();
-        void saveDaysWasClicked(int monday, int tuesday, int wednesday, int thursday, int friday, int saturday, int sunday);
+        void saveDaysWasClicked();
         void onRingtonesWasClicked();
         void onVibrationWasClicked();
         void onRingtoneResult(String ringtoneName);

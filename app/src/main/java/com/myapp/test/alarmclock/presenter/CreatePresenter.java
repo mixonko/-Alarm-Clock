@@ -5,14 +5,12 @@ import com.myapp.test.alarmclock.contract.RepositoryContract;
 import com.myapp.test.alarmclock.entity.AlarmClock;
 import com.myapp.test.alarmclock.model.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CreatePresenter implements CreateContract.presenter {
 
     private CreateContract.view view;
     private RepositoryContract repository;
-    private int monday = 0, tuesday = 0, wednesday = 0, thursday = 0, friday = 0, saturday = 0, sunday = 0;
 
     public CreatePresenter(CreateContract.view view) {
         this.view = view;
@@ -22,11 +20,9 @@ public class CreatePresenter implements CreateContract.presenter {
     @Override
     public void onDoneWasClicked() {
         AlarmClock alarmClock = new AlarmClock(getHour(view.getHour()),
-                getMinute(view.getMinute()), view.getTimeInMillis(view.getHour(),
-                view.getMinute()), true,
-                view.getVibrationInfo(), view.getDescription(),
-                monday, tuesday, wednesday, thursday, friday, saturday, sunday,
-                view.getRingtoneName(), view.getRingtonePath(),view.getPickedDays());
+                getMinute(view.getMinute()), 0, true,
+                view.getVibrationInfo(), view.getDescription(), view.getDaysOfWeek(),
+                view.getRingtoneName(), view.getRingtonePath(),view.getPickedDaysText());
         repository.addAlarmClock(alarmClock);
         List<AlarmClock> list = repository.getAllAlarmClocks();
         alarmClock = list.get(list.size() - 1);
@@ -46,27 +42,12 @@ public class CreatePresenter implements CreateContract.presenter {
 
     @Override
     public void onDaysWasClicked() {
-        List<Integer> checkedDays = new ArrayList<>();
-        checkedDays.add(monday);
-        checkedDays.add(tuesday);
-        checkedDays.add(wednesday);
-        checkedDays.add(thursday);
-        checkedDays.add(friday);
-        checkedDays.add(saturday);
-        checkedDays.add(sunday);
-        view.showDaysDialog(view.getDaysList(), checkedDays);
+        view.showDaysDialog(view.getDaysList(), view.getDaysOfWeek().getDays());
     }
 
     @Override
-    public void saveDaysWasClicked(int monday, int tuesday, int wednesday, int thursday, int friday, int saturday, int sunday) {
-        this.monday = monday;
-        this.tuesday = tuesday;
-        this.wednesday = wednesday;
-        this.thursday = thursday;
-        this.friday = friday;
-        this.saturday = saturday;
-        this.sunday = sunday;
-            view.setPickedDaysText(view.getPickedDays());
+    public void saveDaysWasClicked() {
+        view.setPickedDaysText(view.getPickedDaysText());
     }
 
     @Override

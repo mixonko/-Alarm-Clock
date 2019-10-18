@@ -4,10 +4,10 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 
+import com.myapp.test.alarmclock.entity.DaysOfWeek;
 import com.myapp.test.alarmclock.myAppContext.MyApplication;
 import com.myapp.test.alarmclock.receiver.AlarmClockReceiver;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -18,13 +18,15 @@ public class RegisterAlarmClock {
 
     private RegisterAlarmClock() {}
 
-    public static Long registerAlarmClock(int id, int hour, int minute, int monday, int tuesday, int wednesday, int thursday, int friday, int saturday, int sunday) {
+    public static Long registerAlarmClock(int id, int hour, int minute, DaysOfWeek daysOfWeek) {
         Calendar calendar = Calendar.getInstance();
+        List<Integer> days= daysOfWeek.getDays();
+        Boolean disposable = null;
 
-        if (monday == 0 && tuesday == 0
-                && wednesday == 0 && thursday == 0
-                && friday == 0 && saturday == 0
-                && sunday == 0) {
+        if (daysOfWeek.getMonday() == 0 && daysOfWeek.getTuesday() == 0
+                && daysOfWeek.getWednesday() == 0 && daysOfWeek.getThursday() == 0
+                && daysOfWeek.getFriday() == 0 && daysOfWeek.getSaturday() == 0
+                && daysOfWeek.getSunday() == 0) {
             calendar.set(Calendar.HOUR_OF_DAY, hour);
             calendar.set(Calendar.MINUTE, minute);
             calendar.set(Calendar.SECOND, 0);
@@ -33,20 +35,12 @@ public class RegisterAlarmClock {
                 calendar.add(Calendar.DATE, 1);
             }
         } else {
-            List<Integer> l = new ArrayList();
-            l.add(monday);
-            l.add(tuesday);
-            l.add(wednesday);
-            l.add(thursday);
-            l.add(friday);
-            l.add(saturday);
-            l.add(sunday);
             calendar.set(Calendar.HOUR_OF_DAY, hour);
             calendar.set(Calendar.MINUTE, minute);
             calendar.set(Calendar.SECOND, 0);
             calendar.set(Calendar.MILLISECOND, 0);
-            for (int i = 0; i < l.size(); i++) {
-                if (l.contains(calendar.get(Calendar.DAY_OF_WEEK))) {
+            for (int i = 0; i < days.size(); i++) {
+                if (days.contains(calendar.get(Calendar.DAY_OF_WEEK))) {
                     if (calendar.before(Calendar.getInstance())) {
                         calendar.add(Calendar.DATE, 1);
                         continue;

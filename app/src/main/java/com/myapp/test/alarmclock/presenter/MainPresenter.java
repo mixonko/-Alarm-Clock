@@ -30,7 +30,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onItemWasLongClicked(AlarmClock alarmClock, int position) {
-        view.showDeleteDialog(alarmClock, position, alarmClock.getPickedDays());
+        view.showDeleteDialog(alarmClock, position, alarmClock.getPickedDaysText());
     }
 
     @Override
@@ -52,9 +52,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     private void alarmClockOn(AlarmClock alarmClock) {
         Long timeInMillis = view.alarmClockOn(alarmClock.getId(), Integer.parseInt(alarmClock.getHour()),
-                Integer.parseInt(alarmClock.getMinute()), alarmClock.getMonday(),
-                alarmClock.getTuesday(), alarmClock.getWednesday(), alarmClock.getThursday(),
-                alarmClock.getFriday(), alarmClock.getSaturday(), alarmClock.getSunday());
+                Integer.parseInt(alarmClock.getMinute()), alarmClock.getDaysOfWeek());
         updateAlarmClock(alarmClock, true, timeInMillis);
         setInfoText();
         view.showAlarmClockOn(differenceTime(alarmClock.getTimeInMillis()));

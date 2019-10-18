@@ -1,6 +1,7 @@
 package com.myapp.test.alarmclock.entity;
 
 import androidx.room.ColumnInfo;
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -8,25 +9,18 @@ import androidx.room.PrimaryKey;
 public class AlarmClock {
 
     public AlarmClock(String hour, String minute, long timeInMillis, Boolean alarmClockOn,
-                      Boolean vibration, String description, int monday, int tuesday,
-                      int wednesday, int thursday, int friday, int saturday, int sunday,
-                      String ringtoneName, String ringtonePath, String pickedDays) {
+                      Boolean vibration, String description, DaysOfWeek daysOfWeek,
+                      String ringtoneName, String ringtonePath, String pickedDaysText) {
         this.hour = hour;
         this.minute = minute;
         this.timeInMillis = timeInMillis;
         this.alarmClockOn = alarmClockOn;
         this.vibration = vibration;
         this.description = description;
-        this.monday = monday;
-        this.tuesday = tuesday;
-        this.wednesday = wednesday;
-        this.thursday = thursday;
-        this.friday = friday;
-        this.saturday = saturday;
-        this.sunday = sunday;
+        this.daysOfWeek = daysOfWeek;
         this.ringtoneName = ringtoneName;
         this.ringtonePath = ringtonePath;
-        this.pickedDays = pickedDays;
+        this.pickedDaysText = pickedDaysText;
     }
 
     @PrimaryKey( autoGenerate = true )
@@ -43,26 +37,14 @@ public class AlarmClock {
     private Boolean vibration;
     @ColumnInfo( name = "description" )
     private String description;
-    @ColumnInfo( name = "monday" )
-    private int monday;
-    @ColumnInfo( name = "tuesday" )
-    private int tuesday;
-    @ColumnInfo( name = "wednesday" )
-    private int wednesday;
-    @ColumnInfo( name = "thursday" )
-    private int thursday;
-    @ColumnInfo( name = "friday" )
-    private int friday;
-    @ColumnInfo( name = "saturday" )
-    private int saturday;
-    @ColumnInfo( name = "sunday" )
-    private int sunday;
+    @Embedded()
+    private DaysOfWeek daysOfWeek;
     @ColumnInfo( name = "ringtoneName" )
     private String ringtoneName;
     @ColumnInfo( name = "ringtonePath" )
     private String ringtonePath;
-    @ColumnInfo( name = "pickedDays" )
-    private String pickedDays;
+    @ColumnInfo( name = "pickedDaysText" )
+    private String pickedDaysText;
 
     public int getId() {
         return id;
@@ -120,60 +102,12 @@ public class AlarmClock {
         this.description = description;
     }
 
-    public int getMonday() {
-        return monday;
+    public DaysOfWeek getDaysOfWeek() {
+        return daysOfWeek;
     }
 
-    public void setMonday(int monday) {
-        this.monday = monday;
-    }
-
-    public int getTuesday() {
-        return tuesday;
-    }
-
-    public void setTuesday(int tuesday) {
-        this.tuesday = tuesday;
-    }
-
-    public int getWednesday() {
-        return wednesday;
-    }
-
-    public void setWednesday(int wednesday) {
-        this.wednesday = wednesday;
-    }
-
-    public int getThursday() {
-        return thursday;
-    }
-
-    public void setThursday(int thursday) {
-        this.thursday = thursday;
-    }
-
-    public int getFriday() {
-        return friday;
-    }
-
-    public void setFriday(int friday) {
-        this.friday = friday;
-    }
-
-    public int getSaturday() {
-        return saturday;
-    }
-
-    public void setSaturday(int saturday) {
-        this.saturday = saturday;
-    }
-
-    public int getSunday() {
-        return sunday;
-    }
-
-    public void setSunday(int sunday) {
-        this.sunday = sunday;
+    public void setDaysOfWeek(DaysOfWeek daysOfWeek) {
+        this.daysOfWeek = daysOfWeek;
     }
 
     public String getRingtoneName() {
@@ -192,11 +126,11 @@ public class AlarmClock {
         this.ringtonePath = ringtonePath;
     }
 
-    public String getPickedDays() {
-        return pickedDays;
+    public String getPickedDaysText() {
+        return pickedDaysText;
     }
 
-    public void setPickedDays(String days) {
-        this.pickedDays = days;
+    public void setPickedDaysText(String pickedDaysText) {
+        this.pickedDaysText = pickedDaysText;
     }
 }

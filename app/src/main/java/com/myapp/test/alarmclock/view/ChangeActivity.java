@@ -22,6 +22,7 @@ import android.widget.TimePicker;
 
 import com.myapp.test.alarmclock.R;
 import com.myapp.test.alarmclock.contract.ChangeContract;
+import com.myapp.test.alarmclock.entity.DaysOfWeek;
 import com.myapp.test.alarmclock.myAppContext.MyApplication;
 import com.myapp.test.alarmclock.permission.CheckReadStoragePermission;
 import com.myapp.test.alarmclock.presenter.ChangePresenter;
@@ -48,14 +49,8 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
     private FrameLayout soundLayout, descriptionLayout, daysLayout, vibrationLayout;
     private TextView ringtoneText, description, days;
     private androidx.appcompat.widget.SwitchCompat vibrationSignal;
-    private int mMonday = 0;
-    private int mTuesday = 0;
-    private int mWednesday = 0;
-    private int mThursday = 0;
-    private int mFriday = 0;
-    private int mSaturday = 0;
-    private int mSunday = 0;
-    private String pickedDays;
+    private DaysOfWeek mDaysOfWeek = new DaysOfWeek(0,0,0,0,0,0,0);
+    private String mPickedDaysText;
     private String ringtonePath;
     private String ringtoneName;
 
@@ -88,7 +83,7 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
         Intent intent = getIntent();
         int id = intent.getIntExtra(MainActivity.ALARM_CLOCK_ID, 1);
 
-        pickedDays = MyApplication.getAppContext().getString(R.string.without_replay);
+        mPickedDaysText = MyApplication.getAppContext().getString(R.string.without_replay);
         presenter.onActivityCreate(id);
     }
 
@@ -210,15 +205,9 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
         adapter.setOnItemClickListener(new ExampleDaysAdapter.OnItemClickListener() {
 
             @Override
-            public void onItemClick(int monday, int tuesday, int wednesday, int thursday, int friday, int saturday, int sunday, String days) {
-                mMonday = monday;
-                mTuesday = tuesday;
-                mWednesday = wednesday;
-                mThursday = thursday;
-                mFriday = friday;
-                mSaturday = saturday;
-                mSunday = sunday;
-                pickedDays = days;
+            public void onItemClick(DaysOfWeek daysOfWeek, String pickedDaysText) {
+                mDaysOfWeek = daysOfWeek;
+                mPickedDaysText = pickedDaysText;
             }
         });
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -231,7 +220,7 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 adapter.clearData();
-                presenter.saveDaysWasClicked(mMonday, mTuesday, mWednesday, mThursday, mFriday, mSaturday, mSunday);
+                presenter.saveDaysWasClicked();
             }
         }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
@@ -256,12 +245,22 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
 
     @Override
     public String getPickedDaysText() {
-        return pickedDays;
+        return mPickedDaysText;
     }
 
     @Override
     public void setPickedDaysText(String daysOfWeekText) {
         days.setText(daysOfWeekText);
+    }
+
+    @Override
+    public void setDaysOfWeek(DaysOfWeek daysOfWeek) {
+        mDaysOfWeek = daysOfWeek;
+    }
+
+    @Override
+    public DaysOfWeek getDaysOfWeek() {
+        return mDaysOfWeek;
     }
 
     @Override

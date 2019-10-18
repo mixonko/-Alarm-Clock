@@ -9,15 +9,14 @@ import android.os.IBinder;
 
 import com.myapp.test.alarmclock.entity.AlarmClock;
 import com.myapp.test.alarmclock.myAppContext.MyApplication;
-import com.myapp.test.alarmclock.receiver.AlarmClockReceiver;
 import com.myapp.test.alarmclock.view.MyNotification;
 
 import java.util.Calendar;
+import java.util.List;
 
 import static com.myapp.test.alarmclock.model.Repository.database;
 import static com.myapp.test.alarmclock.other.RegisterAlarmClock.registerAlarmClock;
 import static com.myapp.test.alarmclock.receiver.AlarmClockReceiver.SERVICE_INTENT;
-import static com.myapp.test.alarmclock.view.MainActivity.INTENT_EXTRA;
 import static com.myapp.test.alarmclock.view.MainActivity.UPDATE;
 
 public class MyService extends Service {
@@ -34,33 +33,17 @@ public class MyService extends Service {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(Intent intent, int flags, int startId) { 
         id = intent.getIntExtra(SERVICE_INTENT, 1);
         alarmClock = database.alarmClockDao().getAlarmClock(id);
 
-        Calendar calendar = Calendar.getInstance();
-        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        int monday = alarmClock.getMonday();
-        int tuesday = alarmClock.getTuesday();
-        int wednesday = alarmClock.getWednesday();
-        int thursday = alarmClock.getThursday();
-        int friday = alarmClock.getFriday();
-        int saturday = alarmClock.getSaturday();
-        int sunday = alarmClock.getSunday();
-
-
-        if (monday == 0 && tuesday == 0
-                && wednesday == 0 && thursday == 0
-                && friday == 0 && saturday == 0
-                && sunday == 0) {
+        if (alarmClock.getDaysOfWeek().getMonday() == 0 && alarmClock.getDaysOfWeek().getTuesday() == 0
+                && alarmClock.getDaysOfWeek().getWednesday() == 0 && alarmClock.getDaysOfWeek().getThursday() == 0
+                && alarmClock.getDaysOfWeek().getFriday() == 0 && alarmClock.getDaysOfWeek().getSaturday() == 0
+                && alarmClock.getDaysOfWeek().getSunday() == 0) {
             startNotification(alarmClock);
             alarmClockOff(alarmClock);
-        }
-
-        if (monday == dayOfWeek || tuesday == dayOfWeek
-                || wednesday == dayOfWeek || thursday == dayOfWeek
-                || friday == dayOfWeek || saturday == dayOfWeek
-                || sunday == dayOfWeek) {
+        }else  {
             startNotification(alarmClock);
             reuseAlarmClock(alarmClock);
         }
@@ -79,9 +62,7 @@ public class MyService extends Service {
 
     private void reuseAlarmClock(AlarmClock alarmClock) {
         Long timeInMillis = registerAlarmClock(alarmClock.getId(), Integer.parseInt(alarmClock.getHour()),
-                Integer.parseInt(alarmClock.getMinute()), alarmClock.getMonday(),
-                alarmClock.getTuesday(), alarmClock.getWednesday(), alarmClock.getThursday(),
-                alarmClock.getFriday(), alarmClock.getSaturday(), alarmClock.getSunday());
+                Integer.parseInt(alarmClock.getMinute()), alarmClock.getDaysOfWeek());
         alarmClock.setTimeInMillis(timeInMillis);
         updateDB(alarmClock);
         updateList();
