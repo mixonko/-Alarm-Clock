@@ -1,6 +1,7 @@
 package com.myapp.test.alarmclock.view.other;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -16,6 +17,8 @@ import com.myapp.test.alarmclock.myAppContext.MyApplication;
 import java.util.Calendar;
 
 import androidx.annotation.Nullable;
+
+import static com.myapp.test.alarmclock.view.MainActivity.UPDATE;
 
 public class ClockView extends View {
 
@@ -129,6 +132,11 @@ public class ClockView extends View {
         paint.setStrokeWidth(1);
         paint.setColor(MyApplication.getAppContext().getColor(R.color.colorAccent));
         drawHand(canvas, calendar.get(Calendar.SECOND), false);
+        if (calendar.get(Calendar.SECOND) == 0){
+            Intent myIntent = new Intent();
+            myIntent.setAction(UPDATE);
+            MyApplication.getAppContext().sendBroadcast(myIntent);
+        }
     }
 
     private void drawHourHand(Canvas canvas, double loc) {

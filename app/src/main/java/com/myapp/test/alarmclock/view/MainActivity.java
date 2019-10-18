@@ -26,6 +26,7 @@ import com.myapp.test.alarmclock.entity.DaysOfWeek;
 import com.myapp.test.alarmclock.myAppContext.MyApplication;
 import com.myapp.test.alarmclock.presenter.MainPresenter;
 import com.myapp.test.alarmclock.view.adapter.ExampleAdapter;
+import com.myapp.test.alarmclock.view.other.ClockView;
 
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private ExampleAdapter exampleAdapter;
     private LinearLayoutManager linearLayoutManager;
     private List<AlarmClock> list;
-    private BroadcastReceiver stopAlarmClockReceiver;
+    private BroadcastReceiver updateAlarmClockReceiver;
     public static final String INTENT_EXTRA = "INTENT_EXTRA";
     public static final String ALARM_CLOCK_ID = "ALARM_CLOCK_ID";
     public static final String UPDATE = "UPDATE";
@@ -183,21 +184,22 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     protected void onResume() {
         super.onResume();
-        stopAlarmClockReceiver = new BroadcastReceiver() {
+        updateAlarmClockReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                presenter.cancelWasReceived();
+                presenter.updateWasReceived();
             }
         };
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(UPDATE);
-        registerReceiver(stopAlarmClockReceiver, intentFilter);
+        registerReceiver(updateAlarmClockReceiver, intentFilter);
         presenter.onActivityResume();
+        View view = new ClockView(MyApplication.getAppContext());
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        unregisterReceiver(stopAlarmClockReceiver);
+        unregisterReceiver(updateAlarmClockReceiver);
     }
 }

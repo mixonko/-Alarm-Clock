@@ -27,7 +27,7 @@ public interface MainContract {
         void onCreateButtonWasClicked();
         void onDeleteWasClicked(AlarmClock alarmClock, int position);
         void onActivityResult(int id);
-        void cancelWasReceived();
+        void updateWasReceived();
         void onActivityResume();
     }
 

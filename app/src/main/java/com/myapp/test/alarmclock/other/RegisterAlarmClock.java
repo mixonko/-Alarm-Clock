@@ -21,7 +21,6 @@ public class RegisterAlarmClock {
     public static Long registerAlarmClock(int id, int hour, int minute, DaysOfWeek daysOfWeek) {
         Calendar calendar = Calendar.getInstance();
         List<Integer> days= daysOfWeek.getDays();
-        Boolean disposable = null;
 
         if (daysOfWeek.getMonday() == 0 && daysOfWeek.getTuesday() == 0
                 && daysOfWeek.getWednesday() == 0 && daysOfWeek.getThursday() == 0
