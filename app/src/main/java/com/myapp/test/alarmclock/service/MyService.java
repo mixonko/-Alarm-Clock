@@ -15,13 +15,14 @@ import com.myapp.test.alarmclock.view.MyNotification;
 import java.util.Calendar;
 
 import static com.myapp.test.alarmclock.model.Repository.database;
+import static com.myapp.test.alarmclock.other.RegisterAlarmClock.registerAlarmClock;
 import static com.myapp.test.alarmclock.receiver.AlarmClockReceiver.SERVICE_INTENT;
-import static com.myapp.test.alarmclock.view.MainActivity.ALARM_CLOCK_OFF;
 import static com.myapp.test.alarmclock.view.MainActivity.INTENT_EXTRA;
+import static com.myapp.test.alarmclock.view.MainActivity.UPDATE;
 
 public class MyService extends Service {
     private int id;
-
+    private AlarmClock alarmClock;
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -35,7 +36,7 @@ public class MyService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         id = intent.getIntExtra(SERVICE_INTENT, 1);
-        AlarmClock alarmClock = database.alarmClockDao().getAlarmClock(id);
+        alarmClock = database.alarmClockDao().getAlarmClock(id);
 
         Calendar calendar = Calendar.getInstance();
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
@@ -53,7 +54,7 @@ public class MyService extends Service {
                 && friday == 0 && saturday == 0
                 && sunday == 0) {
             startNotification(alarmClock);
-//            alarmClockOff(alarmClock);
+            alarmClockOff(alarmClock);
         }
 
         if (monday == dayOfWeek || tuesday == dayOfWeek
@@ -77,33 +78,28 @@ public class MyService extends Service {
     }
 
     private void reuseAlarmClock(AlarmClock alarmClock) {
-        alarmClockOn(Integer.parseInt(alarmClock.getHour()),
-                Integer.parseInt(alarmClock.getMinute()), alarmClock.getId());
-    }
-
-    public void alarmClockOn(int hour, int minute, int id) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.set(Calendar.MINUTE, minute);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.add(Calendar.DATE, 1);
-        Intent intent = new Intent(MyApplication.getAppContext(), AlarmClockReceiver.class);
-        intent.addFlags(Intent.FLAG_RECEIVER_NO_ABORT);
-        intent.putExtra(INTENT_EXTRA, id);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(MyApplication.getAppContext(),
-                id, intent, PendingIntent.FLAG_IMMUTABLE);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-//        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-        AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), pendingIntent);
-        alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
+        Long timeInMillis = registerAlarmClock(alarmClock.getId(), Integer.parseInt(alarmClock.getHour()),
+                Integer.parseInt(alarmClock.getMinute()), alarmClock.getMonday(),
+                alarmClock.getTuesday(), alarmClock.getWednesday(), alarmClock.getThursday(),
+                alarmClock.getFriday(), alarmClock.getSaturday(), alarmClock.getSunday());
+        alarmClock.setTimeInMillis(timeInMillis);
+        updateDB(alarmClock);
+        updateList();
     }
 
     private void alarmClockOff(AlarmClock alarmClock) {
         alarmClock.setAlarmClockOn(false);
-        database.alarmClockDao().updateAlarmClock(alarmClock);
+        updateDB(alarmClock);
+        updateList();
+    }
 
+    private void updateDB(AlarmClock alarmClock){
+        database.alarmClockDao().updateAlarmClock(alarmClock);
+    }
+
+    private void updateList(){
         Intent myIntent = new Intent();
-        myIntent.setAction(ALARM_CLOCK_OFF);
+        myIntent.setAction(UPDATE);
         MyApplication.getAppContext().sendBroadcast(myIntent);
     }
 

@@ -77,6 +77,7 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void cancelWasReceived() {
         view.updateList(repository.getAllAlarmClocks());
+        setInfoText();
     }
 
     @Override
