@@ -5,10 +5,7 @@ import com.myapp.test.alarmclock.contract.RepositoryContract;
 import com.myapp.test.alarmclock.entity.AlarmClock;
 import com.myapp.test.alarmclock.model.Repository;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import static com.myapp.test.alarmclock.model.Repository.database;
 
@@ -38,11 +35,11 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onSwitchWasChanged(Boolean b, AlarmClock alarmClock) {
-        if (b){
+        if (b) {
             alarmClockOn(alarmClock);
-        }else {
+        } else {
             view.alarmClockOff(alarmClock.getId());
-            updateAlarmClock(alarmClock,false, 0L);
+            updateAlarmClock(alarmClock, false, 0L);
             setInfoText();
         }
     }
@@ -53,14 +50,14 @@ public class MainPresenter implements MainContract.Presenter {
         alarmClockOn(alarmClock);
     }
 
-    private void alarmClockOn(AlarmClock alarmClock){
+    private void alarmClockOn(AlarmClock alarmClock) {
         Long timeInMillis = view.alarmClockOn(alarmClock.getId(), Integer.parseInt(alarmClock.getHour()),
                 Integer.parseInt(alarmClock.getMinute()), alarmClock.getMonday(),
                 alarmClock.getTuesday(), alarmClock.getWednesday(), alarmClock.getThursday(),
                 alarmClock.getFriday(), alarmClock.getSaturday(), alarmClock.getSunday());
-        updateAlarmClock(alarmClock,true, timeInMillis);
+        updateAlarmClock(alarmClock, true, timeInMillis);
         setInfoText();
-        view.showAlarmClockOn(alarmClock.getHour(), alarmClock.getMinute());
+        view.showAlarmClockOn(differenceTime(alarmClock.getTimeInMillis()));
     }
 
     @Override
@@ -74,6 +71,7 @@ public class MainPresenter implements MainContract.Presenter {
         view.alarmClockOff(alarmClock.getId());
         repository.deleteAlarmClock(alarmClock);
         view.deleteItem(position);
+        setInfoText();
     }
 
     @Override
@@ -87,36 +85,44 @@ public class MainPresenter implements MainContract.Presenter {
         setInfoText();
     }
 
-    private void setInfoText(){
+    private void setInfoText() {
         try {
-            view.setInfoText(timeUntilNextAlarmClock());
+            view.setInfoText(differenceTime(repository.getWorkingAlarms(true).get(0)));
         } catch (Exception e) {
             view.setInfoText("Нет будильников");
         }
     }
 
-    private void updateAlarmClock(AlarmClock alarmClock, Boolean b, Long timeInMillis){
+    private void updateAlarmClock(AlarmClock alarmClock, Boolean b, Long timeInMillis) {
         alarmClock.setAlarmClockOn(b);
         alarmClock.setTimeInMillis(timeInMillis);
         repository.updateAlarmClock(alarmClock);
     }
 
-    public String timeUntilNextAlarmClock() throws Exception {
-        DateFormat df;
-        Long myTimeInMillis = repository.getSortByTimemillis(true).get(0);
-        Calendar calendar = Calendar.getInstance();
-        Long timeInMillis = calendar.getTimeInMillis();
-        long difference = myTimeInMillis - timeInMillis - 10800000 - 86400000 ;
-        if (difference > 86340000){
-            df = new SimpleDateFormat("Сработает через dd д HH ч mm мин.");
-        }else{
-            df = new SimpleDateFormat("Сработает через HH ч mm мин.");
-
+    public String differenceTime(Long myTimeInMillis) {
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("Сработает через ");
+        Long timeInMillis = Calendar.getInstance().getTimeInMillis();
+        long difference = myTimeInMillis - timeInMillis;
+        long days = (difference / (24 * 60 * 60 * 1000));
+        long d = 24 * 60 * 60 * 1000 * days;
+        long hour = (difference - d) / (60 * 60 * 1000);
+        long h = 1000 * 60 * 60 * hour;
+        long minute = (difference - d - h) / (60 * 1000);
+        if (days != 0) {
+            stringBuffer.append(days + " д. ");
+        }
+        if (hour != 0) {
+            stringBuffer.append(hour + " ч. ");
         }
 
-        Date date = new Date(difference);
-        String time = df.format(date) ;
-        return time;
+        if (minute != 0) {
+            stringBuffer.append(minute + " мин.");
+        }
+        if (days == 0 && hour == 0 && minute == 0) {
+            stringBuffer.append("1 минуту");
+        }
+        return stringBuffer.toString();
     }
 
 }

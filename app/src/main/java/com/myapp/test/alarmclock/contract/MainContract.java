@@ -10,7 +10,7 @@ public interface MainContract {
         void startChangeActivity(int id);
         Long alarmClockOn(int id, int hour, int minute, int monday, int tuesday, int wednesday, int thursday, int friday, int saturday, int sunday);
         void alarmClockOff(int id);
-        void showAlarmClockOn(String hour, String minute);
+        void showAlarmClockOn(String info);
         void showDeleteDialog(AlarmClock alarmClock, int position, String days);
         void deleteItem(int position);
         void updateList(List<AlarmClock> list);

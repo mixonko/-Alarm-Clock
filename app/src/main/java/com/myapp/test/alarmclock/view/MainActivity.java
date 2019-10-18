@@ -132,14 +132,15 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         if (monday == 0 && tuesday == 0
                 && wednesday == 0 && thursday == 0
                 && friday == 0 && saturday == 0
-                && sunday == 0){
+                && sunday == 0) {
             calendar.set(Calendar.HOUR_OF_DAY, hour);
             calendar.set(Calendar.MINUTE, minute);
             calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
             if (calendar.before(Calendar.getInstance())) {
                 calendar.add(Calendar.DATE, 1);
             }
-        }else {
+        } else {
             List<Integer> l = new ArrayList();
             l.add(monday);
             l.add(tuesday);
@@ -151,32 +152,31 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             calendar.set(Calendar.HOUR_OF_DAY, hour);
             calendar.set(Calendar.MINUTE, minute);
             calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
             for (int i = 0; i < l.size(); i++) {
-                if (l.contains(calendar.get(Calendar.DAY_OF_WEEK))){
+                if (l.contains(calendar.get(Calendar.DAY_OF_WEEK))) {
                     if (calendar.before(Calendar.getInstance())) {
                         calendar.add(Calendar.DATE, 1);
+                        continue;
                     }
                     break;
-                }else {
+                } else {
                     calendar.add(Calendar.DATE, 1);
                 }
             }
         }
 
-
-
+        Long timeInMillis = calendar.getTimeInMillis();
         Intent intent = new Intent(MyApplication.getAppContext(), AlarmClockReceiver.class);
         intent.addFlags(Intent.FLAG_RECEIVER_NO_ABORT);
         intent.putExtra(INTENT_EXTRA, id);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(MyApplication.getAppContext(),
                 id, intent, PendingIntent.FLAG_IMMUTABLE);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), pendingIntent);
+        AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(timeInMillis, pendingIntent);
         alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
 
-
-
-        return calendar.getTimeInMillis();
+        return timeInMillis;
     }
 
     @Override
@@ -193,17 +193,15 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void showAlarmClockOn(String hour, String minute) {
-        Toast.makeText(MyApplication.getAppContext(),
-                "Будильник включен на " + hour + ":" + minute,
-                Toast.LENGTH_SHORT).show();
+    public void showAlarmClockOn(String info) {
+        Toast.makeText(MyApplication.getAppContext(), info, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void showDeleteDialog(final AlarmClock alarmClock, final int position, String days) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Удалить будильник на " + alarmClock.getHour() +
-                ":" + alarmClock.getMinute() + " (" + days.trim() + ")"+" ?")
+                ":" + alarmClock.getMinute() + " (" + days.trim() + ")" + " ?")
                 .setCancelable(false)
                 .setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
                     @Override
