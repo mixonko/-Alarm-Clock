@@ -197,10 +197,10 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
     }
 
     @Override
-    public void showDaysDialog(List<String> daysList, List<Integer> checkedDays) {
+    public void showDaysDialog(List<String> daysList, DaysOfWeek daysOfWeek) {
         RecyclerView recyclerView = new RecyclerView(MyApplication.getAppContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MyApplication.getAppContext());
-        final ExampleDaysAdapter adapter = new ExampleDaysAdapter(daysList, checkedDays);
+        final ExampleDaysAdapter adapter = new ExampleDaysAdapter(daysList, daysOfWeek);
 
         adapter.setOnItemClickListener(new ExampleDaysAdapter.OnItemClickListener() {
 
@@ -251,6 +251,7 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
     @Override
     public void setPickedDaysText(String daysOfWeekText) {
         days.setText(daysOfWeekText);
+        mPickedDaysText = daysOfWeekText;
     }
 
     @Override

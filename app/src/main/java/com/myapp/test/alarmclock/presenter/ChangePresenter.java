@@ -57,7 +57,7 @@ public class ChangePresenter implements ChangeContract.presenter {
 
     @Override
     public void onDaysWasClicked() {
-        view.showDaysDialog(view.getDaysList(), view.getDaysOfWeek().getDays());
+        view.showDaysDialog(view.getDaysList(), view.getDaysOfWeek());
     }
 
     @Override

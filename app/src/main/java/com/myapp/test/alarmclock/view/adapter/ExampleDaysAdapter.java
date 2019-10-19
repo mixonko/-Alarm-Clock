@@ -5,7 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.myapp.test.alarmclock.R;
 import com.myapp.test.alarmclock.entity.DaysOfWeek;
@@ -37,10 +36,17 @@ public class ExampleDaysAdapter extends RecyclerView.Adapter<ExampleDaysAdapter.
     private static String st = "";
     private static String sn = "";
 
-    public ExampleDaysAdapter(List<String> exampleItems, List<Integer> checkedDays) {
-        this.exampleItems = exampleItems;
-        this.checkedDays = checkedDays;
 
+    public ExampleDaysAdapter(List<String> exampleItems, DaysOfWeek daysOfWeek) {
+        this.exampleItems = exampleItems;
+        this.checkedDays = daysOfWeek.getDays();
+        this.monday = daysOfWeek.getMonday();
+        this.tuesday = daysOfWeek.getTuesday();
+        this.wednesday = daysOfWeek.getWednesday();
+        this.thursday = daysOfWeek.getThursday();
+        this.friday = daysOfWeek.getFriday();
+        this.saturday = daysOfWeek.getSaturday();
+        this.sunday = daysOfWeek.getSunday();
     }
 
     public interface OnItemClickListener {
@@ -54,113 +60,132 @@ public class ExampleDaysAdapter extends RecyclerView.Adapter<ExampleDaysAdapter.
     public static class ExampleViewHolder extends RecyclerView.ViewHolder {
         public TextView day;
         public CheckBox check;
-        public ExampleViewHolder(@NonNull View itemView, final OnItemClickListener listener ) {
+        DaysOfWeek daysOfWeek = new DaysOfWeek(0, 0, 0, 0, 0, 0, 0);
+        private String pickedDaysText;
+
+        public ExampleViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             day = itemView.findViewById(R.id.dayOfWeek);
             check = itemView.findViewById(R.id.check);
-
             itemView.setOnClickListener(new View.OnClickListener() {
+
                 @Override
                 public void onClick(View view) {
 
                     if (listener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            if (position == 0){
+                            if (position == 0) {
                                 setChecked();
-                                if (check.isChecked()){
+                                if (check.isChecked()) {
                                     monday = 2;
                                     mn = " пн";
-                                }else {
+                                } else {
                                     monday = 0;
                                     mn = "";
                                 }
                             }
-                            if (position == 1){
+                            if (position == 1) {
                                 setChecked();
-                                if (check.isChecked()){
+                                if (check.isChecked()) {
                                     tuesday = 3;
                                     ts = " вт";
-                                }else{
+                                } else {
                                     tuesday = 0;
                                     ts = "";
                                 }
                             }
-                            if (position == 2){
+                            if (position == 2) {
                                 setChecked();
-                                if (check.isChecked()){
+                                if (check.isChecked()) {
                                     wednesday = 4;
                                     wd = " ср";
 
-                                }else {
+                                } else {
                                     wednesday = 0;
                                     wd = "";
                                 }
                             }
-                            if (position == 3){
+                            if (position == 3) {
                                 setChecked();
-                                if (check.isChecked()){
+                                if (check.isChecked()) {
                                     thursday = 5;
                                     th = " чт";
-                                }else {
+                                } else {
                                     thursday = 0;
                                     th = "";
                                 }
                             }
-                            if (position == 4){
+                            if (position == 4) {
                                 setChecked();
-                                if (check.isChecked()){
+                                if (check.isChecked()) {
                                     friday = 6;
                                     fr = " пт";
-                                }else {
+                                } else {
                                     friday = 0;
                                     fr = "";
                                 }
                             }
-                            if (position == 5){
+                            if (position == 5) {
                                 setChecked();
-                                if (check.isChecked()){
+                                if (check.isChecked()) {
                                     saturday = 7;
                                     st = " сб";
-                                }else {
+                                } else {
                                     saturday = 0;
                                     st = "";
                                 }
                             }
-                            if (position == 6){
+                            if (position == 6) {
                                 setChecked();
-                                if (check.isChecked()){
+                                if (check.isChecked()) {
                                     sunday = 1;
                                     sn = " вс";
 
-                                }else {
+                                } else {
                                     sunday = 0;
                                     sn = "";
                                 }
                             }
-                            String pickedDaysText;
+                            if (monday != 0)
+                                mn = "пн";
+                            if (tuesday != 0)
+                                ts = " вт";
+                            if (wednesday != 0)
+                                wd = " ср";
+                            if (thursday != 0)
+                                th = " чт";
+                            if (friday != 0)
+                                fr = " пт";
+                            if (saturday != 0)
+                                st = " сб";
+                            if (sunday != 0)
+                                sn = " вс";
+
                             StringBuffer stringBuffer = new StringBuffer();
+                            stringBuffer.append(mn);
+                            stringBuffer.append(ts);
+                            stringBuffer.append(wd);
+                            stringBuffer.append(th);
+                            stringBuffer.append(fr);
+                            stringBuffer.append(st);
+                            stringBuffer.append(sn);
+                            pickedDaysText = stringBuffer.toString();
                             if (monday != 0 && tuesday != 0 && wednesday != 0 && thursday != 0 &&
-                                    friday != 0 && saturday != 0 && sunday != 0){
+                                    friday != 0 && saturday != 0 && sunday != 0) {
                                 pickedDaysText = MyApplication.getAppContext().getString(R.string.everyday);
-                            }else {
-                                stringBuffer.append(mn);
-                                stringBuffer.append(ts);
-                                stringBuffer.append(wd);
-                                stringBuffer.append(th);
-                                stringBuffer.append(fr);
-                                stringBuffer.append(st);
-                                stringBuffer.append(sn);
-                                pickedDaysText = stringBuffer.toString();
-                            }
-                             
-                            if (pickedDaysText.length()==0){
-                                pickedDaysText = MyApplication.getAppContext().getString(R.string.without_replay);
                             }
 
-                            DaysOfWeek daysOfWeek = new DaysOfWeek(monday, tuesday, wednesday, thursday, friday, saturday, sunday);
-                            Toast.makeText(MyApplication.getAppContext(), String.valueOf(daysOfWeek.getMonday()+ daysOfWeek.getTuesday()+ daysOfWeek.getWednesday()+ daysOfWeek.getThursday()+ daysOfWeek
-                            .getFriday()+ daysOfWeek.getSaturday() + daysOfWeek.getSunday()), Toast.LENGTH_LONG).show();
+                            if (pickedDaysText.length() == 0) {
+                                pickedDaysText = MyApplication.getAppContext().getString(R.string.without_replay);
+                            }
+                            daysOfWeek.setMonday(monday);
+                            daysOfWeek.setTuesday(tuesday);
+                            daysOfWeek.setWednesday(wednesday);
+                            daysOfWeek.setThursday(thursday);
+                            daysOfWeek.setFriday(friday);
+                            daysOfWeek.setSaturday(saturday);
+                            daysOfWeek.setSunday(sunday);
                             listener.onItemClick(daysOfWeek, pickedDaysText);
 
                         }
@@ -170,7 +195,7 @@ public class ExampleDaysAdapter extends RecyclerView.Adapter<ExampleDaysAdapter.
 
         }
 
-        private void setChecked(){
+        private void setChecked() {
             check.setChecked(!check.isChecked());
         }
 
@@ -187,7 +212,7 @@ public class ExampleDaysAdapter extends RecyclerView.Adapter<ExampleDaysAdapter.
     @Override
     public void onBindViewHolder(@NonNull ExampleViewHolder exampleViewHolder, int i) {
         String currentItem = exampleItems.get(i);
-        Boolean isChecked = checkedDays.get(i) !=0 ? true : false;
+        Boolean isChecked = checkedDays.get(i) != 0 ? true : false;
         exampleViewHolder.day.setText(currentItem);
         exampleViewHolder.check.setChecked(isChecked);
     }
@@ -197,7 +222,7 @@ public class ExampleDaysAdapter extends RecyclerView.Adapter<ExampleDaysAdapter.
         return exampleItems.size();
     }
 
-    public void clearData(){
+    public void clearData() {
         monday = 0;
         tuesday = 0;
         wednesday = 0;

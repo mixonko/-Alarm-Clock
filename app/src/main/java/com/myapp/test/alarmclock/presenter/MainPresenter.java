@@ -20,7 +20,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onActivityCreate() {
-        view.setList(repository.getAllAlarmClocks());
+            view.setList(repository.getAllAlarmClocks());
     }
 
     @Override
@@ -74,13 +74,13 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void updateWasReceived() {
-        view.updateList(repository.getAllAlarmClocks());
+            view.updateList(repository.getAllAlarmClocks());
         setInfoText();
     }
 
     @Override
     public void onActivityResume() {
-        view.updateList(repository.getAllAlarmClocks());
+            view.updateList(repository.getAllAlarmClocks());
         setInfoText();
     }
 

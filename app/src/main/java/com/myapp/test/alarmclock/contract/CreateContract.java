@@ -14,7 +14,7 @@ public interface CreateContract {
         Boolean getVibrationInfo();
         String getDescription();
         List<String> getDaysList();
-        void showDaysDialog(List<String>daysList, List<Integer>checkedDays);
+        void showDaysDialog(List<String>daysList, DaysOfWeek daysOfWeek);
         void showRingtones();
         String getRingtonePath();
         void setActivityResult(int id);
@@ -31,7 +31,7 @@ public interface CreateContract {
         void onDescriptionWasClicked();
         void onDescriptionDone(String description);
         void onDaysWasClicked();
-        void saveDaysWasClicked( );
+        void saveDaysWasClicked();
         void onRingtonesWasClicked();
         void onRingtoneResult(String ringtoneName);
         void onVibrationWasClicked();

@@ -28,6 +28,7 @@ import com.myapp.test.alarmclock.presenter.MainPresenter;
 import com.myapp.test.alarmclock.view.adapter.ExampleAdapter;
 import com.myapp.test.alarmclock.view.other.ClockView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.myapp.test.alarmclock.other.RegisterAlarmClock.registerAlarmClock;
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private RecyclerView recyclerView;
     private ExampleAdapter exampleAdapter;
     private LinearLayoutManager linearLayoutManager;
-    private List<AlarmClock> list;
+    private List<AlarmClock> list = new ArrayList<>();
     private BroadcastReceiver updateAlarmClockReceiver;
     public static final String INTENT_EXTRA = "INTENT_EXTRA";
     public static final String ALARM_CLOCK_ID = "ALARM_CLOCK_ID";
@@ -54,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         setContentView(R.layout.activity_main);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.alarm_clock);
+
+        list.add(new AlarmClock("Asd", "ASdasd",0, true,true, "dsad", new DaysOfWeek(0,0,0,0,0,0,0), "sadasd","Asdasd", "asd"));
 
         presenter = new MainPresenter(this);
 
@@ -95,7 +98,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 presenter.onSwitchWasChanged(b, alarmClock);
             }
         });
-
     }
 
     @Override
@@ -184,17 +186,16 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     protected void onResume() {
         super.onResume();
-        updateAlarmClockReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                presenter.updateWasReceived();
-            }
-        };
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(UPDATE);
-        registerReceiver(updateAlarmClockReceiver, intentFilter);
-        presenter.onActivityResume();
-        View view = new ClockView(MyApplication.getAppContext());
+            updateAlarmClockReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    presenter.updateWasReceived();
+                }
+            };
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(UPDATE);
+            registerReceiver(updateAlarmClockReceiver, intentFilter);
+            presenter.onActivityResume();
     }
 
     @Override

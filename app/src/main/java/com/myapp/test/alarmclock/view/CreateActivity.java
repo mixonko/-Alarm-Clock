@@ -47,7 +47,7 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     private FrameLayout soundLayout, descriptionLayout, daysLayout, vibrationLayout;
     private TextView ringtoneText, description, days;
     private androidx.appcompat.widget.SwitchCompat vibrationSignal;
-    private DaysOfWeek mDaysOfWeek = new DaysOfWeek(0,0,0,0,0,0,0);
+    private DaysOfWeek mDaysOfWeek ;
     private String mPickedDaysText;
     private String ringtonePath;
     private String ringtoneName;
@@ -81,6 +81,7 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
         ringtonePath = RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI;
         ringtoneName = MyApplication.getAppContext().getString(R.string.defauly_ringtone);
         mPickedDaysText = MyApplication.getAppContext().getString(R.string.without_replay);
+        mDaysOfWeek = new DaysOfWeek(0,0,0,0,0,0,0);
 
     }
 
@@ -167,10 +168,10 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     }
 
     @Override
-    public void showDaysDialog(List<String> daysList, List<Integer> checkedDays) {
+    public void showDaysDialog(List<String> daysList, DaysOfWeek daysOfWeek) {
         RecyclerView recyclerView = new RecyclerView(MyApplication.getAppContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MyApplication.getAppContext());
-        final ExampleDaysAdapter adapter = new ExampleDaysAdapter(daysList, checkedDays);
+        final ExampleDaysAdapter adapter = new ExampleDaysAdapter(daysList, daysOfWeek);
         adapter.setOnItemClickListener(new ExampleDaysAdapter.OnItemClickListener() {
 
             @Override

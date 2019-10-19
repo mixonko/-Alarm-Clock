@@ -11,7 +11,6 @@ public class CreatePresenter implements CreateContract.presenter {
 
     private CreateContract.view view;
     private RepositoryContract repository;
-
     public CreatePresenter(CreateContract.view view) {
         this.view = view;
         repository = new Repository();
@@ -24,10 +23,13 @@ public class CreatePresenter implements CreateContract.presenter {
                 view.getVibrationInfo(), view.getDescription(), view.getDaysOfWeek(),
                 view.getRingtoneName(), view.getRingtonePath(),view.getPickedDaysText());
         repository.addAlarmClock(alarmClock);
-        List<AlarmClock> list = repository.getAllAlarmClocks();
-        alarmClock = list.get(list.size() - 1);
-        view.setActivityResult(alarmClock.getId());
-        view.close();
+        try {
+            List<AlarmClock> list = repository.getAllAlarmClocks();
+            alarmClock = list.get(list.size() - 1);
+            view.setActivityResult(alarmClock.getId());
+            view.close();
+        } catch (Exception e) { }
+
     }
 
     @Override
@@ -42,7 +44,7 @@ public class CreatePresenter implements CreateContract.presenter {
 
     @Override
     public void onDaysWasClicked() {
-        view.showDaysDialog(view.getDaysList(), view.getDaysOfWeek().getDays());
+        view.showDaysDialog(view.getDaysList(), view.getDaysOfWeek());
     }
 
     @Override

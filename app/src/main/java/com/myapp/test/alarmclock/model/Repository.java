@@ -41,7 +41,7 @@ public class Repository implements RepositoryContract {
     }
 
     @Override
-    public List<Long> getWorkingAlarms(Boolean alarmClockOn) throws EmptyStackException {
+    public List<Long> getWorkingAlarms(Boolean alarmClockOn) throws Exception{
         return database.alarmClockDao().getWorkingAlarms(alarmClockOn);
     }
 }

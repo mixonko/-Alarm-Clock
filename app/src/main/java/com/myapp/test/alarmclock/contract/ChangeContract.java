@@ -16,7 +16,7 @@ public interface ChangeContract {
         int getMinute();
         Boolean getVibrationInfo();
         String getDescription();
-        void showDaysDialog(List<String>daysList, List<Integer>checkedDays);
+        void showDaysDialog(List<String>daysList, DaysOfWeek daysOfWeek);
         List<String> getDaysList();
         String getRingtonePath();
         String getRingtoneName();

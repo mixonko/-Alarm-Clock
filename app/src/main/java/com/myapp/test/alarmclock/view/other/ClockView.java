@@ -70,7 +70,7 @@ public class ClockView extends View {
         drawCenterCircle(canvas);
         drawHands(canvas);
 
-        postInvalidateDelayed(500);
+        postInvalidateDelayed(250);
     }
 
     private void drawOuterCircle(Canvas canvas) {
