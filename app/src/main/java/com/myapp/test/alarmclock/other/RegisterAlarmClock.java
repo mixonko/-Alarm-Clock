@@ -53,11 +53,11 @@ public class RegisterAlarmClock {
 
         Long timeInMillis = calendar.getTimeInMillis();
         Intent intent = new Intent(MyApplication.getAppContext(), AlarmClockReceiver.class);
-        intent.addFlags(Intent.FLAG_RECEIVER_NO_ABORT);
         intent.putExtra(INTENT_EXTRA, id);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(MyApplication.getAppContext(),
                 id, intent, PendingIntent.FLAG_IMMUTABLE);
         AlarmManager alarmManager = (AlarmManager) MyApplication.getAppContext().getSystemService(ALARM_SERVICE);
+        assert alarmManager != null;
         AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(timeInMillis, pendingIntent);
         alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
 
@@ -66,13 +66,11 @@ public class RegisterAlarmClock {
 
     public static void unRegisterAlarmClock(int id) {
         Intent intent = new Intent(MyApplication.getAppContext(), AlarmClockReceiver.class);
-        intent.addFlags(Intent.FLAG_RECEIVER_NO_ABORT);
         intent.putExtra(INTENT_EXTRA, id);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(MyApplication.getAppContext(),
                 id, intent, PendingIntent.FLAG_IMMUTABLE);
         AlarmManager alarmManager = (AlarmManager) MyApplication.getAppContext().getSystemService(ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
         pendingIntent.cancel();
-
     }
 }

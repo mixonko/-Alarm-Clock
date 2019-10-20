@@ -3,7 +3,6 @@ package com.myapp.test.alarmclock.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 
 import com.myapp.test.alarmclock.myAppContext.MyApplication;
 import com.myapp.test.alarmclock.view.MainActivity;
@@ -14,13 +13,10 @@ public class AlarmClockReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, final Intent intent) {
-
         int id = intent.getIntExtra(MainActivity.INTENT_EXTRA, 1);
-        Intent myIntent = new Intent(MyApplication.getAppContext(), MyService.class);
+        Intent myIntent = new Intent(context, MyService.class);
         myIntent.putExtra(SERVICE_INTENT, id);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            MyApplication.getAppContext().startService(myIntent);
-        }
+        MyApplication.getAppContext().startService(myIntent);
 
     }
 

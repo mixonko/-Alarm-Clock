@@ -1,7 +1,6 @@
 package com.myapp.test.alarmclock.view;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -110,7 +109,7 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.description:
+            case R.id.description_layout:
                 presenter.onDescriptionWasClicked();
                 break;
             case R.id.days_of_week:
@@ -172,8 +171,12 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
     }
 
     @Override
-    public void setDescription(String description) {
-        this.description.setText(description);
+    public void setDescriptionText(String description) {
+        if (description.isEmpty()) {
+            this.description.setText(R.string.alarm_clock);
+        } else {
+            this.description.setText(description);
+        }
     }
 
     @Override
@@ -241,6 +244,11 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
     @Override
     public String getRingtonePath() {
         return ringtonePath;
+    }
+
+    @Override
+    public void setRingtonePath(String ringtonePath) {
+        this.ringtonePath = ringtonePath;
     }
 
     @Override
@@ -317,6 +325,7 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
     @Override
     public void setRingtoneNameText(String ringtoneName) {
         ringtoneText.setText(ringtoneName);
+        this.ringtoneName = ringtoneName;
     }
 
     @Override
@@ -326,8 +335,6 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
         setResult(RESULT_OK, intent);
     }
 
-    @SuppressLint( "WrongConstant" )
-    @Override
     public long getTimeInMillis(int hour, int minute) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, hour);

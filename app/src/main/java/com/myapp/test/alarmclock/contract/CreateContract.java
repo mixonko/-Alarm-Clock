@@ -10,7 +10,7 @@ public interface CreateContract {
         int getHour();
         int getMinute();
         void showDescriptionDialog();
-        void setDescription(String description);
+        void setDescriptionText(String description);
         Boolean getVibrationInfo();
         String getDescription();
         List<String> getDaysList();

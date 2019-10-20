@@ -26,7 +26,6 @@ import com.myapp.test.alarmclock.entity.DaysOfWeek;
 import com.myapp.test.alarmclock.myAppContext.MyApplication;
 import com.myapp.test.alarmclock.presenter.MainPresenter;
 import com.myapp.test.alarmclock.view.adapter.ExampleAdapter;
-import com.myapp.test.alarmclock.view.other.ClockView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,8 +55,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.alarm_clock);
 
-        list.add(new AlarmClock("Asd", "ASdasd",0, true,true, "dsad", new DaysOfWeek(0,0,0,0,0,0,0), "sadasd","Asdasd", "asd"));
-
         presenter = new MainPresenter(this);
 
         create = findViewById(R.id.create);
@@ -73,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             }
         });
 
-        presenter.onActivityCreate();
         exampleAdapter = new ExampleAdapter(this.list);
         recyclerView.setAdapter(exampleAdapter);
         exampleAdapter.setOnItemClickListener(new ExampleAdapter.OnItemClickListener() {

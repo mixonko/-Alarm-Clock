@@ -22,8 +22,9 @@ public class ChangePresenter implements ChangeContract.presenter {
         view.setHour(Integer.parseInt(alarmClock.getHour()));
         view.setMinute(Integer.parseInt(alarmClock.getMinute()));
         view.setVibration(alarmClock.getVibration());
-        view.setDescription(alarmClock.getDescription());
+        view.setDescriptionText(alarmClock.getDescription());
         view.setRingtoneNameText(alarmClock.getRingtoneName());
+        view.setRingtonePath(alarmClock.getRingtonePath());
         view.setPickedDaysText(alarmClock.getPickedDaysText());
         view.setDaysOfWeek(alarmClock.getDaysOfWeek());
     }
@@ -52,7 +53,7 @@ public class ChangePresenter implements ChangeContract.presenter {
 
     @Override
     public void onDescriptionDone(String description) {
-        view.setDescription(description);
+        view.setDescriptionText(description);
     }
 
     @Override

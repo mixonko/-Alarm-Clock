@@ -20,7 +20,6 @@ public interface MainContract {
     }
 
     interface Presenter{
-        void onActivityCreate();
         void onItemWasClicked(AlarmClock alarmClock);
         void onItemWasLongClicked(AlarmClock alarmClock, int position);
         void onSwitchWasChanged(Boolean b, AlarmClock alarmClock);

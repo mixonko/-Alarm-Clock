@@ -28,7 +28,7 @@ public class CreatePresenter implements CreateContract.presenter {
             alarmClock = list.get(list.size() - 1);
             view.setActivityResult(alarmClock.getId());
             view.close();
-        } catch (Exception e) { }
+        } catch (Exception e) {  }
 
     }
 
@@ -39,7 +39,7 @@ public class CreatePresenter implements CreateContract.presenter {
 
     @Override
     public void onDescriptionDone(String description) {
-        view.setDescription(description);
+        view.setDescriptionText(description);
     }
 
     @Override

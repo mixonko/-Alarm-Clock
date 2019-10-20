@@ -142,7 +142,7 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     }
 
     @Override
-    public void setDescription(String description) {
+    public void setDescriptionText(String description) {
         if (description.isEmpty()) {
             this.description.setText(R.string.alarm_clock);
         } else {
@@ -269,7 +269,7 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
                 }
             }
         }
-        return  fileName;
+        return fileName;
     }
 
     @Override

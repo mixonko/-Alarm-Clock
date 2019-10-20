@@ -4,7 +4,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.IBinder;
-import android.widget.Toast;
 
 import com.myapp.test.alarmclock.entity.AlarmClock;
 import com.myapp.test.alarmclock.myAppContext.MyApplication;
@@ -18,6 +17,7 @@ import static com.myapp.test.alarmclock.view.MainActivity.UPDATE;
 public class MyService extends Service {
     private int id;
     private AlarmClock alarmClock;
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -29,7 +29,8 @@ public class MyService extends Service {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(final Intent intent, int flags, int startId) {
+
         id = intent.getIntExtra(SERVICE_INTENT, 1);
         alarmClock = database.alarmClockDao().getAlarmClock(id);
 
@@ -39,12 +40,12 @@ public class MyService extends Service {
                 && alarmClock.getDaysOfWeek().getSunday() == 0) {
             startNotification(alarmClock);
             alarmClockOff(alarmClock);
-        }else  {
+        } else {
             startNotification(alarmClock);
             reuseAlarmClock(alarmClock);
         }
 
-        return super.onStartCommand(intent, flags, startId);
+        return Service.START_NOT_STICKY;
     }
 
     private void startNotification(AlarmClock alarmClock) {
@@ -70,11 +71,11 @@ public class MyService extends Service {
         updateList();
     }
 
-    private void updateDB(AlarmClock alarmClock){
+    private void updateDB(AlarmClock alarmClock) {
         database.alarmClockDao().updateAlarmClock(alarmClock);
     }
 
-    private void updateList(){
+    private void updateList() {
         Intent myIntent = new Intent();
         myIntent.setAction(UPDATE);
         MyApplication.getAppContext().sendBroadcast(myIntent);
@@ -88,4 +89,5 @@ public class MyService extends Service {
         myNotification.stopVibration();
         myNotification.deleteNotification(id);
     }
+
 }

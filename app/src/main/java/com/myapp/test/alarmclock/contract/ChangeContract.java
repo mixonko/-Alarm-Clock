@@ -11,7 +11,7 @@ public interface ChangeContract {
         void setMinute(int minute);
         void setVibration(Boolean vibration);
         void showDescriptionDialog();
-        void setDescription(String description);
+        void setDescriptionText(String description);
         int getHour();
         int getMinute();
         Boolean getVibrationInfo();
@@ -19,6 +19,7 @@ public interface ChangeContract {
         void showDaysDialog(List<String>daysList, DaysOfWeek daysOfWeek);
         List<String> getDaysList();
         String getRingtonePath();
+        void setRingtonePath(String ringtonePath);
         String getRingtoneName();
         void setRingtoneNameText(String ringtoneName);
         void showRingtones();
