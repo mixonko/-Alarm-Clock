@@ -15,7 +15,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
+import android.widget.ImageSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,11 +45,17 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private LinearLayoutManager linearLayoutManager;
     private List<AlarmClock> list = new ArrayList<>();
     private BroadcastReceiver updateAlarmClockReceiver;
+    private ImageSwitcher imageSwitcher;
     public static final String INTENT_EXTRA = "INTENT_EXTRA";
     public static final String ALARM_CLOCK_ID = "ALARM_CLOCK_ID";
     public static final String UPDATE = "UPDATE";
     public static final String RESULT_ID = "RESULT_ID";
     public static final int RESULT_REQUEST_CODE = 1;
+
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event) {
+//        return super.onTouchEvent(event);
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +69,15 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         create = findViewById(R.id.create);
         infoText = findViewById(R.id.info_text);
         recyclerView = findViewById(R.id.list);
+        imageSwitcher = findViewById(R.id.image_switcher);
+        setImageSwAnim();
+
+        imageSwitcher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imageSwitcher.showNext();
+            }
+        });
         linearLayoutManager = new LinearLayoutManager(MyApplication.getAppContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
@@ -94,6 +112,16 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 presenter.onSwitchWasChanged(b, alarmClock);
             }
         });
+    }
+
+    private void setImageSwAnim() {
+        Animation inAnimation = new AlphaAnimation(0, 1);
+        inAnimation.setDuration(500);
+        Animation outAnimation = new AlphaAnimation(1, 0);
+        outAnimation.setDuration(500);
+
+        imageSwitcher.setInAnimation(inAnimation);
+        imageSwitcher.setOutAnimation(outAnimation); 
     }
 
     @Override

@@ -154,7 +154,9 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
         LayoutInflater layoutInflater = getLayoutInflater();
         View v = layoutInflater.inflate(R.layout.description, null, false);
         final EditText et = v.findViewById(R.id.des);
+        et.setText(description.getText().toString());
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.description);
         builder.setView(v);
         builder.setPositiveButton("Ок", new DialogInterface.OnClickListener() {
             @Override

@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -70,7 +69,7 @@ public class ClockView extends View {
         drawCenterCircle(canvas);
         drawHands(canvas);
 
-        postInvalidateDelayed(250);
+        postInvalidateDelayed(100);
     }
 
     private void drawOuterCircle(Canvas canvas) {
@@ -115,8 +114,6 @@ public class ClockView extends View {
 
     private void drawHands(Canvas canvas) {
         Calendar calendar = Calendar.getInstance();
-        float hour = calendar.get(Calendar.HOUR_OF_DAY);
-        hour = hour > 12 ? hour - 12 : hour;
 
         float minuteOfDay = calendar.get(Calendar.MINUTE) + 60 * calendar.get(Calendar.HOUR_OF_DAY);
         minuteOfDay = calendar.get(Calendar.HOUR_OF_DAY) > 12 ? minuteOfDay - 12 * 60 : minuteOfDay;

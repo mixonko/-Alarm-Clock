@@ -7,8 +7,19 @@
     android:layout_margin="10dp"
     tools:context=".view.MainActivity">
 
+    <ImageSwitcher
+        android:id="@+id/image_switcher"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:layout_gravity="center">
+
     <com.myapp.test.alarmclock.view.other.ClockView
         style="@style/myClockView"/>
+
+    <com.myapp.test.alarmclock.view.other.DigitalClockView
+        style="@style/myClockView"/>
+
+    </ImageSwitcher>
 
     <TextView
         android:id="@+id/info_text"
