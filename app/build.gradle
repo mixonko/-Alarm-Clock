@@ -28,4 +28,7 @@ dependencies {
     implementation "android.arch.persistence.room:runtime:$room_version"
     annotationProcessor "android.arch.persistence.room:compiler:$room_version"
 
+    //swipe button
+    implementation "com.ebanx:swipe-button:0.8.0"
+
 }

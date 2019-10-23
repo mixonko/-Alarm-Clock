@@ -54,7 +54,7 @@ public class MyService extends Service {
                 alarmClock.getHour() + ":" + alarmClock.getMinute(), id);
         myNotification.playRingtone(Uri.parse(alarmClock.getRingtonePath()));
         if (alarmClock.getVibration())
-            myNotification.startVibration(20000);
+            myNotification.startVibration(40000);
     }
 
     private void reuseAlarmClock(AlarmClock alarmClock) {

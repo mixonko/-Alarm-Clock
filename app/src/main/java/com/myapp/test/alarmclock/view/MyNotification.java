@@ -28,6 +28,9 @@ public class MyNotification {
     private NotificationManager notificationManager;
     private Ringtone ringtone;
     private Vibrator vibrator;
+    public static final String ID_EXTRA = "id_extra";
+    public static final String TITLE_EXTRA = "title_extra";
+    public static final String TEXT_EXTRA = "text_extra";
 
     private MyNotification(){}
 
@@ -50,15 +53,24 @@ public class MyNotification {
                 MyApplication.getAppContext().getResources().
                         getString(R.string.disable_alarm), pendingIntent);
 
+        Intent alarmIntent = new Intent(MyApplication.getAppContext(), AlarmActivity.class);
+        alarmIntent.putExtra(ID_EXTRA, id);
+        alarmIntent.putExtra(TITLE_EXTRA, title);
+        alarmIntent.putExtra(TEXT_EXTRA, text);
+        PendingIntent pendingAlarmIntent =   PendingIntent.getActivity(MyApplication.getAppContext(), 1, alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
         mBuilder.setSmallIcon(R.mipmap.ic_alarm);
         mBuilder.setContentTitle(title)
                 .setContentText(text)
-                .setAutoCancel(false) ;
+                .setFullScreenIntent(pendingAlarmIntent, true)
+                .setAutoCancel(false);
         mBuilder.addAction(action);
+
+
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
 
-            @SuppressLint( "WrongConstant" ) NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, String.valueOf(id), NotificationManager.IMPORTANCE_MAX);
+            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, String.valueOf(id), NotificationManager.IMPORTANCE_HIGH );
 
             notificationChannel.enableLights(true);
 

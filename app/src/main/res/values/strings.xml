@@ -16,4 +16,5 @@
     <string name="defauly_ringtone">По умолчанию</string>
     <string name="no_alarms">Без Будильников</string>
     <string name="everyday">Ежедневно</string>
+    <string name="swipe_to_off">Потяните вправо</string>
 </resources>
