@@ -79,6 +79,11 @@ public class MainPresenter implements MainContract.Presenter {
         setInfoText();
     }
 
+    @Override
+    public void onImgSwitcherWasClicked() {
+        view.showNextClockView();
+    }
+
     private void updateList(){
         try {
             view.updateList(repository.getAllAlarmClocks());

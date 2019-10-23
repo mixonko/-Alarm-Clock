@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -14,9 +15,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageSwitcher;
 import android.widget.TextView;
@@ -51,11 +55,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public static final String UPDATE = "UPDATE";
     public static final String RESULT_ID = "RESULT_ID";
     public static final int RESULT_REQUEST_CODE = 1;
-
-//    @Override
-//    public boolean onTouchEvent(MotionEvent event) {
-//        return super.onTouchEvent(event);
-//    }
+    public static final String TRANSLATION_Y = "translationY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,12 +70,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         infoText = findViewById(R.id.info_text);
         recyclerView = findViewById(R.id.list);
         imageSwitcher = findViewById(R.id.image_switcher);
-        setImageSwAnim();
+        startAnimation();
+        setImageSwChangeAnim();
 
         imageSwitcher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                imageSwitcher.showNext();
+                presenter.onImgSwitcherWasClicked();
             }
         });
         linearLayoutManager = new LinearLayoutManager(MyApplication.getAppContext());
@@ -114,14 +115,34 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         });
     }
 
-    private void setImageSwAnim() {
+    private void startAnimation() {
+        BounceInterpolator bounceInterpolator = new BounceInterpolator();
+        ObjectAnimator anim1 = ObjectAnimator.ofFloat(imageSwitcher, TRANSLATION_Y, -1000, 0f );
+        anim1.setInterpolator(bounceInterpolator);
+        anim1.setDuration(800).start();
+
+        LinearInterpolator linearInterpolator = new LinearInterpolator();
+        ObjectAnimator anim2 = ObjectAnimator.ofFloat(recyclerView, TRANSLATION_Y, -1000, 0f );
+        anim2.setInterpolator(linearInterpolator);
+        anim2.setDuration(400).start();
+
+        ObjectAnimator anim3 = ObjectAnimator.ofFloat(create, TRANSLATION_Y, 1000, 0 );
+        anim3.setInterpolator(linearInterpolator);
+        anim3.setDuration(400).start();
+
+        ObjectAnimator anim4 = ObjectAnimator.ofFloat(infoText, "translationX", 1000, 0 );
+        anim4.setInterpolator(linearInterpolator);
+        anim4.setDuration(400).start();
+
+    }
+
+    private void setImageSwChangeAnim() {
         Animation inAnimation = new AlphaAnimation(0, 1);
         inAnimation.setDuration(500);
         Animation outAnimation = new AlphaAnimation(1, 0);
         outAnimation.setDuration(500);
-
         imageSwitcher.setInAnimation(inAnimation);
-        imageSwitcher.setOutAnimation(outAnimation); 
+        imageSwitcher.setOutAnimation(outAnimation);
     }
 
     @Override
@@ -132,6 +153,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void setInfoText(String time) {
         infoText.setText(time);
+    }
+
+    @Override
+    public void showNextClockView() {
+        imageSwitcher.showNext();
     }
 
     @Override

@@ -17,6 +17,7 @@ public interface MainContract {
         void updateList(List<AlarmClock> list);
         void setList(List<AlarmClock> list);
         void setInfoText(String time);
+        void showNextClockView();
     }
 
     interface Presenter{
@@ -28,6 +29,7 @@ public interface MainContract {
         void onActivityResult(int id);
         void updateWasReceived();
         void onActivityResume();
+        void onImgSwitcherWasClicked();
     }
 
 }

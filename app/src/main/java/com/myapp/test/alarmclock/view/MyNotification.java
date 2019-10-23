@@ -1,5 +1,6 @@
 package com.myapp.test.alarmclock.view;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -56,11 +57,15 @@ public class MyNotification {
         mBuilder.addAction(action);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, String.valueOf(id), NotificationManager.IMPORTANCE_HIGH);
+
+            @SuppressLint( "WrongConstant" ) NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, String.valueOf(id), NotificationManager.IMPORTANCE_MAX);
+
             notificationChannel.enableLights(true);
+
             assert notificationManager != null;
             mBuilder.setChannelId(NOTIFICATION_CHANNEL_ID);
             notificationManager.createNotificationChannel(notificationChannel);
+
         }
         assert notificationManager != null;
         notificationManager.notify(id, mBuilder.build());

@@ -1,15 +1,21 @@
 package com.myapp.test.alarmclock.view.other;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.myapp.test.alarmclock.myAppContext.MyApplication;
+
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+import static com.myapp.test.alarmclock.view.MainActivity.UPDATE;
 
 public class DigitalClockView extends View {
 
@@ -58,8 +64,16 @@ public class DigitalClockView extends View {
     }
 
     private void drawClock(Canvas canvas){
-        String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
-        canvas.drawText(currentTime, positionX, positionY, paint);
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateformat = new SimpleDateFormat("HH:mm:ss");
+        String datetime = dateformat.format(calendar.getTime());
+        canvas.drawText(datetime, positionX, positionY, paint);
+
+        if (calendar.get(Calendar.SECOND) == 0){
+            Intent myIntent = new Intent();
+            myIntent.setAction(UPDATE);
+            MyApplication.getAppContext().sendBroadcast(myIntent);
+        }
     }
 
 }
