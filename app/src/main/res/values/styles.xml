@@ -5,6 +5,11 @@
         <item name="colorAccent">@color/colorBlack</item>
     </style>
 
+    <style name="AlarmActyivityStyle" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimaryDark">@color/colorBlack</item>
+        <item name="colorAccent">@color/colorBlack</item>
+    </style>
+
     <style name="AlarmClockTextDay">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

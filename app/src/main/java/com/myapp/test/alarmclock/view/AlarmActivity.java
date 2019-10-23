@@ -1,7 +1,7 @@
 package com.myapp.test.alarmclock.view;
 
 import android.os.Bundle;
-import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.ebanx.swipebtn.OnStateChangeListener;
@@ -23,6 +23,10 @@ public class AlarmActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         setContentView(R.layout.activity_alarm);
 
         title = findViewById(R.id.title);
@@ -35,7 +39,6 @@ public class AlarmActivity extends AppCompatActivity {
 
         text.setText(timeText);
         title.setText(titleText);
-
         alarmOff.setOnStateChangeListener(new OnStateChangeListener() {
             @Override
             public void onStateChange(boolean active) {

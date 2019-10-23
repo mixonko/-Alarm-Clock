@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
         android:name=".myAppContext.MyApplication"
@@ -24,7 +25,7 @@
         <activity android:name=".view.CreateActivity" />
         <activity android:name=".view.ChangeActivity" />
         <activity android:name=".view.AlarmActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+            android:theme="@style/AlarmActyivityStyle" />
         <receiver android:name="com.myapp.test.alarmclock.receiver.AlarmClockReceiver" />
         <receiver android:name="com.myapp.test.alarmclock.receiver.NotificationCancelReceiver"/>
         <service android:name=".service.MyService"/>
