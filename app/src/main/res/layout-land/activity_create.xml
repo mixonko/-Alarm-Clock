@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TimePicker
+        android:id="@+id/timePicker"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:timePickerMode="spinner"
+        android:layout_gravity="center" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/colorGray" />
+
+
+    <LinearLayout
+        style="@style/LayoutInfo"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="0dp"
+        android:layout_gravity="center">
+
+        <View
+            style="@style/Line" />
+
+        <FrameLayout
+            android:id="@+id/days_of_week"
+            style="@style/InfoItem" >
+
+            <TextView
+                style="@style/TextLeft"
+                android:text="@string/days_of_the_week" />
+
+            <TextView
+                android:id="@+id/days"
+                style="@style/TextRight"
+                android:text="@string/without_replay" />
+
+        </FrameLayout>
+
+        <View
+            style="@style/Line" />
+
+        <FrameLayout
+            android:id="@+id/sound_layout"
+            style="@style/InfoItem">
+
+            <TextView
+                style="@style/TextLeft"
+                android:text="@string/sound" />
+
+            <TextView
+                android:id="@+id/sound"
+                style="@style/TextRight"
+                android:text="@string/default_text"
+                android:maxLength="12"
+                android:drawableRight="@drawable/ic_arrow_right_black"/>
+
+        </FrameLayout>
+
+        <View
+            style="@style/Line" />
+
+        <FrameLayout
+            android:id="@+id/vibration_layout"
+            style="@style/InfoItem">
+
+            <TextView
+                style="@style/TextLeft"
+                android:text="@string/vibration_signal" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/vibration"
+                style="@style/SwitchButtonInfo" />
+
+        </FrameLayout>
+
+        <View
+            style="@style/Line" />
+
+        <FrameLayout
+            android:id="@+id/description_layout"
+            style="@style/InfoItem">
+
+            <TextView
+                style="@style/TextLeft"
+                android:text="@string/description" />
+
+            <TextView
+                android:id="@+id/description"
+                style="@style/TextRight"
+                android:text="@string/alarm_clock"
+                android:drawableRight="@drawable/ic_arrow_right_black"/>
+
+        </FrameLayout>
+
+        <View
+            style="@style/Line" />
+
+    </LinearLayout>
+
+</LinearLayout>

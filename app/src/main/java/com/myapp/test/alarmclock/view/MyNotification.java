@@ -1,6 +1,5 @@
 package com.myapp.test.alarmclock.view;
 
-import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -64,9 +63,8 @@ public class MyNotification {
                 .setContentText(text)
                 .setFullScreenIntent(pendingAlarmIntent, true)
                 .setAutoCancel(false);
+
         mBuilder.addAction(action);
-
-
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
 

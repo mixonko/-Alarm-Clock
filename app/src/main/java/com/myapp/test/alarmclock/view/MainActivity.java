@@ -190,8 +190,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void showDeleteDialog(final AlarmClock alarmClock, final int position, String days) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Удалить будильник на " + alarmClock.getHour() +
-                ":" + alarmClock.getMinute() + " (" + days.trim() + ")" + " ?")
+        builder.setMessage("Удалить " + alarmClock.getDescription() + " на " + alarmClock.getHour() +
+                ":" + alarmClock.getMinute() + "\n" + "(" + days.trim() + ")" + " ?")
                 .setCancelable(false)
                 .setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
                     @Override

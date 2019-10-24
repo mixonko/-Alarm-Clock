@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:layout_margin="10dp"
+    tools:context=".view.MainActivity">
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <com.myapp.test.alarmclock.view.other.DigitalClockView
+            style="@style/myClockView"
+            android:layout_marginBottom="55dp"/>
+
+        <ImageSwitcher
+            android:id="@+id/image_switcher"
+            android:layout_width="280dp"
+            android:layout_height="280dp"
+            android:layout_gravity="center"
+            android:visibility="invisible">
+
+            <com.myapp.test.alarmclock.view.other.ClockView
+                style="@style/myClockView" />
+
+            <com.myapp.test.alarmclock.view.other.DigitalClockView
+                style="@style/myClockView"/>
+
+        </ImageSwitcher>
+
+        <TextView
+            android:id="@+id/info_text"
+            style="@style/InfoText"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="100dp"/>
+
+    </FrameLayout>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/colorGray" />
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:paddingLeft="10dp">
+
+        <View
+            style="@style/Line" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list"
+            style="@style/RecyclerView" />
+
+        <Button
+            android:id="@+id/create"
+            style="@style/AddButton" />
+
+    </FrameLayout>
+
+</LinearLayout>
