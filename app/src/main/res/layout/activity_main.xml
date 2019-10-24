@@ -34,7 +34,10 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list"
-            style="@style/RecyclerView" />
+            style="@style/RecyclerView"
+            android:clipToPadding="false"
+            android:paddingBottom="90dp"
+            android:scrollbars="vertical" />
 
         <Button
             android:id="@+id/create"

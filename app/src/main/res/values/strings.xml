@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Alarm Clock</string>
+    <string name="app_name">Будильник</string>
     <string name="alarm_clock">Будильник</string>
     <string name="create_title">Добавить</string>
     <string name="done">Сохранить</string>

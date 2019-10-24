@@ -108,7 +108,6 @@ public class MyNotification {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 vibrator = getSystemService(MyApplication.getAppContext(), Vibrator.class);
-
                 vibrator.vibrate(VibrationEffect.createOneShot(milliseconds, VibrationEffect.DEFAULT_AMPLITUDE));
             } else {
                 vibrator.vibrate(milliseconds);
