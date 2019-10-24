@@ -40,6 +40,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import static com.myapp.test.alarmclock.view.MainActivity.RESULT_ID;
+import static com.myapp.test.alarmclock.view.MainActivity.SCREEN_OFF;
 
 public class ChangeActivity extends AppCompatActivity implements ChangeContract.view, View.OnClickListener {
     private ChangeContract.presenter presenter;
@@ -345,6 +346,5 @@ public class ChangeActivity extends AppCompatActivity implements ChangeContract.
         calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTimeInMillis();
     }
-
 
 }

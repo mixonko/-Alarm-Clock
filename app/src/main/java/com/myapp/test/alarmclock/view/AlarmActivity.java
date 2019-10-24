@@ -10,7 +10,7 @@ import com.myapp.test.alarmclock.R;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import static com.myapp.test.alarmclock.view.MainActivity.screenOff;
+import static com.myapp.test.alarmclock.view.MainActivity.SCREEN_OFF;
 import static com.myapp.test.alarmclock.view.MyNotification.ID_EXTRA;
 import static com.myapp.test.alarmclock.view.MyNotification.TEXT_EXTRA;
 import static com.myapp.test.alarmclock.view.MyNotification.TITLE_EXTRA;
@@ -30,7 +30,7 @@ public class AlarmActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (screenOff){
+        if (SCREEN_OFF){
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

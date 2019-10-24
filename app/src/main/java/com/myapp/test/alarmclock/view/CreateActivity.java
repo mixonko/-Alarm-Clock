@@ -2,8 +2,11 @@ package com.myapp.test.alarmclock.view;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -38,6 +41,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import static com.myapp.test.alarmclock.view.MainActivity.RESULT_ID;
+import static com.myapp.test.alarmclock.view.MainActivity.SCREEN_OFF;
 
 public class CreateActivity extends AppCompatActivity implements CreateContract.view, View.OnClickListener {
 
