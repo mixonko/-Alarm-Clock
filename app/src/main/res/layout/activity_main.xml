@@ -13,10 +13,9 @@
         android:layout_height="280dp"
         android:layout_gravity="center">
 
-    <com.myapp.test.alarmclock.view.other.ClockView
-        style="@style/myClockView"/>
+        <com.myapp.test.alarmclock.view.other.ClockView style="@style/myClockView" />
 
-    <com.myapp.test.alarmclock.view.other.DigitalClockView
+        <com.myapp.test.alarmclock.view.other.DigitalClockView
         style="@style/myClockView"/>
 
     </ImageSwitcher>
@@ -36,8 +35,7 @@
             android:id="@+id/list"
             style="@style/RecyclerView"
             android:clipToPadding="false"
-            android:paddingBottom="90dp"
-            android:scrollbars="vertical" />
+            android:paddingBottom="90dp"  />
 
         <Button
             android:id="@+id/create"

@@ -1,5 +1,6 @@
 package com.myapp.test.alarmclock.view;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,12 +17,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageSwitcher;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -91,6 +94,26 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         exampleAdapter = new ExampleAdapter(this.list);
         recyclerView.setAdapter(exampleAdapter);
+        final LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) imageSwitcher.getLayoutParams();
+        final int height = imageSwitcher.getLayoutParams().height;
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                    int state = recyclerView.getScrollState();
+                if (dy > 20 && state == 1) {
+                    params.height = 0;
+                    imageSwitcher.setLayoutParams(params);
+
+                }
+                if (dy <= 0 && state == 2 ) {
+                    params.height = height;
+                    imageSwitcher.setLayoutParams(params);
+
+                }
+
+            }
+        });
         exampleAdapter.setOnItemClickListener(new ExampleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -117,20 +140,20 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     private void startAnimation() {
         BounceInterpolator bounceInterpolator = new BounceInterpolator();
-        ObjectAnimator anim1 = ObjectAnimator.ofFloat(imageSwitcher, TRANSLATION_Y, -1000, 0f );
+        ObjectAnimator anim1 = ObjectAnimator.ofFloat(imageSwitcher, TRANSLATION_Y, -1000, 0f);
         anim1.setInterpolator(bounceInterpolator);
         anim1.setDuration(800).start();
 
         LinearInterpolator linearInterpolator = new LinearInterpolator();
-        ObjectAnimator anim2 = ObjectAnimator.ofFloat(recyclerView, TRANSLATION_Y, -1000, 0f );
+        ObjectAnimator anim2 = ObjectAnimator.ofFloat(recyclerView, TRANSLATION_Y, -1000, 0f);
         anim2.setInterpolator(linearInterpolator);
         anim2.setDuration(400).start();
 
-        ObjectAnimator anim3 = ObjectAnimator.ofFloat(create, TRANSLATION_Y, 1000, 0 );
+        ObjectAnimator anim3 = ObjectAnimator.ofFloat(create, TRANSLATION_Y, 1000, 0);
         anim3.setInterpolator(linearInterpolator);
         anim3.setDuration(400).start();
 
-        ObjectAnimator anim4 = ObjectAnimator.ofFloat(infoText, "translationX", 1000, 0 );
+        ObjectAnimator anim4 = ObjectAnimator.ofFloat(infoText, "translationX", 1000, 0);
         anim4.setInterpolator(linearInterpolator);
         anim4.setDuration(400).start();
 
@@ -212,7 +235,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void deleteItem(int position) {
         list.remove(position);
-        recyclerView.removeViewAt(position);
         exampleAdapter.notifyItemRemoved(position);
         exampleAdapter.notifyItemRangeChanged(position, list.size());
     }
@@ -236,17 +258,17 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     protected void onResume() {
         super.onResume();
-            updateAlarmClockReceiver = new BroadcastReceiver() {
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                    presenter.updateWasReceived();
-                }
-            };
-            IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction(UPDATE);
-            registerReceiver(updateAlarmClockReceiver, intentFilter);
-            presenter.onActivityResume();
-            SCREEN_OFF = false;
+        updateAlarmClockReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                presenter.updateWasReceived();
+            }
+        };
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(UPDATE);
+        registerReceiver(updateAlarmClockReceiver, intentFilter);
+        presenter.onActivityResume();
+        SCREEN_OFF = false;
     }
 
     @Override
