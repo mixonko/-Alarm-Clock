@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.renderscript.RenderScript;
 
 import com.myapp.test.alarmclock.R;
 import com.myapp.test.alarmclock.myAppContext.MyApplication;
@@ -62,7 +63,7 @@ public class MyNotification {
         mBuilder.setContentTitle(title)
                 .setContentText(text)
                 .setFullScreenIntent(pendingAlarmIntent, true)
-                .setAutoCancel(false);
+                .setAutoCancel(false) ;
 
         mBuilder.addAction(action);
 

@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public static final String RESULT_ID = "RESULT_ID";
     public static final int RESULT_REQUEST_CODE = 1;
     public static final String TRANSLATION_Y = "translationY";
-    public static Boolean SCREEN_OFF = true;
+    public static Boolean SCREEN_OFF = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -268,13 +268,25 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         intentFilter.addAction(UPDATE);
         registerReceiver(updateAlarmClockReceiver, intentFilter);
         presenter.onActivityResume();
-        SCREEN_OFF = false;
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         unregisterReceiver(updateAlarmClockReceiver);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SCREEN_OFF = false;
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
         SCREEN_OFF = true;
+
     }
 }
