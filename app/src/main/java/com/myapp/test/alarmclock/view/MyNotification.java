@@ -20,6 +20,7 @@ import com.myapp.test.alarmclock.receiver.NotificationCancelReceiver;
 
 
 import static androidx.core.content.ContextCompat.getSystemService;
+import static com.myapp.test.alarmclock.view.MainActivity.SCREEN_OFF;
 
 public class MyNotification {
 
@@ -62,8 +63,11 @@ public class MyNotification {
         mBuilder.setSmallIcon(R.mipmap.ic_alarm);
         mBuilder.setContentTitle(title)
                 .setContentText(text)
-                .setFullScreenIntent(pendingAlarmIntent, true)
                 .setAutoCancel(false) ;
+
+        if (SCREEN_OFF){
+            mBuilder.setFullScreenIntent(pendingAlarmIntent, true);
+        }
 
         mBuilder.addAction(action);
 
@@ -82,6 +86,7 @@ public class MyNotification {
         notificationManager.notify(id, mBuilder.build());
 
     }
+
 
     public void deleteNotification(int id){
         notificationManager.cancel(id);
