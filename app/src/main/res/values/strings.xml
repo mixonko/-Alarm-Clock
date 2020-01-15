@@ -17,4 +17,7 @@
     <string name="no_alarms">Без Будильников</string>
     <string name="everyday">Ежедневно</string>
     <string name="swipe_to_off">Потяните вправо</string>
+    <string name="setPhoto">Добавить фото</string>
+    <string name="camera">Камера</string>
+    <string name="gallery">Галерея</string>
 </resources>

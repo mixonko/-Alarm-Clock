@@ -67,6 +67,30 @@ public class CreatePresenter implements CreateContract.presenter {
         view.setVibration(!view.getVibrationInfo());
     }
 
+    @Override
+    public void onPhotoButWasClicked() {
+        view.startCamera();
+    }
+
+    @Override
+    public void onCheckedChanged(boolean b) {
+        if (b){
+            view.showPhotoLayout();
+        }else{
+            view.hidePhotoLayout();
+        }
+    }
+
+    @Override
+    public void onPhotoCheckWasClicked() {
+        view.setPhotoCheck(!view.getPhotoCheck());
+    }
+
+    @Override
+    public void onGalleryWasClicked() {
+        view.pickImage();
+    }
+
     private String getHour(int hour){
         String mHour = String.valueOf(hour);
         if (mHour.length() == 1){

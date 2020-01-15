@@ -2,12 +2,10 @@ package com.myapp.test.alarmclock.view;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,8 +15,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -26,10 +28,12 @@ import com.myapp.test.alarmclock.R;
 import com.myapp.test.alarmclock.contract.CreateContract;
 import com.myapp.test.alarmclock.entity.DaysOfWeek;
 import com.myapp.test.alarmclock.myAppContext.MyApplication;
+import com.myapp.test.alarmclock.other.Permissions;
 import com.myapp.test.alarmclock.permission.CheckReadStoragePermission;
 import com.myapp.test.alarmclock.presenter.CreatePresenter;
 import com.myapp.test.alarmclock.view.adapter.ExampleDaysAdapter;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,20 +45,24 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import static com.myapp.test.alarmclock.view.MainActivity.RESULT_ID;
-import static com.myapp.test.alarmclock.view.MainActivity.SCREEN_OFF;
 
 public class CreateActivity extends AppCompatActivity implements CreateContract.view, View.OnClickListener {
 
     private static final int REQUEST_CODE_RINGTONE = 5;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int LOAD_IMAGE_REQUEST_CODE = 2;
     private CreateContract.presenter presenter;
     private TimePicker timePicker;
-    private FrameLayout soundLayout, descriptionLayout, daysLayout, vibrationLayout;
+    private FrameLayout soundLayout, descriptionLayout, daysLayout, vibrationLayout, photoLayout, photo;
     private TextView ringtoneText, description, days;
-    private androidx.appcompat.widget.SwitchCompat vibrationSignal;
-    private DaysOfWeek mDaysOfWeek ;
+    private androidx.appcompat.widget.SwitchCompat vibrationSignal, photoSwitch;
+    private DaysOfWeek mDaysOfWeek;
     private String mPickedDaysText;
     private String ringtonePath;
     private String ringtoneName;
+    private Button photoButton, galleryButton;
+    private ImageView photoImage;
+    private LinearLayout.LayoutParams params;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,18 +83,35 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
         vibrationLayout = findViewById(R.id.vibration_layout);
         vibrationSignal = findViewById(R.id.vibration);
         descriptionLayout = findViewById(R.id.description_layout);
+        photoLayout = findViewById(R.id.photo_layout);
         description = findViewById(R.id.description);
+        photoSwitch = findViewById(R.id.photo_switch);
+        photoButton = findViewById(R.id.photo_button);
+        galleryButton = findViewById(R.id.gallery);
+        photoImage = findViewById(R.id.photo_image);
+        photo = findViewById(R.id.photo);
 
         daysLayout.setOnClickListener(this);
         soundLayout.setOnClickListener(this);
         vibrationLayout.setOnClickListener(this);
         descriptionLayout.setOnClickListener(this);
+        photoLayout.setOnClickListener(this);
+        photoButton.setOnClickListener(this);
+        galleryButton.setOnClickListener(this);
+
+        photoSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                presenter.onCheckedChanged(b);
+            }
+        });
 
         ringtonePath = RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI;
         ringtoneName = MyApplication.getAppContext().getString(R.string.defauly_ringtone);
         mPickedDaysText = MyApplication.getAppContext().getString(R.string.without_replay);
-        mDaysOfWeek = new DaysOfWeek(0,0,0,0,0,0,0);
+        mDaysOfWeek = new DaysOfWeek(0, 0, 0, 0, 0, 0, 0);
 
+        params = (LinearLayout.LayoutParams) photo.getLayoutParams();
     }
 
     @Override
@@ -219,15 +244,24 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
                 presenter.onDaysWasClicked();
                 break;
             case R.id.vibration_layout:
-                 presenter.onVibrationWasClicked();
+                presenter.onVibrationWasClicked();
                 break;
             case R.id.sound_layout:
-                if (CheckReadStoragePermission.checkSelfPermission(MyApplication.getAppContext())){
+                if (CheckReadStoragePermission.checkSelfPermission(MyApplication.getAppContext())) {
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                             1);
-                }else {
+                } else {
                     presenter.onRingtonesWasClicked();
                 }
+                break;
+            case R.id.photo_layout:
+                presenter.onPhotoCheckWasClicked();
+                break;
+            case R.id.photo_button:
+                presenter.onPhotoButWasClicked();
+                break;
+            case R.id.gallery:
+                presenter.onGalleryWasClicked();
                 break;
         }
     }
@@ -243,18 +277,45 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
 
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent intent) {
-        if (resultCode == Activity.RESULT_OK && requestCode == 5) {
-            Uri uri = intent.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+        super.onActivityResult(requestCode, resultCode, intent);
 
-            if (uri != null) {
-                ringtonePath = uri.toString();
-                ringtoneName = getRingtoneName(uri);
-                presenter.onRingtoneResult(ringtoneName);
+        if (intent != null) {
+            if (resultCode == Activity.RESULT_OK) {
+                switch (requestCode) {
+                    case REQUEST_CODE_RINGTONE:
+                        if (resultCode == RESULT_OK) {
+                            Uri uri = intent.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+
+                            if (uri != null) {
+                                ringtonePath = uri.toString();
+                                ringtoneName = getRingtoneName(uri);
+                                presenter.onRingtoneResult(ringtoneName);
+                            }
+                        }
+                        break;
+                    case LOAD_IMAGE_REQUEST_CODE:
+                        if (resultCode == RESULT_OK) {
+                            Uri pickedImage = intent.getData();
+                            photoImage.setImageURI(pickedImage);
+                        }
+                        break;
+                    case REQUEST_IMAGE_CAPTURE:
+                        if (resultCode == RESULT_OK) {
+                            Bundle extras = intent.getExtras();
+                            Bitmap imageBitmap = (Bitmap) extras.get("data");
+                            Uri pickedImage = (Uri) extras.get("data");
+                            photoImage.setImageURI(pickedImage);
+
+
+                        }
+                        break;
+                }
+
             }
         }
     }
 
-    private String getRingtoneName(Uri uri){
+    private String getRingtoneName(Uri uri) {
         String fileName = "";
         if (uri.getScheme().equals("file")) {
             fileName = uri.getLastPathSegment();
@@ -279,7 +340,7 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     }
 
     @Override
-    public String getRingtoneName(){
+    public String getRingtoneName() {
         return ringtoneName;
     }
 
@@ -301,6 +362,55 @@ public class CreateActivity extends AppCompatActivity implements CreateContract.
     @Override
     public DaysOfWeek getDaysOfWeek() {
         return mDaysOfWeek;
+    }
+
+    @Override
+    public void startCamera() {
+        if (Permissions.checkCameraHardware(MyApplication.getAppContext())) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
+                    1);
+        } else {
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
+
+        }
+    }
+
+    @Override
+    public void pickImage() {
+        if (Permissions.checkStoragePermission(MyApplication.getAppContext())) {
+            Intent intentGallery = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(intentGallery, LOAD_IMAGE_REQUEST_CODE);
+        } else getPermission();
+    }
+
+    public void getPermission() {
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+    }
+
+    @Override
+    public void showPhotoLayout() {
+        params.height = 150;
+        photo.setLayoutParams(params);
+    }
+
+    @Override
+    public void hidePhotoLayout() {
+        params.height = 0;
+        photo.setLayoutParams(params);
+    }
+
+    @Override
+    public Boolean getPhotoCheck() {
+        return photoSwitch.isChecked();
+    }
+
+    @Override
+    public void setPhotoCheck(Boolean b) {
+        photoSwitch.setChecked(b);
     }
 
     @Override

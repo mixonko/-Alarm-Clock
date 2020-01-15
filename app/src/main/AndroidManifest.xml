@@ -4,8 +4,11 @@
     package="com.myapp.test.alarmclock">
 
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
 
     <application
         android:name=".myAppContext.MyApplication"
@@ -28,13 +31,11 @@
         <activity
             android:name=".view.AlarmActivity"
             android:theme="@style/AlarmActyivityStyle" />
-
         <receiver
             android:name=".receiver.AlarmClockReceiver"
             android:enabled="true"
             android:exported="true"/>
         <receiver android:name=".receiver.NotificationCancelReceiver" />
-
         <service android:name=".service.MyService" />
     </application>
 

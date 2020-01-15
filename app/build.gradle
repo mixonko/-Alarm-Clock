@@ -31,4 +31,5 @@ dependencies {
     //swipe button
     implementation "com.ebanx:swipe-button:0.8.0"
 
+
 }
