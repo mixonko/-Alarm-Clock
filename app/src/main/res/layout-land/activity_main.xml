@@ -3,43 +3,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
     android:layout_margin="10dp"
+    android:orientation="horizontal"
     tools:context=".view.MainActivity">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
 
-        <com.myapp.test.alarmclock.view.other.DigitalClockView
-            style="@style/myClockView"
-            android:layout_marginBottom="55dp"/>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.myapp.test.alarmclock.view.other.DigitalClockView
+                style="@style/myClockView"
+                android:layout_marginBottom="55dp" />
+
+            <TextView
+                android:id="@+id/info_text"
+                style="@style/InfoText"
+                android:layout_gravity="bottom|center"
+                android:layout_marginBottom="100dp" />
+
+        </FrameLayout>
 
         <ImageSwitcher
             android:id="@+id/image_switcher"
-            android:layout_width="280dp"
-            android:layout_height="280dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_gravity="center"
             android:visibility="invisible">
 
-            <com.myapp.test.alarmclock.view.other.ClockView
-                style="@style/myClockView" />
+            <com.myapp.test.alarmclock.view.other.ClockView style="@style/myClockView" />
 
-            <com.myapp.test.alarmclock.view.other.DigitalClockView
-                style="@style/myClockView"/>
+            <com.myapp.test.alarmclock.view.other.DigitalClockView style="@style/myClockView" />
 
         </ImageSwitcher>
 
-        <TextView
-            android:id="@+id/info_text"
-            style="@style/InfoText"
-            android:layout_gravity="bottom|center"
-            android:layout_marginBottom="100dp"/>
 
-    </FrameLayout>
+    </LinearLayout>
 
     <View
         android:layout_width="1dp"
@@ -52,12 +57,13 @@
         android:layout_weight="1"
         android:paddingLeft="10dp">
 
-        <View
-            style="@style/Line" />
+        <View style="@style/Line" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list"
-            style="@style/RecyclerView" />
+            style="@style/RecyclerView"
+            android:clipToPadding="false"
+            android:paddingBottom="90dp" />
 
         <Button
             android:id="@+id/create"

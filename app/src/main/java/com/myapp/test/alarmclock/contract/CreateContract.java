@@ -24,12 +24,6 @@ public interface CreateContract {
         void setRingtoneNameText(String ringtoneName);
         void setVibration(Boolean vibration);
         DaysOfWeek getDaysOfWeek();
-        void startCamera();
-        void pickImage();
-        void showPhotoLayout();
-        void hidePhotoLayout();
-        Boolean getPhotoCheck();
-        void setPhotoCheck(Boolean b);
     }
 
     interface presenter{
@@ -41,10 +35,6 @@ public interface CreateContract {
         void onRingtonesWasClicked();
         void onRingtoneResult(String ringtoneName);
         void onVibrationWasClicked();
-        void onPhotoButWasClicked();
-        void onCheckedChanged(boolean b);
-        void onPhotoCheckWasClicked();
-        void onGalleryWasClicked();
 
     }
 

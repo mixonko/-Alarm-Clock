@@ -89,52 +89,6 @@
         <View
             style="@style/Line" />
 
-        <FrameLayout
-            android:id="@+id/photo_layout"
-            style="@style/InfoItem">
-
-            <TextView
-                style="@style/TextLeft"
-                android:layout_height="wrap_content"
-                android:text="@string/setPhoto" />
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/photo_switch"
-                style="@style/SwitchButtonInfo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="false"/>
-
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/photo"
-            style="@style/InfoItem"
-            android:layout_height="0dp">
-
-            <Button
-                android:id="@+id/photo_button"
-                style="@style/addImageAlarm"
-                android:layout_gravity="left|center"
-                android:background="@drawable/camera_selector" />
-
-            <Button
-                android:id="@+id/gallery"
-                style="@style/addImageAlarm"
-                android:layout_gravity="center"
-                android:background="@drawable/gallery_selector"/>
-
-            <ImageView
-                android:id="@+id/photo_image"
-                android:scaleType="centerCrop"
-                style="@style/addImageAlarm"
-                android:layout_gravity="right|center"/>
-
-        </FrameLayout>
-
-        <View
-            style="@style/Line" />
-
     </LinearLayout>
 
 </LinearLayout>
